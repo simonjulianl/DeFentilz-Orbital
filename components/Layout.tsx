@@ -1,6 +1,8 @@
 import Header from "./Header";
 import NavBar from "./NavBar";
-import styles from './Layout.module.scss';
+import navButtons from '../config/buttons';
+
+import styles from '../styles/Layout.module.scss';
 
 import Head from "next/head";
 
@@ -19,6 +21,8 @@ function Layout (props){
       <div className={styles.Content}>
           {props.children}
       </div>
+
+      <NavBar navButtons={navButtons}/>
     </div>)
 };
 
