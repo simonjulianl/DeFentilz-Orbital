@@ -1,5 +1,6 @@
-import styles from '../../styles/NavBar.module.scss';
+import styles from '~/src/styles/NavBar.module.scss';
 import NavButton from "../NavButton/NavButton";
+import React from 'react';
 
 interface Props {
   navButtons: { label: string;

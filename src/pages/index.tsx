@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Layout from '../components/Layout/Layout';
+import React from 'react';
 
 function Index(props) {
     return (

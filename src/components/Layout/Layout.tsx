@@ -1,8 +1,8 @@
 import Header from "../Header/Header";
 import NavBar from "../NavBar/NavBar";
 import navButtons from '../Button/Button';
-
-import styles from '../../styles/Layout.module.scss';
+import React from 'react';
+import styles from '~/src/styles/Layout.module.scss';
 
 import Head from "next/head";
 

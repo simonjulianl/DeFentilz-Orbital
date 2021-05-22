@@ -7,7 +7,7 @@ import {
   faShoppingCart
 } from "@fortawesome/free-solid-svg-icons";
 
-const navButtons = [
+const Button = [
   {
     label: "Explore",
     path: "/explore",
@@ -30,4 +30,4 @@ const navButtons = [
   }
 ];
 
-export default navButtons;
+export default Button;
