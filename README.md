@@ -4,8 +4,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Development Setup
 
-## Development Setup
-
 [Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) the latest `npm` and `node` versions on your local machine
 You should have the latest `npm` and `node` versions installed on your local machine before running.
 
