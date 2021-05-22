@@ -1,5 +1,5 @@
-import styles from '../styles/NavBar.module.scss';
-import NavButton from "./NavButton";
+import styles from '../../styles/NavBar.module.scss';
+import NavButton from "../NavButton/NavButton";
 
 interface Props {
   navButtons: { label: string;

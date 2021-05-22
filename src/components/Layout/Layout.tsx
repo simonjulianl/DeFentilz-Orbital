@@ -1,8 +1,8 @@
-import Header from "./Header";
-import NavBar from "./NavBar";
-import navButtons from '../config/buttons';
+import Header from "../Header/Header";
+import NavBar from "../NavBar/NavBar";
+import navButtons from '../Button/Button';
 
-import styles from '../styles/Layout.module.scss';
+import styles from '../../styles/Layout.module.scss';
 
 import Head from "next/head";
 

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { withRouter } from "next/router";
-import buttonStyles from "@/styles/NavButton.module.scss";
-
+import buttonStyles from "../../styles/NavButton.module.scss";
 
 function NavButton(props){
     return (<Link href={props.path}>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from '../styles/Header.module.scss';
+import styles from '../../styles/Header.module.scss';
 
 interface Props {
     appTitle: string;
