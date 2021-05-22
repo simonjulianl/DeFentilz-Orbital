@@ -20,6 +20,12 @@ To build the app for production:
 ```bash
 yarn run build
 ```
+
+To run the storybook for components development:
+```bash
+yarn storybook
+```
+
 To run the app in development development 
 ```bash
 npx next dev
@@ -29,6 +35,8 @@ To run the app in production mode
 ```bash
 npx next start
 ```
+
+
 
 note : use -p PORT_NUMBER to change the default port, default port is 3000 
 
