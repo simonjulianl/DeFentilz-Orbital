@@ -11,7 +11,7 @@ You should have the latest `npm` and `node` versions installed on your local mac
 Install all dependencies using yarn for this project (ensure that package-lock.json which comes from npm package manager is not in the file) :
 ```bash
 npm install yarn
-yarn install
+yarn add
 ```
 
 ## Scripts 
