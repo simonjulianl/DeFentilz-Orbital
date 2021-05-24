@@ -65,7 +65,7 @@ function signupModal(
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => handlers.emailSignInHandler(event)}
+              onClick={(event) => handlers.emailSignUpHandler(event)}
             >
               Sign Up
             </Button>

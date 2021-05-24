@@ -12,6 +12,7 @@ import { useState } from "react";
 const Header: React.FC<{}> = () => {
   const router = useRouter();
   const authContext = useAuth();
+  const [name, setName ] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const {
@@ -27,7 +28,9 @@ const Header: React.FC<{}> = () => {
 
   const onChangeHandler = (event) => {
     const { id, value } = event.currentTarget;
-    if (id === "userEmail") {
+    if (id === "displayName") {
+      setName(value);
+    } else if (id === "userEmail") {
       setEmail(value);
     } else if (id === "userPassword") {
       setPassword(value);
@@ -47,8 +50,14 @@ const Header: React.FC<{}> = () => {
         }
       }
     );
-    return <></>;
   };
+
+  const emailSignUpHandler = (event) => {
+    event.preventDefault();
+    authContext.signUpWithEmail(email, password, name, (errorCode: string, errorMessage: string) => {
+      console.error(errorCode + " " + errorMessage);
+    });
+  }
 
   const logOutHandler = () => {
     authContext.signOut();
@@ -68,6 +77,7 @@ const Header: React.FC<{}> = () => {
   };
 
   const handlerObject = {
+    emailSignUpHandler,
     emailSignInHandler,
     onChangeHandler,
     toLoginHandler,

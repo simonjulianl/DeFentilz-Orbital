@@ -13,7 +13,6 @@ function NavBar(props: Props) {
   const router = useRouter();
   
   if (auth) {
-    console.log(props.navButtons);
     return (
       <HStack justify="space-around">
         {props.navButtons.map(button => GeneralButton(button, () => router.push(button.path), router))}
