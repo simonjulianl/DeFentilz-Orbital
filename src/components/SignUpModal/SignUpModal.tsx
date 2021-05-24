@@ -22,9 +22,7 @@ type closeModalCallback = {
 function signupModal(
   isOpen: boolean,
   onClose: closeModalCallback,
-  authContext,
   handlers,
-  router
 ) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

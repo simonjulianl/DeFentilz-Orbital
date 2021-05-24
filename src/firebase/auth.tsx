@@ -10,7 +10,7 @@ interface Auth {
   token: string | null;
 }
 
-interface AuthContext {
+export interface AuthContext {
   auth: Auth | null;
   loading: boolean;
   signUpWithEmail: (
@@ -25,6 +25,10 @@ interface AuthContext {
     errorHandler: Function
   ) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  changePassword: (
+    email: string,
+    errorHandler: Function
+  ) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -43,6 +47,10 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
     errorHandler: Function
   ) => {},
   signInWithGoogle: async () => {},
+  changePassword: async (
+    email: string, 
+    errorHandler: Function
+  ) => {},
   signOut: async () => {},
 });
 
@@ -146,6 +154,18 @@ function useProvideAuth() {
       });
   };
 
+  const changePassword = async (
+    email: string,
+    errorHandler: Function
+  ) => {
+    setLoading(true);
+    return firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then((response) => console.log(response))
+      .catch((error) => errorHandler(error.code, error.message));
+  };
+
   const signOut = async () => {
     return firebase.auth().signOut().then(clear);
   };
@@ -161,6 +181,7 @@ function useProvideAuth() {
     signUpWithEmail,
     signInWithEmail,
     signInWithGoogle,
+    changePassword,
     signOut,
   };
 }

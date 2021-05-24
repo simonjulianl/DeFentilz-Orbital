@@ -13,6 +13,7 @@ import {
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
 import { EmailIcon } from "@chakra-ui/icons";
+import { NextRouter } from "next/router";
 
 type closeModalCallback = {
   (): void;
@@ -23,9 +24,8 @@ type closeModalCallback = {
 function signinModal(
   isOpen: boolean,
   onClose: closeModalCallback,
-  authContext,
   handlers,
-  router
+  router : NextRouter
 ) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -53,7 +53,7 @@ function signinModal(
             <Link
               pb="3"
               color="blue.600"
-              onClick={() => router.push("/requestpwd")}
+              onClick={() => handlers.toReqPwdHandler()} // Find a better way to do this
             >
               Forgot Password?
             </Link>
@@ -72,7 +72,7 @@ function signinModal(
             <Button
               leftIcon={<FaGoogle />}
               colorScheme="red"
-              onClick={(event) => authContext.signInWithGoogle(event)}
+              onClick={(event) => handlers.googleSignInHandler(event)}
             >
               Log In With Google
             </Button>

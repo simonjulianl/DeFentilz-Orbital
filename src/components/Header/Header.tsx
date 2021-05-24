@@ -5,9 +5,11 @@ import GeneralButton from "~/components/Button/Button";
 import signinModal from "~/components/SignInModal/SignInModal";
 import signupModal from "~/components/SignUpModal/SignUpModal";
 
-import { useAuth } from "~/firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useAuth } from "~/firebase/auth";
+import authHandlers from "~/firebase/authHandlers";
+import requestpwdModal from "../ReqPwdModal/ReqPwdModal";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
@@ -25,64 +27,16 @@ const Header: React.FC<{}> = () => {
     onOpen: onOpenSignup,
     onClose: onCloseSignup,
   } = useDisclosure();
+  const {
+    isOpen: isOpenPwd,
+    onOpen: onOpenPwd,
+    onClose: onClosePwd,
+  } = useDisclosure();
 
-  const onChangeHandler = (event) => {
-    const { id, value } = event.currentTarget;
-    if (id === "displayName") {
-      setName(value);
-    } else if (id === "userEmail") {
-      setEmail(value);
-    } else if (id === "userPassword") {
-      setPassword(value);
-    }
-  };
-
-  const emailSignInHandler = (event) => {
-    event.preventDefault();
-    authContext.signInWithEmail(
-      email,
-      password,
-      (errorCode: string, errorMessage: string) => {
-        if (errorCode === "auth/invalid-email") {
-          console.error("404");
-        } else if (errorCode === "auth/user-not-found") {
-          console.error("404");
-        }
-      }
-    );
-  };
-
-  const emailSignUpHandler = (event) => {
-    event.preventDefault();
-    authContext.signUpWithEmail(email, password, name, (errorCode: string, errorMessage: string) => {
-      console.error(errorCode + " " + errorMessage);
-    });
-  }
-
-  const logOutHandler = () => {
-    authContext.signOut();
-    router.push("/");
-    onCloseLogin();
-    onCloseSignup();
-  };
-
-  const toLoginHandler = () => {
-    onCloseSignup();
-    onOpenLogin();
-  };
-
-  const toSignupHandler = () => {
-    onCloseLogin();
-    onOpenSignup();
-  };
-
-  const handlerObject = {
-    emailSignUpHandler,
-    emailSignInHandler,
-    onChangeHandler,
-    toLoginHandler,
-    toSignupHandler,
-  };
+  const hookVars = {name, email, password};
+  const settersObject = {setName, setEmail, setPassword};
+  const modalCallbacks = { onOpenLogin, onCloseLogin, onOpenSignup, onCloseSignup, onOpenPwd, onClosePwd};
+  const handlerObject = authHandlers(hookVars, settersObject, modalCallbacks, authContext, router); 
 
   return (
     <>
@@ -100,7 +54,7 @@ const Header: React.FC<{}> = () => {
           <HStack paddingRight="5">
             {GeneralButton(
             {label : "Log Out", path : null, icon : null},
-            logOutHandler,
+            handlerObject.logOutHandler,
             router
           )}
           </HStack>
@@ -128,7 +82,6 @@ const Header: React.FC<{}> = () => {
               {signinModal(
                 isOpenLogin,
                 onCloseLogin,
-                authContext,
                 handlerObject,
                 router
               )}
@@ -137,7 +90,14 @@ const Header: React.FC<{}> = () => {
               {signupModal(
                 isOpenSignup,
                 onCloseSignup,
-                authContext,
+                handlerObject,
+                router
+              )}
+            </Modal>
+            <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
+              {requestpwdModal(
+                isOpenPwd,
+                onClosePwd,
                 handlerObject,
                 router
               )}
