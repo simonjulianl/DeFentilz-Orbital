@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
 import requestpwdModal from "../ReqPwdModal/ReqPwdModal";
-//test
+
 const Header: React.FC<{}> = () => {
   const router = useRouter();
   const authContext = useAuth();
