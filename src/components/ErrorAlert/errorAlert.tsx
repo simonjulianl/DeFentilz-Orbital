@@ -1,6 +1,5 @@
 import { Alert, AlertIcon, AlertTitle } from "@chakra-ui/react";
 
-// test
 function ErrorAlert({ status, error }) {
   return (
     <Alert status={status}>
