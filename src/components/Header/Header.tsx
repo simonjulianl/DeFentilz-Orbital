@@ -82,16 +82,14 @@ const Header: React.FC<{}> = () => {
               {signinModal(
                 isOpenLogin,
                 onCloseLogin,
-                handlerObject,
-                router
+                handlerObject
               )}
             </Modal>
             <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
               {signupModal(
                 isOpenSignup,
                 onCloseSignup,
-                handlerObject,
-                router
+                handlerObject
               )}
             </Modal>
             <Modal isOpen={isOpenPwd} onClose={onClosePwd}>

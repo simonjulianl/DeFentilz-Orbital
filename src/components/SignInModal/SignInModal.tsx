@@ -13,7 +13,6 @@ import {
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
 import { EmailIcon } from "@chakra-ui/icons";
-import { NextRouter } from "next/router";
 
 type closeModalCallback = {
   (): void;
@@ -24,8 +23,7 @@ type closeModalCallback = {
 function signinModal(
   isOpen: boolean,
   onClose: closeModalCallback,
-  handlers,
-  router : NextRouter
+  handlers: any // Lazy make type for this. Refer to authHandlers.tsx for type
 ) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

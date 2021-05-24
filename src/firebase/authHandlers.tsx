@@ -58,7 +58,7 @@ const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) =>
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signInWithGoogle(event);
+    authContext.signInWithGoogle();
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {

@@ -22,7 +22,7 @@ type closeModalCallback = {
 function signupModal(
   isOpen: boolean,
   onClose: closeModalCallback,
-  handlers,
+  handlers: any  // Lazy make type for this. Refer to authHandlers.tsx for type
 ) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
