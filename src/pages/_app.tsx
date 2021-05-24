@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import { AuthProvider } from "~/firebase/auth" // Had to modify this. Not sure why
+import { AuthProvider } from "~/firebase/auth";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App({ Component, pageProps }: AppProps) {
