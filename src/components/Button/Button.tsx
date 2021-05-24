@@ -1,33 +1,27 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCompass,
-  faMapMarkerAlt,
-  faUser,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@chakra-ui/react";
+import { NextRouter } from 'next/router';
 
-const Button = [
-  {
-    label: "Explore",
-    path: "/explore",
-    icon: <FontAwesomeIcon icon={faCompass} />,
-  },
-  {
-    label: "Near Me",
-    path: "/nearme",
-    icon: <FontAwesomeIcon icon={faMapMarkerAlt} />,
-  },
-  {
-    label: "My Booking",
-    path: "/booking",
-    icon: <FontAwesomeIcon icon={faShoppingCart} />,
-  },
-  {
-    label: "Profile",
-    path: "/profile",
-    icon: <FontAwesomeIcon icon={faUser} />,
-  },
-];
+interface Property {
+  label: string, 
+  path: string | null;
+  icon: any;
+}
 
-export default Button;
+type onClickCallback = (event: React.MouseEvent<HTMLButtonElement>) => void;
+
+const GeneralButton = (property: Property, callback : onClickCallback, router: NextRouter) => {
+  return (
+  <Button
+    leftIcon={property.icon}
+    border="0px"
+    bgColor="white"
+    onClick={callback}
+    as="button" 
+    fontWeight={router.pathname === property.path ? 'extrabold' : 'normal'}>
+    {property.label}
+  </Button>
+  )
+}
+
+export default GeneralButton;

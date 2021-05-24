@@ -1,12 +1,12 @@
-import { useAuth } from "~/firebase/auth";
-import { NextRouter, useRouter } from "next/router";
-
-import { Image, Button, useDisclosure } from "@chakra-ui/react";
-
-import { Modal } from "@chakra-ui/react";
+import { Image, Modal, useDisclosure } from "@chakra-ui/react";
 import { Flex, Box, HStack } from "@chakra-ui/layout";
+
+import GeneralButton from "~/components/Button/Button";
 import signinModal from "~/components/SignInModal/SignInModal";
 import signupModal from "~/components/SignUpModal/SignUpModal";
+
+import { useAuth } from "~/firebase/auth";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const Header: React.FC<{}> = () => {
@@ -85,28 +85,29 @@ const Header: React.FC<{}> = () => {
         >
           <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px" />
         </Box>
+        <Box justifyContent="space-around" align="center">
         {authContext.auth ? (
-          buttonFactory(
-            { rightPadding: 5, leftPadding: 0, path: null, label: "Log Out" },
+          <HStack paddingRight="5">
+            {GeneralButton(
+            {label : "Log Out", path : null, icon : null},
             logOutHandler,
             router
-          )
+          )}
+          </HStack>
         ) : (
-          <HStack>
-            {buttonFactory(
+          <HStack paddingRight="5" justifyContent="space-between">
+            {GeneralButton(
               {
-                rightPadding: 0,
-                leftPadding: 5,
+                icon : null,
                 path: "/signup",
                 label: "Sign Up",
               },
               onOpenSignup,
               router
             )}
-            {buttonFactory(
+            {GeneralButton(
               {
-                rightPadding: 5,
-                leftPadding: 0,
+                icon : null,
                 path: "/signin",
                 label: "Log In",
               },
@@ -133,40 +134,9 @@ const Header: React.FC<{}> = () => {
             </Modal>
           </HStack>
         )}
+        </Box>
       </Flex>
     </>
   );
 };
 export default Header;
-
-// Helper function
-interface Property {
-  label: string;
-  path: string | null;
-  leftPadding: number;
-  rightPadding: number;
-}
-type onClickCallback = (event: React.MouseEvent<HTMLButtonElement>) => void;
-
-function buttonFactory(
-  property: Property,
-  callback: onClickCallback,
-  router: NextRouter
-) {
-  return (
-    <Box
-      paddingRight={property.rightPadding}
-      paddingLeft={property.leftPadding}
-    >
-      <Button
-        width={"90px"}
-        borderRadius="15px"
-        onClick={callback}
-        as="button"
-        fontWeight={router.pathname === property.path ? "extrabold" : "normal"}
-      >
-        {property.label}
-      </Button>
-    </Box>
-  );
-}

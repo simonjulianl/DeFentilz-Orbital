@@ -1,15 +1,18 @@
 import Header from "~/components/Header/Header";
 import NavBar from "~/components/NavBar/NavBar";
-import navButtons from "~/components/Button/Button";
-import { Flex, Box, Center } from "@chakra-ui/layout";
+
 import Head from "next/head";
+import { Flex, Box, Center } from "@chakra-ui/layout";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCompass, faMapMarkerAlt, faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 function Layout(props) {
   // TODO : Add description and title onto each layout
   return (
-    <Flex direction="column" height="100%" width="100%">
+    <Flex direction="column" height="100vh" width="100wh">
       <Head>
-        <title>BoNUS: Your One Stop Facility Booking Place</title>
+        <title>{`BoNUS: Your One Stop Facility Booking Place`}</title>
         <meta
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1"
@@ -26,18 +29,17 @@ function Layout(props) {
           key="ogsitename"
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
-        <title>{`BoNUS`}</title>
       </Head>
       <Header />
       <Center
         bgColor="blue.100"
-        height="100%"
-        width="100%"
+        h="100%"
+        w="100%"
         justifyContent="center"
       >
         <Box>{props.children}</Box>
       </Center>
-      <NavBar navButtons={navButtons} />
+      <NavBar navButtons={buttonConfig} />
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
     </Flex>
@@ -45,3 +47,26 @@ function Layout(props) {
 }
 
 export default Layout;
+
+const buttonConfig = [
+  {
+    label: "Explore",
+    path: "/explore",
+    icon: <FontAwesomeIcon icon={faCompass} />
+  },
+  {
+    label: "Near Me",
+    path: "/nearme",
+    icon: <FontAwesomeIcon icon={faMapMarkerAlt} />
+  },
+  {
+    label: "My Booking",
+    path: "/booking",
+    icon: <FontAwesomeIcon icon={faShoppingCart} />
+  },
+  {
+    label: "Profile",
+    path: "/profile",
+    icon: <FontAwesomeIcon icon={faUser} />
+  }
+];
