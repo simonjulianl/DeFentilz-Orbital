@@ -38,7 +38,7 @@ function signinModal(
             <FormLabel>Email address</FormLabel>
             <Input
               type="email"
-              placeholder="E.g: faruq123@yahoo.com"
+              placeholder="E.g: Maruq123@u.nus.edu"
               onChange={(event) => handlers.onChangeHandler(event)}
             />
           </FormControl>

@@ -67,6 +67,17 @@ const formatAuthState = (user: firebase.User): Auth => ({
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null); // Declares state variable "auth" with setter "setAuth"
   const [loading, setLoading] = useState<boolean>(true);
+  const basicEmailChecker = (email: string | null, errorHandler: Function) => {
+    if (email === "") {
+      errorHandler("404", "Please fill in your email address");
+      return false;
+    } else if (email.split('@')[1] !== "u.nus.edu") {
+      errorHandler("404", "This is not a valid NUS email address");
+      return false;
+    }
+    errorHandler(null, null);
+    return true;
+  }
 
   const handleAuthChange = async (authState: firebase.User | null) => {
     if (!authState) {
@@ -135,13 +146,20 @@ function useProvideAuth() {
     errorHandler: Function
   ) => {
     setLoading(true);
-    return firebase
+    if(displayName === ''){
+      errorHandler("404", "Please input display name");
+      return;
+    }
+    if(basicEmailChecker(email, errorHandler)){
+      return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => signedUpandIn(response, "email", displayName))
       .catch((error) => {
         errorHandler(error.code, error.message);
       });
+    }
+    return ;
   };
 
   const signInWithEmail = async (
@@ -150,13 +168,16 @@ function useProvideAuth() {
     errorHandler: Function
   ) => {
     setLoading(true);
-    return firebase
+    if (basicEmailChecker(email, errorHandler)) {
+      return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => signedIn(response, "email"))
       .catch((error) => {
         errorHandler(error.code, error.message);
       });
+    }
+    return ;
   };
 
   const changePassword = async (

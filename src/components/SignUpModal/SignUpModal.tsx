@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Link, Input, FormHelperText } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
 import ErrorAlert from "~/components/ErrorAlert/errorAlert";
 
@@ -37,7 +37,7 @@ function signupModal(
             <FormLabel>Display Name</FormLabel>
             <Input
               type="string"
-              placeholder="E.g: Faruq"
+              placeholder="E.g: Maruq"
               onChange={(event) => handlers.onChangeHandler(event)}
             />
           </FormControl>
@@ -45,9 +45,11 @@ function signupModal(
             <FormLabel>Email address</FormLabel>
             <Input
               type="email"
-              placeholder="E.g: faruq123@yahoo.com"
+              placeholder="E.g: Maruq123@u.nus.edu"
               onChange={(event) => handlers.onChangeHandler(event)}
             />
+            <FormHelperText>{'Please use your email address ending with "u.nus.edu"'}</FormHelperText>
+
           </FormControl>
           <FormControl pb="3" id="userPassword" isRequired>
             <FormLabel>Password</FormLabel>
