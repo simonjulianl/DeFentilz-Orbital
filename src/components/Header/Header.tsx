@@ -95,7 +95,8 @@ const Header: React.FC<{}> = () => {
               {signupModal(
                 isOpenSignup,
                 onCloseSignup,
-                handlerObject
+                handlerObject,
+                hookVars
               )}
             </Modal>
             <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
@@ -103,7 +104,7 @@ const Header: React.FC<{}> = () => {
                 isOpenPwd,
                 onClosePwd,
                 handlerObject,
-                router
+                hookVars
               )}
             </Modal>
           </HStack>

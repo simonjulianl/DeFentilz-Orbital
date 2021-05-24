@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
+import ErrorAlert from "~/components/ErrorAlert/errorAlert";
 
 type closeModalCallback = {
   (): void;
@@ -22,7 +23,8 @@ type closeModalCallback = {
 function signupModal(
   isOpen: boolean,
   onClose: closeModalCallback,
-  handlers: any  // Lazy make type for this. Refer to authHandlers.tsx for type
+  handlers: any,  // Lazy make type for this. Refer to authHandlers.tsx for type
+  hookVars
 ) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -69,7 +71,9 @@ function signupModal(
             </Button>
           </Stack>
         </ModalBody>
-        <ModalFooter></ModalFooter>
+        <ModalFooter>
+          {hookVars.error.errorCode != null && ErrorAlert({status: 'error', error: hookVars.error})}
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

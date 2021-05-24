@@ -13,7 +13,7 @@ import {
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
 import { EmailIcon } from "@chakra-ui/icons";
-import ErrorAlert from "../ErrorAlert/errorAlert";
+import ErrorAlert from "~/components/ErrorAlert/errorAlert";
 
 type closeModalCallback = {
   (): void;
@@ -27,7 +27,6 @@ function signinModal(
   handlers: any, // Lazy make type for this. Refer to authHandlers.tsx for type
   hookVars: any
 ) {
-  console.log(hookVars.error.errorCode);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
