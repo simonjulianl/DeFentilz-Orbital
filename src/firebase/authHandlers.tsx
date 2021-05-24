@@ -11,6 +11,8 @@ interface settersObject {
     setName : (arg0: string) => void,
     setEmail : (arg0: string) => void,
     setPassword : (arg0: string) => void,
+    setError : (arg0: { errorCode: string,
+                        errorMessage: string}) => void,
 };
 
 interface modalCallbacks {
@@ -26,8 +28,12 @@ function authHandlers(  hookVars : hookVars,
                         modalCallbacks: modalCallbacks,
                         authContext: AuthContext,
                         router: NextRouter) {
+  const errorHandler = (errorCode: string | null, errorMessage: string | null) => {
+    console.error(errorCode + " " + errorMessage);
+    settersObject.setError({errorCode: errorCode, errorMessage: errorMessage});
+  }
                             
-const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) => {
+  const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) => {
     const { id, value } = event.currentTarget;
     if (id === "displayName") {
         settersObject.setName(value);
@@ -43,32 +49,27 @@ const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) =>
     authContext.signInWithEmail(
       hookVars.email,
       hookVars.password,
-      (errorCode: string, errorMessage: string) => {
-        console.error(errorCode + " " + errorMessage);
-      }
+      errorHandler
     );
   };
 
   const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signUpWithEmail(hookVars.email, hookVars.password, hookVars.name, (errorCode: string, errorMessage: string) => {
-      console.error(errorCode + " " + errorMessage);
-    });
+    authContext.signUpWithEmail(hookVars.email, hookVars.password, hookVars.name, errorHandler);
   }
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signInWithGoogle();
+    authContext.signInWithGoogle(errorHandler);
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.changePassword(hookVars.email, (errorCode: string, errorMessage: string) => {
-      console.error(errorCode + " " + errorMessage);
-    })
+    authContext.changePassword(hookVars.email, errorHandler);
   }
 
   const logOutHandler = () => {
+    settersObject.setError({errorCode: null, errorMessage: null});
     authContext.signOut();
     router.push("/");
     modalCallbacks.onCloseLogin();
@@ -76,16 +77,19 @@ const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) =>
   };
 
   const toLoginHandler = () => {
+    settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseSignup();
     modalCallbacks.onOpenLogin();
   };
 
   const toSignupHandler = () => {
+    settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenSignup();
   };
 
   const toReqPwdHandler = () => {
+    settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenPwd();
   }

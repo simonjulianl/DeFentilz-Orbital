@@ -17,24 +17,29 @@ const Header: React.FC<{}> = () => {
   const [name, setName ] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState({errorCode: null, errorMessage: null});
   const {
     isOpen: isOpenLogin,
     onOpen: onOpenLogin,
-    onClose: onCloseLogin,
+    onClose: onCloseLoginTemp,
   } = useDisclosure();
   const {
     isOpen: isOpenSignup,
     onOpen: onOpenSignup,
-    onClose: onCloseSignup,
+    onClose: onCloseSignupTemp,
   } = useDisclosure();
   const {
     isOpen: isOpenPwd,
     onOpen: onOpenPwd,
-    onClose: onClosePwd,
+    onClose: onClosePwdTemp,
   } = useDisclosure();
+  const resetError = () => setError({errorCode: null, errorMessage: null});
+  const onCloseLogin = () => { resetError(); onCloseLoginTemp(); }
+  const onCloseSignup = () => { resetError(); onCloseSignupTemp(); }
+  const onClosePwd = () => { resetError(); onClosePwdTemp(); }
 
-  const hookVars = {name, email, password};
-  const settersObject = {setName, setEmail, setPassword};
+  const hookVars = {name, email, password, error};
+  const settersObject = {setName, setEmail, setPassword, setError};
   const modalCallbacks = { onOpenLogin, onCloseLogin, onOpenSignup, onCloseSignup, onOpenPwd, onClosePwd};
   const handlerObject = authHandlers(hookVars, settersObject, modalCallbacks, authContext, router); 
 
@@ -82,7 +87,8 @@ const Header: React.FC<{}> = () => {
               {signinModal(
                 isOpenLogin,
                 onCloseLogin,
-                handlerObject
+                handlerObject,
+                hookVars
               )}
             </Modal>
             <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>

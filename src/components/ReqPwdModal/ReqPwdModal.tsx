@@ -1,7 +1,6 @@
 import {
     Button,
     Stack,
-    Flex,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -11,7 +10,6 @@ import {
     ModalOverlay,
   } from "@chakra-ui/react";
   import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
-  import { FaGoogle } from "react-icons/fa";
   import { EmailIcon } from "@chakra-ui/icons";
   import { NextRouter } from "next/router";
   

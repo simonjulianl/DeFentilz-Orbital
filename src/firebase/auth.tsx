@@ -24,7 +24,7 @@ export interface AuthContext {
     password: string,
     errorHandler: Function
   ) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (errorHandler: Function) => Promise<void>;
   changePassword: (
     email: string,
     errorHandler: Function
@@ -46,7 +46,9 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
     password: string,
     errorHandler: Function
   ) => {},
-  signInWithGoogle: async () => {},
+  signInWithGoogle: async (
+    errorHandler: Function
+  ) => {},
   changePassword: async (
     email: string, 
     errorHandler: Function
@@ -115,12 +117,15 @@ function useProvideAuth() {
     setLoading(true);
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (errorHandler: Function) => {
     setLoading(true);
     return firebase
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((response) => signedIn(response, "google"));
+      .then((response) => signedIn(response, "google"))
+      .catch((error) => {
+        errorHandler(error.code, error.message);
+      });
   };
 
   const signUpWithEmail = async (
