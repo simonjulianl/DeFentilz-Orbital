@@ -47,7 +47,6 @@ To learn more about the resources used, the following documentation might be hel
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [React Documentation](https://reactjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Chakra UI](https://chakra-ui.com/)
 - [Storybook Documentation](https://storybook.js.org/docs)
 - [Redux Toolkit Tutorials](https://redux-toolkit.js.org/tutorials/overview)
