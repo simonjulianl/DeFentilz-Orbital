@@ -1,27 +1,46 @@
-import Header from "../Header/Header";
-import NavBar from "../NavBar/NavBar";
-import navButtons from "../Button/Button";
-import React from "react";
-import styles from "~/src/styles/Layout.module.scss";
-
+import Header from "~/components/Header/Header";
+import NavBar from "~/components/NavBar/NavBar";
+import navButtons from "~/components/Button/Button";
+import { Flex, Box, Center } from "@chakra-ui/layout";
 import Head from "next/head";
 
 function Layout(props) {
-  const appTitle = `BoNUS: Your One Stop Facility Booking Place`;
-
+  // TODO : Add description and title onto each layout
   return (
-    <div className={styles.Layout}>
+    <Flex direction="column" height="100%" width="100%">
       <Head>
-        <title>BoNUS</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>BoNUS: Your One Stop Facility Booking Place</title>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1"
+        />
         <meta charSet="utf-8" />
+        <meta
+          property="og:image"
+          content={"/assets/icons/pinus.png"}
+          key="ogimage"
+        />
+        <meta
+          property="og:site_name"
+          content="Perhimpunan Indonesia NUS"
+          key="ogsitename"
+        />
+        <meta property="og:title" content={`BoNUS`} key="ogtitle" />
+        <title>{`BoNUS`}</title>
       </Head>
-
-      <Header appTitle={appTitle} />
-      <div className={styles.Content}>{props.children}</div>
-
+      <Header />
+      <Center
+        bgColor="blue.100"
+        height="100%"
+        width="100%"
+        justifyContent="center"
+      >
+        <Box>{props.children}</Box>
+      </Center>
       <NavBar navButtons={navButtons} />
-    </div>
+      <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+    </Flex>
   );
 }
 

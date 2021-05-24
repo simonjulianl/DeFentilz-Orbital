@@ -1,10 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCompass,
-  faMapMarkerAlt,
-  faUser,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCompass } from "@fortawesome/free-solid-svg-icons";
 
 import React from "react";
 import { Story, Meta } from "@storybook/react";

@@ -4,30 +4,30 @@ import {
   faCompass,
   faMapMarkerAlt,
   faUser,
-  faShoppingCart
+  faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Button = [
   {
     label: "Explore",
     path: "/explore",
-    icon: <FontAwesomeIcon icon={faCompass} />
+    icon: <FontAwesomeIcon icon={faCompass} />,
   },
   {
     label: "Near Me",
     path: "/nearme",
-    icon: <FontAwesomeIcon icon={faMapMarkerAlt} />
+    icon: <FontAwesomeIcon icon={faMapMarkerAlt} />,
   },
   {
     label: "My Booking",
-    path: "/mybooking",
-    icon: <FontAwesomeIcon icon={faShoppingCart} />
+    path: "/booking",
+    icon: <FontAwesomeIcon icon={faShoppingCart} />,
   },
   {
     label: "Profile",
     path: "/profile",
-    icon: <FontAwesomeIcon icon={faUser} />
-  }
+    icon: <FontAwesomeIcon icon={faUser} />,
+  },
 ];
 
 export default Button;

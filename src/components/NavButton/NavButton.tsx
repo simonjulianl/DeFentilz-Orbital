@@ -1,23 +1,23 @@
-import Link from "next/link";
-import { withRouter } from "next/router";
-import buttonStyles from "~/src/styles/NavButton.module.scss";
 import React from "react";
+import { useRouter } from "next/router";
+import buttonStyles from "~/styles/NavButton.module.scss";
 
 function NavButton(props) {
+  const Router = useRouter();
+
   return (
-    <Link href={props.path}>
-      <div
-        className={
-          props.router.pathname === props.path
-            ? buttonStyles.NavButtonActive
-            : buttonStyles.NavButton
-        }
-      >
-        <div className="Icon">{props.icon}</div>
-        <span className="Label">{props.label}</span>
-      </div>
-    </Link>
+    <div
+      className={
+        Router.pathname === props.path
+          ? buttonStyles.NavButtonActive
+          : buttonStyles.NavButton
+      }
+      onClick={() => Router.push(props.path)}
+    >
+      <div className="Icon">{props.icon}</div>
+      <span className="Label">{props.label}</span>
+    </div>
   );
 }
 
-export default withRouter(NavButton);
+export default NavButton;

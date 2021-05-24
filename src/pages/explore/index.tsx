@@ -1,4 +1,4 @@
-import Layout from "../components/Layout/Layout";
+import Layout from "~/components/Layout/Layout";
 
 const ExploreView = (props) => (
   <Layout>{`Explore Different Facilities in NUS`}</Layout>
