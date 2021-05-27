@@ -30,7 +30,7 @@ function Layout(props) {
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
-      <Header />
+      <Header navButtons= { buttonConfig }/>
       <Center
         bgColor="blue.100"
         h="100%"
