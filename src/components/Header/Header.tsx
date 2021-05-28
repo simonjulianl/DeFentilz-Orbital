@@ -1,4 +1,4 @@
-import { Button, IconButton, Image, Modal, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
+import { Button, Image, Modal, useDisclosure } from "@chakra-ui/react";
 import { useMediaQuery } from "@chakra-ui/react"
 import { Flex, Box, HStack } from "@chakra-ui/layout";
 
@@ -14,16 +14,23 @@ import { useState } from "react";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
 
+import { faUserPlus, faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+
 
 interface Props {
   navButtons: { label: string; path: string; icon: any }[];
+  isMobile: boolean
 }
 
-function Header({ navButtons } : Props) {
+function Header({ navButtons, isMobile} : Props) {
   const router = useRouter();
   const authContext = useAuth();
+  // const [isMobile, isDisplayingInBrowser] = useMediaQuery([
+  //   "(min-width: 768px)",
+  //   "(display-mode: browser)",
+  // ]);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,8 +56,6 @@ function Header({ navButtons } : Props) {
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
-  const [isBig, isDisplayingInBrowser] = useMediaQuery(["(min-width: 768px)", "(display-mode: browser"]);
-  const isNotMobile = isBig && isDisplayingInBrowser;
 
   const resetError = () => setError({ errorCode: null, errorMessage: null });
   const onCloseLogin = () => {
@@ -74,7 +79,8 @@ function Header({ navButtons } : Props) {
     onOpenSignup,
     onCloseSignup,
     onOpenPwd,
-    onClosePwd
+    onClosePwd,
+    onCloseDrawer,
   };
   const handlerObject = authHandlers(
     hookVars,
@@ -87,54 +93,56 @@ function Header({ navButtons } : Props) {
   return (
     <>
       <Flex justify="space-between" align="center" bgColor="red.800">
-        <HStack paddingLeft={[2, 10]}>
-          <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
-          <Button variant="link" onClick={() => router.push("/")}>
-            <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
-          </Button>
-        </HStack>
+        <Button paddingLeft={[2, 10]} variant="link" onClick={() => router.push("/")}>
+          <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
+        </Button>
         <NavDrawer
           navButtons={ navButtons }
           onCloseDrawer={onCloseDrawer}
           isOpenDrawer={isOpenDrawer}
           onOpenLogin={onOpenLogin}
-          onOpenSignup={onOpenSignup} />
-        <Box justifyContent="space-around" align="center">
+          onOpenSignup={onOpenSignup}
+          logOutHandler={handlerObject.logOutHandler} />
+        <Box paddingRight={[2, 5]} justifyContent="space-around" align="center">
           {
-            isNotMobile ? (
+            isMobile 
+            ? (
               authContext.auth ? (
-                <HStack paddingRight="5">
-                  {GeneralButton(
-                    { label: "Log Out", path: null, icon: null },
-                    handlerObject.logOutHandler,
-                    router
+                <HStack>
+                  { GeneralButton(
+                        { 
+                        label: "Log Out",
+                        path: null,
+                        icon: <FontAwesomeIcon icon={faSignOutAlt}/> },
+                        handlerObject.logOutHandler,
+                        router
                   )}
                 </HStack>
                 ) : (
-                <HStack paddingRight={[2, 5]} justifyContent="space-between">
-                  {GeneralButton(
+                <HStack justifyContent="space-between">
+                  { GeneralButton(
                     {
-                      icon: null,
-                      path: "/signup",
-                      label: "Sign Up",
+                    label: "Sign Up",
+                    path: "/signup",
+                    icon: <FontAwesomeIcon icon={faUserPlus} />,
                     },
                     onOpenSignup,
                     router
-                  )}
-                  {GeneralButton(
+                )}
+                { GeneralButton(
                     {
-                      icon: null,
-                      path: "/signin",
-                      label: "Log In",
+                    label: "Log In",
+                    path: "/signin",
+                    icon: <FontAwesomeIcon icon={faSignInAlt} />,
                     },
                     onOpenLogin,
                     router
-                  )}
+                )}
                 </HStack>
               )
             )
             : (
-              <></>
+              <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
             )
           }
           <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
@@ -161,60 +169,6 @@ function Header({ navButtons } : Props) {
             hookVars
           )}
         </Modal>
-          {/* {authContext.auth ? (
-            <HStack paddingRight="5">
-              {GeneralButton(
-                { label: "Log Out", path: null, icon: null },
-                handlerObject.logOutHandler,
-                router
-              )}
-            </HStack>
-          ) : (
-            <HStack paddingRight={[2, 5]} justifyContent="space-between">
-              {GeneralButton(
-                {
-                  icon: null,
-                  path: "/signup",
-                  label: "Sign Up",
-                },
-                onOpenSignup,
-                router
-              )}
-              {GeneralButton(
-                {
-                  icon: null,
-                  path: "/signin",
-                  label: "Log In",
-                },
-                onOpenLogin,
-                router
-              )}
-              <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
-                {signinModal(
-                  isOpenLogin,
-                  onCloseLogin,
-                  handlerObject,
-                  hookVars
-                )}
-              </Modal>
-              <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
-                {signupModal(
-                  isOpenSignup,
-                  onCloseSignup,
-                  handlerObject,
-                  hookVars
-                )}
-              </Modal>
-              <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
-                {requestpwdModal(
-                  isOpenPwd,
-                  onClosePwd,
-                  handlerObject,
-                  hookVars
-                )}
-              </Modal>
-            </HStack>
-          )} */}
         </Box>
       </Flex>
     </>

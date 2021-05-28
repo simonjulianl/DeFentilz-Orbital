@@ -5,17 +5,14 @@ import { VStack } from "@chakra-ui/layout";
 import {
     Drawer,
     DrawerBody,
-    DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
-    DrawerCloseButton,
-    useMediaQuery,
     IconButton,
-  } from "@chakra-ui/react"
+} from "@chakra-ui/react"
 import GeneralButton from "~/components/Button/Button";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+
+import { faBars, faUserPlus, faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
@@ -24,14 +21,15 @@ interface Props {
   isOpenDrawer : boolean;
   onOpenSignup : () => void;
   onOpenLogin : () => void;
+  logOutHandler : () => void;
 }
 
-function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpenLogin} : Props) {
+function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpenLogin, logOutHandler} : Props) {
   const { auth } = useAuth();
   const router = useRouter();
   
     return (
-        <Drawer placement="left" onClose={onCloseDrawer} isOpen={isOpenDrawer}>
+        <Drawer placement="right" onClose={onCloseDrawer} isOpen={isOpenDrawer}>
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerHeader borderBottomWidth="1px">Navigation</DrawerHeader>
@@ -39,26 +37,36 @@ function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpe
                     {
                         auth ? (
                             <VStack alignItems="flex-start">
-                                {navButtons.map(button => GeneralButton(button, () => router.push(button.path), router))}
+                                { navButtons.map(
+                                    button =>
+                                    GeneralButton(button, () => router.push(button.path), router))
+                                }
+                                { GeneralButton(
+                                    { 
+                                    label: "Log Out",
+                                    path: null,
+                                    icon: <FontAwesomeIcon icon={faSignOutAlt}/> },
+                                    logOutHandler,
+                                    router
+                                )}
                             </VStack>
                             )
                             : (
                             <VStack alignItems="flex-start">
-                                {/* {navButtons.map(button => GeneralButton(button, () => router.push(button.path), router))} */}
-                                {GeneralButton(
+                                { GeneralButton(
                                     {
-                                    icon: null,
-                                    path: "/signup",
                                     label: "Sign Up",
+                                    path: "/signup",
+                                    icon: <FontAwesomeIcon icon={faUserPlus} />,
                                     },
                                     onOpenSignup,
                                     router
                                 )}
-                                {GeneralButton(
+                                { GeneralButton(
                                     {
-                                    icon: null,
-                                    path: "/signin",
                                     label: "Log In",
+                                    path: "/signin",
+                                    icon: <FontAwesomeIcon icon={faSignInAlt} />,
                                     },
                                     onOpenLogin,
                                     router
@@ -74,15 +82,12 @@ function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpe
 
 
 export const NavDrawerButton = ({onOpenDrawer}) => {
-    const [isBig, isDisplayingInBrowser] = useMediaQuery(["(min-width: 768px)", "(display-mode: browser"]);
-    const isNotMobile = isBig && isDisplayingInBrowser;
-    return isNotMobile ? (<></>) : (
+    return (
       <IconButton
       icon={<FontAwesomeIcon icon={faBars} />}
       aria-label="Navigation Drawer"
       onClick={() => onOpenDrawer()} />
-    )
-  
+    );
 }
 
 export default NavDrawer;

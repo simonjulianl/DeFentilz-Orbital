@@ -6,16 +6,22 @@ import GeneralButton from "~/components/Button/Button";
 
 interface Props {
   navButtons: { label: string; path: string; icon: any }[];
+  isMobile: boolean
 }
 
-function NavBar(props: Props) {
+function NavBar({navButtons, isMobile}: Props) {
   const { auth } = useAuth();
   const router = useRouter();
   
   if (auth) {
     return (
       <HStack justify="space-around">
-        {props.navButtons.map(button => GeneralButton(button, () => router.push(button.path), router))}
+        { isMobile
+          ? 
+          navButtons.map((button) => GeneralButton(button, () => router.push(button.path), router))
+          :
+          navButtons.map((button) => GeneralButton({label: "", path: button.path, icon:button.icon}, () => router.push(button.path), router))
+        }
       </HStack>
     )
   }

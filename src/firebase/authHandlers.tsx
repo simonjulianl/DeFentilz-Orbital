@@ -21,6 +21,8 @@ interface modalCallbacks {
     onOpenSignup: () => void, 
     onCloseSignup: () => void,
     onOpenPwd: () => void,
+    onClosePwd: () => void,
+    onCloseDrawer: () => void,
 }
 
 function authHandlers(  hookVars : hookVars,
@@ -51,21 +53,29 @@ function authHandlers(  hookVars : hookVars,
       hookVars.password,
       errorHandler
     );
+    modalCallbacks.onCloseLogin();
+    modalCallbacks.onCloseDrawer();
   };
 
   const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     authContext.signUpWithEmail(hookVars.email, hookVars.password, hookVars.name, errorHandler);
+    modalCallbacks.onCloseSignup();
+    modalCallbacks.onCloseDrawer();
   }
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     authContext.signInWithGoogle(errorHandler);
+    modalCallbacks.onCloseLogin();
+    modalCallbacks.onCloseDrawer();
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     authContext.changePassword(hookVars.email, errorHandler);
+    modalCallbacks.onClosePwd();
+    modalCallbacks.onCloseDrawer();
   }
 
   const logOutHandler = () => {
@@ -74,24 +84,28 @@ function authHandlers(  hookVars : hookVars,
     router.push("/");
     modalCallbacks.onCloseLogin();
     modalCallbacks.onCloseSignup();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toLoginHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseSignup();
     modalCallbacks.onOpenLogin();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toSignupHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenSignup();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toReqPwdHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenPwd();
+    modalCallbacks.onCloseDrawer();
   }
 
   return {
