@@ -1,5 +1,4 @@
 import { Button, Image, Modal, useDisclosure } from "@chakra-ui/react";
-import { useMediaQuery } from "@chakra-ui/react"
 import { Flex, Box, HStack } from "@chakra-ui/layout";
 
 import GeneralButton from "~/components/Button/Button";
@@ -7,7 +6,8 @@ import signinModal from "~/components/SignInModal/SignInModal";
 import signupModal from "~/components/SignUpModal/SignUpModal";
 import requestpwdModal from "~/components/ReqPwdModal/ReqPwdModal";
 import {NavDrawerButton} from "~/components/NavDrawer/NavDrawer";
-import NavDrawer from "~/components/NavDrawer/NavDrawer"; 
+import NavDrawer from "~/components/NavDrawer/NavDrawer";
+import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -17,19 +17,14 @@ import authHandlers from "~/firebase/authHandlers";
 import { faUserPlus, faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 interface Props {
-  navButtons: { label: string; path: string; icon: any }[];
-  isMobile: boolean
+  navButtons: GenButtonInterface[];
+  isMobile: boolean;
 }
 
 function Header({ navButtons, isMobile} : Props) {
   const router = useRouter();
   const authContext = useAuth();
-  // const [isMobile, isDisplayingInBrowser] = useMediaQuery([
-  //   "(min-width: 768px)",
-  //   "(display-mode: browser)",
-  // ]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,7 +88,7 @@ function Header({ navButtons, isMobile} : Props) {
   return (
     <>
       <Flex justify="space-between" align="center" bgColor="red.800">
-        <Button paddingLeft={[2, 10]} variant="link" onClick={() => router.push("/")}>
+        <Button paddingLeft={[5, 10]} variant="link" onClick={() => router.push("/")}>
           <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
         </Button>
         <NavDrawer
@@ -103,7 +98,7 @@ function Header({ navButtons, isMobile} : Props) {
           onOpenLogin={onOpenLogin}
           onOpenSignup={onOpenSignup}
           logOutHandler={handlerObject.logOutHandler} />
-        <Box paddingRight={[2, 5]} justifyContent="space-around" align="center">
+        <Box paddingRight={5} justifyContent="space-around" align="center">
           {
             isMobile 
             ? (
@@ -113,7 +108,8 @@ function Header({ navButtons, isMobile} : Props) {
                         { 
                         label: "Log Out",
                         path: null,
-                        icon: <FontAwesomeIcon icon={faSignOutAlt}/> },
+                        icon: <FontAwesomeIcon icon={faSignOutAlt}/>
+                        },
                         handlerObject.logOutHandler,
                         router
                   )}

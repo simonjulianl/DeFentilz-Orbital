@@ -20,7 +20,7 @@ function NavBar({navButtons, isMobile}: Props) {
           ? 
           navButtons.map((button) => GeneralButton(button, () => router.push(button.path), router))
           :
-          navButtons.map((button) => GeneralButton({label: "", path: button.path, icon:button.icon}, () => router.push(button.path), router))
+          navButtons.map((button) => GeneralButton({label: "", path: button.path, icon:button.icon, size:"lg"}, () => router.push(button.path), router))
         }
       </HStack>
     )

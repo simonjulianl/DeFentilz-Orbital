@@ -1,18 +1,13 @@
-import React from "react";
 import { Button } from "@chakra-ui/react";
 import { NextRouter } from 'next/router';
-
-interface Property {
-  label: string, 
-  path: string | null;
-  icon: any;
-}
+import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
 type onClickCallback = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
-const GeneralButton = (property: Property, callback : onClickCallback, router: NextRouter) => {
+const GeneralButton = (property: GenButtonInterface, callback : onClickCallback, router: NextRouter) => {
   return (
   <Button
+    size={property.size ? property.size : null}
     leftIcon={property.icon}
     border="0px"
     bgColor="white"

@@ -2,21 +2,17 @@ import { useAuth } from "~/firebase/auth";
 import { useRouter } from "next/router";
 
 import { VStack } from "@chakra-ui/layout";
-import {
-    Drawer,
-    DrawerBody,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    IconButton,
-} from "@chakra-ui/react"
+import { Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, IconButton } from "@chakra-ui/react"
+
 import GeneralButton from "~/components/Button/Button";
+import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
 import { faBars, faUserPlus, faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 interface Props {
-  navButtons: { label: string; path: string; icon: any }[];
+  navButtons: GenButtonInterface[];
   onCloseDrawer : () => void;
   isOpenDrawer : boolean;
   onOpenSignup : () => void;
