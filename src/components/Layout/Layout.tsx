@@ -45,7 +45,7 @@ function Layout(props) {
       >
         <Box>{props.children}</Box>
       </Center>
-      <NavBar navButtons={buttonConfig} />
+      <NavBar navButtons={buttonConfig} isMobile={isMobile}/>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
     </Flex>
