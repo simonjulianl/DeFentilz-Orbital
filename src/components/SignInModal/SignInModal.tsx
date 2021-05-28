@@ -34,7 +34,7 @@ function signinModal(
         <ModalHeader>Sign In</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl pb="3" id="userEmail" isRequired>
+          <FormControl pb="3" id="userEmail" isRequired onSubmit={() => console.log("Submitted")}>
             <FormLabel>Email address</FormLabel>
             <Input
               type="email"
@@ -65,7 +65,7 @@ function signinModal(
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => handlers.emailSignInHandler(event)}
+              onClick={(event) => {console.log("Submitted by Clicking"); handlers.emailSignInHandler(event);}}
             >
               Log In
             </Button>

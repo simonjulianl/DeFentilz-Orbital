@@ -5,10 +5,16 @@ import Head from "next/head";
 import { Flex, Box, Center } from "@chakra-ui/layout";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCompass, faMapMarkerAlt, faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { useMediaQuery } from "@chakra-ui/react";
 
 function Layout(props) {
   // TODO : Add description and title onto each layout
+  const [isNotMobile, isDisplayingInBrowser] = useMediaQuery([
+    "(min-width: 768px)",
+    "(display-mode: browser)",
+  ]);
+
   return (
     <Flex direction="column" height="100vh" width="100wh">
       <Head>
@@ -25,21 +31,38 @@ function Layout(props) {
         />
         <meta
           property="og:site_name"
-          content="Perhimpunan Indonesia NUS"
+          content="BoNUS: Your One Stop Facility Booking Place"
           key="ogsitename"
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
-      <Header />
-      <Center
-        bgColor="blue.100"
-        h="100%"
-        w="100%"
-        justifyContent="center"
-      >
-        <Box>{props.children}</Box>
-      </Center>
-      <NavBar navButtons={buttonConfig} />
+      {
+        isNotMobile
+        ? (
+          <>
+            <Header navButtons= { buttonConfig } isNotMobile={isNotMobile}/>
+            <NavBar navButtons={buttonConfig} isNotMobile={isNotMobile}/>
+            <Box
+              bgColor="white"
+              h="100vh"
+              w="100wh">
+            {props.children}
+            </Box>
+          </>
+        )
+        : (
+          <>
+            <Header navButtons= { buttonConfig } isNotMobile={isNotMobile}/>
+            <Box
+              bgColor="white"
+              h="100vh"
+              w="100wh">
+            {props.children}
+            </Box>
+            <NavBar navButtons={buttonConfig} isNotMobile={isNotMobile}/>
+          </>
+        )
+      }
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
     </Flex>
@@ -52,13 +75,13 @@ const buttonConfig = [
   {
     label: "Explore",
     path: "/explore",
-    icon: <FontAwesomeIcon icon={faCompass} />
+    icon: <FontAwesomeIcon icon={faHome} />
   },
-  {
-    label: "Near Me",
-    path: "/nearme",
-    icon: <FontAwesomeIcon icon={faMapMarkerAlt} />
-  },
+  // {
+  //   label: "Near Me",
+  //   path: "/nearme",
+  //   icon: <FontAwesomeIcon icon={faMapMarkerAlt} />
+  // },
   {
     label: "My Booking",
     path: "/booking",

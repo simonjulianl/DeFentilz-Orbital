@@ -1,26 +1,36 @@
-import { useAuth } from "~/firebase/auth";
 import { useRouter } from "next/router";
 
-import { HStack } from "@chakra-ui/layout";
 import GeneralButton from "~/components/Button/Button";
+
+import { HStack } from "@chakra-ui/layout";
+import { useMediaQuery } from "@chakra-ui/react";
 
 interface Props {
   navButtons: { label: string; path: string; icon: any }[];
+  isNotMobile: boolean
 }
 
-function NavBar(props: Props) {
-  const { auth } = useAuth();
+function NavBar({navButtons}: Props) {
   const router = useRouter();
+  const [isNotMobile, isDisplayingInBrowser] = useMediaQuery([
+    "(min-width: 768px)",
+    "(display-mode: browser)",
+  ]);
   
-  if (auth) {
-    return (
-      <HStack justify="space-around">
-        {props.navButtons.map(button => GeneralButton(button, () => router.push(button.path), router))}
-      </HStack>
-    )
-  }
-
-  return (<></>);
+  return (
+      isNotMobile
+        ? (
+          <HStack justify="space-around">
+            {navButtons.map((button) => GeneralButton(button, () => router.push(button.path), router))}
+          </HStack>
+        )
+        : (
+          <HStack justify="space-around">
+            {navButtons.map((button) => GeneralButton({label: "", path: button.path, icon:button.icon, size:"lg"}, () => router.push(button.path), router))}
+          </HStack>
+        )
+      
+  )
 }
 
 export default NavBar;

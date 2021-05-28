@@ -17,16 +17,22 @@ export interface AuthContext {
     email: string,
     password: string,
     displayName: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => Promise<void>;
   signInWithEmail: (
     email: string,
     password: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => Promise<void>;
-  signInWithGoogle: (errorHandler: Function) => Promise<void>;
+  signInWithGoogle: (
+    errorHandler: Function,
+    resolveHandler: Function
+  ) => Promise<void>;
   changePassword: (
     email: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => Promise<void>;
   signOut: () => Promise<void>;
@@ -39,18 +45,22 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
     email: string,
     password: string,
     displayName: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => {},
   signInWithEmail: async (
     email: string,
     password: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => {},
   signInWithGoogle: async (
+    resolveHandler: Function,
     errorHandler: Function
   ) => {},
   changePassword: async (
-    email: string, 
+    email: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => {},
   signOut: async () => {},
@@ -91,7 +101,6 @@ function useProvideAuth() {
   };
 
   const signedIn = async (
-    // Error throwing here
     response: firebase.auth.UserCredential,
     provider: String = "google"
   ) => {
@@ -100,7 +109,7 @@ function useProvideAuth() {
     }
     const authUser = formatAuthState(response.user);
     setAuth(authUser);
-    await addUser({ ...authUser, provider });
+    // await addUser({ ...authUser, provider });
   };
 
   const signedUpandIn = async (
@@ -128,12 +137,17 @@ function useProvideAuth() {
     setLoading(true);
   };
 
-  const signInWithGoogle = async (errorHandler: Function) => {
+  const signInWithGoogle = async (
+    resolveHandler: Function,
+    errorHandler: Function) => {
     setLoading(true);
     return firebase
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((response) => signedIn(response, "google"))
+      .then((response) => {
+        signedIn(response, "google");
+        resolveHandler();
+      })
       .catch((error) => {
         errorHandler(error.code, error.message);
       });
@@ -143,6 +157,7 @@ function useProvideAuth() {
     email: string,
     password: string,
     displayName: string,
+    resolveHandler: Function, 
     errorHandler: Function
   ) => {
     setLoading(true);
@@ -154,7 +169,10 @@ function useProvideAuth() {
       return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((response) => signedUpandIn(response, "email", displayName))
+      .then((response) => {
+        signedUpandIn(response, "email", displayName);
+        resolveHandler();
+      })
       .catch((error) => {
         errorHandler(error.code, error.message);
       });
@@ -165,6 +183,7 @@ function useProvideAuth() {
   const signInWithEmail = async (
     email: string,
     password: string,
+    resolveHandler: Function = () => {}, 
     errorHandler: Function
   ) => {
     setLoading(true);
@@ -172,7 +191,10 @@ function useProvideAuth() {
       return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((response) => signedIn(response, "email"))
+      .then((response) => {
+        signedIn(response, "email");
+        resolveHandler();
+      })
       .catch((error) => {
         errorHandler(error.code, error.message);
       });

@@ -3,7 +3,25 @@ module.exports = withSass();
 
 const path = require("path");
 module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/explore',
+        permanent: true
+      }
+    ]
+  },
+  async rewrites() {
+    return [
+      // Rewrite everything to `pages/index`
+      {
+        source: "/:any*",
+        destination: "/",
+      },
+    ];
+  },
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
-  },
+  }
 };

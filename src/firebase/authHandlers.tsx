@@ -21,6 +21,8 @@ interface modalCallbacks {
     onOpenSignup: () => void, 
     onCloseSignup: () => void,
     onOpenPwd: () => void,
+    onClosePwd: () => void,
+    onCloseDrawer: () => void,
 }
 
 function authHandlers(  hookVars : hookVars,
@@ -28,6 +30,14 @@ function authHandlers(  hookVars : hookVars,
                         modalCallbacks: modalCallbacks,
                         authContext: AuthContext,
                         router: NextRouter) {
+  
+  const resolveHandler = () => {
+      modalCallbacks.onCloseSignup();
+      modalCallbacks.onCloseLogin();
+      modalCallbacks.onCloseDrawer();
+      modalCallbacks.onClosePwd();
+  }
+
   const errorHandler = (errorCode: string | null, errorMessage: string | null) => {
     console.error(errorCode + " " + errorMessage);
     settersObject.setError({errorCode: errorCode, errorMessage: errorMessage});
@@ -49,23 +59,34 @@ function authHandlers(  hookVars : hookVars,
     authContext.signInWithEmail(
       hookVars.email,
       hookVars.password,
-      errorHandler
-    );
+      resolveHandler,
+      errorHandler,
+    )
   };
 
   const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signUpWithEmail(hookVars.email, hookVars.password, hookVars.name, errorHandler);
+    authContext.signUpWithEmail(
+      hookVars.email,
+      hookVars.password,
+      hookVars.name,
+      resolveHandler,
+      errorHandler
+    );
   }
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signInWithGoogle(errorHandler);
+    authContext.signInWithGoogle(resolveHandler, errorHandler);
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.changePassword(hookVars.email, errorHandler);
+    authContext.changePassword(
+      hookVars.email,
+      resolveHandler,
+      errorHandler
+    );
   }
 
   const logOutHandler = () => {
@@ -74,24 +95,28 @@ function authHandlers(  hookVars : hookVars,
     router.push("/");
     modalCallbacks.onCloseLogin();
     modalCallbacks.onCloseSignup();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toLoginHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseSignup();
     modalCallbacks.onOpenLogin();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toSignupHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenSignup();
+    modalCallbacks.onCloseDrawer();
   };
 
   const toReqPwdHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenPwd();
+    modalCallbacks.onCloseDrawer();
   }
 
   return {
