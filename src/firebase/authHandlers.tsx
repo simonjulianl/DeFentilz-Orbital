@@ -51,31 +51,58 @@ function authHandlers(  hookVars : hookVars,
     authContext.signInWithEmail(
       hookVars.email,
       hookVars.password,
-      errorHandler
+      (errorCode: string | null, errorMessage: string | null) => {
+        errorHandler(errorCode, errorMessage);
+        console.log(errorCode);
+        if(errorCode === null && errorMessage === null) {
+          modalCallbacks.onCloseLogin();
+          modalCallbacks.onCloseDrawer();
+        }
+      }
     );
-    modalCallbacks.onCloseLogin();
-    modalCallbacks.onCloseDrawer();
   };
 
   const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signUpWithEmail(hookVars.email, hookVars.password, hookVars.name, errorHandler);
-    modalCallbacks.onCloseSignup();
-    modalCallbacks.onCloseDrawer();
+    authContext.signUpWithEmail(
+      hookVars.email,
+      hookVars.password,
+      hookVars.name,
+      (errorCode: string | null, errorMessage: string | null) => {
+        errorHandler(errorCode, errorMessage);
+        if(errorCode === null && errorMessage === null) {
+          modalCallbacks.onCloseSignup();
+          modalCallbacks.onCloseDrawer();
+        }
+      }
+    );
   }
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signInWithGoogle(errorHandler);
-    modalCallbacks.onCloseLogin();
-    modalCallbacks.onCloseDrawer();
+    authContext.signInWithGoogle(
+      (errorCode: string | null, errorMessage: string | null) => {
+        errorHandler(errorCode, errorMessage);
+        if(errorCode === null && errorMessage === null) {
+          modalCallbacks.onCloseLogin();
+          modalCallbacks.onCloseDrawer();
+        }
+      }
+    );
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.changePassword(hookVars.email, errorHandler);
-    modalCallbacks.onClosePwd();
-    modalCallbacks.onCloseDrawer();
+    authContext.changePassword(
+      hookVars.email,
+      (errorCode: string | null, errorMessage: string | null) => {
+        errorHandler(errorCode, errorMessage);
+        if(errorCode === null && errorMessage === null) {
+          modalCallbacks.onClosePwd();
+          modalCallbacks.onCloseDrawer();
+        }
+      }
+    );
   }
 
   const logOutHandler = () => {

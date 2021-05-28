@@ -19,10 +19,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Props {
   navButtons: GenButtonInterface[];
-  isMobile: boolean;
+  isNotMobile: boolean;
 }
 
-function Header({ navButtons, isMobile} : Props) {
+function Header({ navButtons, isNotMobile} : Props) {
   const router = useRouter();
   const authContext = useAuth();
 
@@ -100,7 +100,7 @@ function Header({ navButtons, isMobile} : Props) {
           logOutHandler={handlerObject.logOutHandler} />
         <Box paddingRight={5} justifyContent="space-around" align="center">
           {
-            isMobile 
+            isNotMobile 
             ? (
               authContext.auth ? (
                 <HStack>
