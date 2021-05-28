@@ -30,6 +30,14 @@ function authHandlers(  hookVars : hookVars,
                         modalCallbacks: modalCallbacks,
                         authContext: AuthContext,
                         router: NextRouter) {
+  
+  const resolveHandler = () => {
+      modalCallbacks.onCloseSignup();
+      modalCallbacks.onCloseLogin();
+      modalCallbacks.onCloseDrawer();
+      modalCallbacks.onClosePwd();
+  }
+
   const errorHandler = (errorCode: string | null, errorMessage: string | null) => {
     console.error(errorCode + " " + errorMessage);
     settersObject.setError({errorCode: errorCode, errorMessage: errorMessage});
@@ -51,15 +59,9 @@ function authHandlers(  hookVars : hookVars,
     authContext.signInWithEmail(
       hookVars.email,
       hookVars.password,
-      (errorCode: string | null, errorMessage: string | null) => {
-        errorHandler(errorCode, errorMessage);
-        console.log(errorCode);
-        if(errorCode === null && errorMessage === null) {
-          modalCallbacks.onCloseLogin();
-          modalCallbacks.onCloseDrawer();
-        }
-      }
-    );
+      resolveHandler,
+      errorHandler,
+    )
   };
 
   const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
@@ -68,40 +70,22 @@ function authHandlers(  hookVars : hookVars,
       hookVars.email,
       hookVars.password,
       hookVars.name,
-      (errorCode: string | null, errorMessage: string | null) => {
-        errorHandler(errorCode, errorMessage);
-        if(errorCode === null && errorMessage === null) {
-          modalCallbacks.onCloseSignup();
-          modalCallbacks.onCloseDrawer();
-        }
-      }
+      resolveHandler,
+      errorHandler
     );
   }
 
   const googleSignInHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    authContext.signInWithGoogle(
-      (errorCode: string | null, errorMessage: string | null) => {
-        errorHandler(errorCode, errorMessage);
-        if(errorCode === null && errorMessage === null) {
-          modalCallbacks.onCloseLogin();
-          modalCallbacks.onCloseDrawer();
-        }
-      }
-    );
+    authContext.signInWithGoogle(resolveHandler, errorHandler);
   };
 
   const changePasswordHandler = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     authContext.changePassword(
       hookVars.email,
-      (errorCode: string | null, errorMessage: string | null) => {
-        errorHandler(errorCode, errorMessage);
-        if(errorCode === null && errorMessage === null) {
-          modalCallbacks.onClosePwd();
-          modalCallbacks.onCloseDrawer();
-        }
-      }
+      resolveHandler,
+      errorHandler
     );
   }
 
