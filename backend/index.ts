@@ -15,7 +15,7 @@ dotenv.config();
 // const certificate = fs.readFileSync("sslcert/server.crt", "utf8");
 
 const app = express();
-const PORT = 4000;
+const PORT = 5000;
 // const credentials = {
 //   key: privateKey,
 //   cert: certificate
@@ -41,6 +41,11 @@ con.connect((err?: mysql.MysqlError) => {
 });
 
 // some api
+app.use("*", (req, res) => {
+  res.send("<h1>Welcome to your simple server! Awesome right</h1>");
+});
+
+app.listen(PORT, () => console.log(`hosting @${PORT}`));
 // app.get("/", (req, res) => res.send("BoNUS Server"));
 
 // // this cre
