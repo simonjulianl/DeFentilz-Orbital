@@ -36,6 +36,10 @@ To run the app in production mode
 npx next start
 ```
 
+To run the server app 
+```bash
+yarn run start:dev
+```
 
 
 note : use -p PORT_NUMBER to change the default port, default port is 3000 
