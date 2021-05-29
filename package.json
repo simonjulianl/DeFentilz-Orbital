@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "dev:backend": "nodemon backend/index.ts",
-    "start:backend": "npx ts-node backend/index.ts",
+    "start:backend": "ts-node backend/index.ts",
     "build:css": "postcss styles/tailwind.css -o styles/main.css",
     "build:watch": "postcss styles/tailwind.css -o styles/main.css --watch",
     "prod:build": "NODE_ENV=production yarn run build:css && yarn run build",

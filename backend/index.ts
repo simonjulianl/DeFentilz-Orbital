@@ -41,12 +41,12 @@ con.connect((err?: mysql.MysqlError) => {
 });
 
 // some api
-app.get("/", (req, res) => res.send("BoNUS Server"));
+// app.get("/", (req, res) => res.send("BoNUS Server"));
 
-// this cre
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
-});
+// // this cre
+// app.listen(PORT, () => {
+//   console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
+// });
 
 con.end((err?: mysql.MysqlError) => {});
 
