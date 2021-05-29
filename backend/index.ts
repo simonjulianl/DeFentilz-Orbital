@@ -1,9 +1,5 @@
-import * as mysql from "mysql";
-import express from "express";
-import LogRocket from "logrocket";
-LogRocket.init("iukbut/bonus");
-
-const sql = require("mysql");
+const mysql = require("mysql");
+const express = require("express");
 // configuring environment variable setting
 const dotenv = require("dotenv");
 dotenv.config();
@@ -23,7 +19,7 @@ const PORT = 5000;
 
 // const httpsServer = https.createServer(credentials, app)
 
-const con = sql.createConnection({
+const con = mysql.createConnection({
   host: process.env.RDS_HOSTNAME,
   user: process.env.RDS_USERNAME,
   password: process.env.RDS_PASSWORD,
@@ -32,7 +28,7 @@ const con = sql.createConnection({
 });
 
 // establish connection
-con.connect((err?: mysql.MysqlError) => {
+con.connect((err) => {
   if (err) {
     console.log("Error connecting to Db");
     return;
@@ -41,18 +37,10 @@ con.connect((err?: mysql.MysqlError) => {
 });
 
 // some api
-app.use("*", (req, res) => {
-  res.send("<h1>Welcome to your simple server! Awesome right</h1>");
+app.get("*", (req, res) => res.send("BoNUS Server"));
+
+app.listen(PORT, () => {
+  console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
 });
 
-app.listen(PORT, () => console.log(`hosting @${PORT}`));
-// app.get("/", (req, res) => res.send("BoNUS Server"));
-
-// // this cre
-// app.listen(PORT, () => {
-//   console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
-// });
-
-con.end((err?: mysql.MysqlError) => {});
-
-export default con;
+con.end((err) => {});
