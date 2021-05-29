@@ -36,11 +36,15 @@ To run the app in production mode
 npx next start
 ```
 
-To run the server app 
+To run the server app using nodemon for live update and auto-refresh 
 ```bash
-yarn run start:dev
+yarn run dev:backend
 ```
 
+To run the server app using ts-node
+```bash
+yarn run start:backend
+```
 
 note : use -p PORT_NUMBER to change the default port, default port is 3000 
 
