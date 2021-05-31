@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 interface Props {
-  navButtons: GenButtonInterface[];
   onCloseDrawer : () => void;
   isOpenDrawer : boolean;
   onOpenSignup : () => void;
@@ -20,14 +19,14 @@ interface Props {
   logOutHandler : () => void;
 }
 
-function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpenLogin, logOutHandler} : Props) {
+function NavDrawer({onCloseDrawer, isOpenDrawer, onOpenSignup, onOpenLogin, logOutHandler} : Props) {
   const { auth } = useAuth();
   const router = useRouter();
   
     return (
         <Drawer placement="right" onClose={onCloseDrawer} isOpen={isOpenDrawer}>
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent >
                 <DrawerHeader borderBottomWidth="1px">Navigation</DrawerHeader>
                 <DrawerBody>
                     {

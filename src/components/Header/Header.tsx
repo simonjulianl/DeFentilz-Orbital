@@ -94,38 +94,39 @@ function Header({ navButtons, isNotMobile} : Props) {
           <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
         </Button>
         <NavDrawer
-          navButtons={ NavBarButtonConfig }
           onCloseDrawer={onCloseDrawer}
           isOpenDrawer={isOpenDrawer}
           onOpenLogin={onOpenLogin}
           onOpenSignup={onOpenSignup}
           logOutHandler={handlerObject.logOutHandler} />
         <Spacer />
-        <Box paddingRight={[2, 5, 10]}>
-          <HStack justify="space-between">  
           {
             isNotMobile 
             ? (
-              <>
-                {HeaderConfig
-                          .filter(button => button.signature != (authContext.auth ? 'signin' : 'logout'))
-                          .map((button) => {console.log(button.signature == 'signin'); return HeaderButton(button, 
-                                                        () => button.signature != 'signin' && button.signature != 'logout' 
-                                                                ? router.push(button.path)
-                                                                : button.signature == 'signin'
-                                                                ? onOpenLogin()
-                                                                : button.signature == 'logout'
-                                                                ? handlerObject.logOutHandler()
-                                                                : router.push('/errorPage'),
-                                                        router)})
-                }
-              </>
+              <Box width={[null,null, "30em", "32em", "40em"]} paddingRight={[2, 5, 10]}>
+                <HStack justify="space-between">  
+                  {HeaderConfig
+                            .filter(button => button.signature != (authContext.auth ? 'signin' : 'logout'))
+                            .map((button) => {console.log(button.signature == 'signin'); return HeaderButton(button, 
+                                                          () => button.signature != 'signin' && button.signature != 'logout' 
+                                                                  ? router.push(button.path)
+                                                                  : button.signature == 'signin'
+                                                                  ? onOpenLogin()
+                                                                  : button.signature == 'logout'
+                                                                  ? handlerObject.logOutHandler()
+                                                                  : router.push('/errorPage'),
+                                                          router)})
+                  }
+                </HStack>
+              </Box>
             )
             : (
-              <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
+              <Box paddingRight={[3, 5]}>
+                <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
+              </Box>
             )
           }
-          </HStack>
+           </Flex>
           <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
           {signinModal(
             isOpenLogin,
@@ -150,8 +151,6 @@ function Header({ navButtons, isNotMobile} : Props) {
             hookVars
           )}
         </Modal>
-        </Box>
-      </Flex>
     </>
   );
 };
