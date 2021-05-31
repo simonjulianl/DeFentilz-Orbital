@@ -18,6 +18,9 @@ const MyBookingView = () => {
                                         </Text>
                                         <Text>
                                             {"Email Address: " + authContext.auth.email}
+                                        </Text>                         
+                                        <Text>
+                                            {"Bookings: Currently No Bookings Yet"}
                                         </Text>
                                     </>
                                 ) : (
