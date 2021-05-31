@@ -2,10 +2,10 @@ import Header from "~/components/Header/Header";
 import NavBar from "~/components/NavBar/NavBar";
 
 import Head from "next/head";
-import { Flex, Box, Center } from "@chakra-ui/layout";
+import { Flex, Box, Center, Spacer } from "@chakra-ui/layout";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { HeaderConfig } from "~/configs/HeaderConfig";
+import {NavBarButtonConfig} from "~/configs/NavBarConfig";
 import { useMediaQuery } from "@chakra-ui/react";
 
 function Layout(props) {
@@ -16,7 +16,7 @@ function Layout(props) {
   ]);
 
   return (
-    <Flex direction="column" height="100vh" width="100wh">
+    <>
       <Head>
         <title>{`BoNUS: Your One Stop Facility Booking Place`}</title>
         <meta
@@ -36,60 +36,31 @@ function Layout(props) {
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
-      {
-        isNotMobile
-        ? (
-          <>
-            <Header navButtons= { buttonConfig } isNotMobile={isNotMobile}/>
-            <NavBar navButtons={buttonConfig} isNotMobile={isNotMobile}/>
-            <Box
-              bgColor="white"
-              h="100vh"
-              w="100wh">
-            {props.children}
-            </Box>
-          </>
-        )
-        : (
-          <>
-            <Header navButtons= { buttonConfig } isNotMobile={isNotMobile}/>
-            <Box
-              bgColor="white"
-              h="100vh"
-              w="100wh">
-            {props.children}
-            </Box>
-            <NavBar navButtons={buttonConfig} isNotMobile={isNotMobile}/>
-          </>
-        )
-      }
+      <Flex direction='column' height="100vh">
+        <Header navButtons= { HeaderConfig } isNotMobile={isNotMobile}/>
+        {
+          isNotMobile
+          ? (
+            <>
+              <Box bgColor="white" height="100vh">
+              {props.children}
+              </Box>
+            </>
+          )
+          : (
+            <>
+              <Box bgColor="white" height="100vh">
+              {props.children}
+              </Box>
+              <NavBar navButtons={ NavBarButtonConfig } isNotMobile={isNotMobile}/>
+            </>
+          )
+        }
+      </Flex>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
-    </Flex>
+    </>
   );
 }
 
 export default Layout;
-
-const buttonConfig = [
-  {
-    label: "Explore",
-    path: "/explore",
-    icon: <FontAwesomeIcon icon={faHome} />
-  },
-  // {
-  //   label: "Near Me",
-  //   path: "/nearme",
-  //   icon: <FontAwesomeIcon icon={faMapMarkerAlt} />
-  // },
-  {
-    label: "My Booking",
-    path: "/booking",
-    icon: <FontAwesomeIcon icon={faShoppingCart} />
-  },
-  {
-    label: "Profile",
-    path: "/profile",
-    icon: <FontAwesomeIcon icon={faUser} />
-  }
-];

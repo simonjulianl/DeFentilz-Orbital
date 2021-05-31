@@ -3,4 +3,8 @@ export interface GenButtonInterface {
     path : string;
     icon : any;
     size? : string;
+    variant? : string;
+    color? : string;
+    bgColor? : string;
+    [x: string]: any
 }

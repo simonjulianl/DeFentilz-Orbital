@@ -1,21 +1,22 @@
 import { Button, Image, Modal, useDisclosure } from "@chakra-ui/react";
-import { Flex, Box, HStack } from "@chakra-ui/layout";
+import { Flex, Box, HStack, Spacer } from "@chakra-ui/layout";
 
-import GeneralButton from "~/components/Button/Button";
 import signinModal from "~/components/SignInModal/SignInModal";
 import signupModal from "~/components/SignUpModal/SignUpModal";
 import requestpwdModal from "~/components/ReqPwdModal/ReqPwdModal";
-import {NavDrawerButton} from "~/components/NavDrawer/NavDrawer";
+
+import HeaderButton from "~/components/HeaderButton/HeaderButton";
+import { NavDrawerButton } from "~/components/NavDrawer/NavDrawer";
 import NavDrawer from "~/components/NavDrawer/NavDrawer";
-import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
+import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
-import { faUserPlus, faSignInAlt, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {HeaderConfig} from "~/configs/HeaderConfig";
+import { NavBarButtonConfig } from "~/configs/NavBarConfig";
 
 interface Props {
   navButtons: GenButtonInterface[];
@@ -88,59 +89,42 @@ function Header({ navButtons, isNotMobile} : Props) {
   return (
     <>
       <Flex justify="space-between" align="center" bgColor="red.800">
-        <Button paddingLeft={[5, 10]} variant="link" onClick={() => router.push("/")}>
+        <Button paddingLeft={[2, 5, 10]} variant="link" onClick={() => router.push("/")}>
           <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
         </Button>
         <NavDrawer
-          navButtons={ navButtons }
+          navButtons={ NavBarButtonConfig }
           onCloseDrawer={onCloseDrawer}
           isOpenDrawer={isOpenDrawer}
           onOpenLogin={onOpenLogin}
           onOpenSignup={onOpenSignup}
           logOutHandler={handlerObject.logOutHandler} />
-        <Box paddingRight={5} justifyContent="space-around" align="center">
+        <Spacer />
+        <Box paddingRight={[2, 5, 10]}>
+          <HStack justify="space-between">  
           {
             isNotMobile 
             ? (
-              authContext.auth ? (
-                <HStack>
-                  { GeneralButton(
-                        { 
-                        label: "Log Out",
-                        path: null,
-                        icon: <FontAwesomeIcon icon={faSignOutAlt}/>
-                        },
-                        handlerObject.logOutHandler,
-                        router
-                  )}
-                </HStack>
-                ) : (
-                <HStack justifyContent="space-between">
-                  { GeneralButton(
-                    {
-                    label: "Sign Up",
-                    path: "/signup",
-                    icon: <FontAwesomeIcon icon={faUserPlus} />,
-                    },
-                    onOpenSignup,
-                    router
-                )}
-                { GeneralButton(
-                    {
-                    label: "Log In",
-                    path: "/signin",
-                    icon: <FontAwesomeIcon icon={faSignInAlt} />,
-                    },
-                    onOpenLogin,
-                    router
-                )}
-                </HStack>
-              )
+              <>
+                {HeaderConfig
+                          .filter(button => button.signature != (authContext.auth ? 'signin' : 'logout'))
+                          .map((button) => {console.log(button.signature == 'signin'); return HeaderButton(button, 
+                                                        () => button.signature != 'signin' && button.signature != 'logout' 
+                                                                ? router.push(button.path)
+                                                                : button.signature == 'signin'
+                                                                ? onOpenLogin()
+                                                                : button.signature == 'logout'
+                                                                ? handlerObject.logOutHandler()
+                                                                : router.push('/errorPage'),
+                                                        router)})
+                }
+              </>
             )
             : (
               <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
             )
           }
+          </HStack>
           <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
           {signinModal(
             isOpenLogin,
