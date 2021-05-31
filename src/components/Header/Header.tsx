@@ -16,14 +16,13 @@ import authHandlers from "~/firebase/authHandlers";
 import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
 
 import {HeaderConfig} from "~/configs/HeaderConfig";
-import { NavBarButtonConfig } from "~/configs/NavBarConfig";
 
 interface Props {
   navButtons: GenButtonInterface[];
   isNotMobile: boolean;
 }
 
-function Header({ navButtons, isNotMobile} : Props) {
+function Header({ isNotMobile} : Props) {
   const router = useRouter();
   const authContext = useAuth();
 
