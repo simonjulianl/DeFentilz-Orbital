@@ -9,7 +9,7 @@ import {
     ModalHeader,
     ModalOverlay,
   } from "@chakra-ui/react";
-import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
 import ErrorAlert from "~/components/ErrorAlert/errorAlert";
 
@@ -53,6 +53,7 @@ return (
         </ModalBody>
         <ModalFooter>
             {hookVars.error.errorCode != null && ErrorAlert({status: 'error', error: hookVars.error})}
+            {hookVars.successChange != null && ErrorAlert({status: 'success', error: {errorCode: null, errorMessage: "We have sent a password change link to the above email!"}})}
         </ModalFooter>
     </ModalContent>
     </Modal>

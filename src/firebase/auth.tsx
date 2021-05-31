@@ -204,14 +204,22 @@ function useProvideAuth() {
 
   const changePassword = async (
     email: string,
+    resolveHandler: Function,
     errorHandler: Function
   ) => {
-    setLoading(true);
-    return firebase
+    setLoading(true);    
+    if (basicEmailChecker(email, errorHandler)) {
+      return firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then((response) => console.log(response))
-      .catch((error) => errorHandler(error.code, error.message));
+      .then((response) => {
+        resolveHandler();
+      })
+      .catch((error) => {
+        errorHandler(error.code, error.message);
+      });
+    }
+    return ;
   };
 
   const signOut = async () => {

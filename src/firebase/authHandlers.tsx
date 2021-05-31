@@ -8,6 +8,7 @@ interface hookVars {
 };
 
 interface settersObject {
+    setSuccessChange: (arg0: boolean | null) => void;
     setName : (arg0: string) => void,
     setEmail : (arg0: string) => void,
     setPassword : (arg0: string) => void,
@@ -84,13 +85,16 @@ function authHandlers(  hookVars : hookVars,
     event.preventDefault();
     authContext.changePassword(
       hookVars.email,
-      resolveHandler,
+      () => {
+        settersObject.setSuccessChange(true);
+      },
       errorHandler
     );
   }
 
   const logOutHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setSuccessChange(null);
     authContext.signOut();
     router.push("/");
     modalCallbacks.onCloseLogin();
@@ -100,6 +104,7 @@ function authHandlers(  hookVars : hookVars,
 
   const toLoginHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setSuccessChange(null);
     modalCallbacks.onCloseSignup();
     modalCallbacks.onOpenLogin();
     modalCallbacks.onCloseDrawer();
@@ -107,6 +112,7 @@ function authHandlers(  hookVars : hookVars,
 
   const toSignupHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenSignup();
     modalCallbacks.onCloseDrawer();
@@ -114,6 +120,7 @@ function authHandlers(  hookVars : hookVars,
 
   const toReqPwdHandler = () => {
     settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenPwd();
     modalCallbacks.onCloseDrawer();

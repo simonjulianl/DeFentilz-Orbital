@@ -30,6 +30,7 @@ function Header({ navButtons, isNotMobile} : Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [successChange, setSuccessChange] = useState(undefined);
   const [error, setError] = useState({ errorCode: null, errorMessage: null });
 
   const {
@@ -67,8 +68,8 @@ function Header({ navButtons, isNotMobile} : Props) {
     onClosePwdTemp();
   };
 
-  const hookVars = { name, email, password, error };
-  const settersObject = { setName, setEmail, setPassword, setError };
+  const hookVars = { name, email, password, error, successChange};
+  const settersObject = { setName, setEmail, setPassword, setError, setSuccessChange };
   const modalCallbacks = {
     onOpenLogin,
     onCloseLogin,
