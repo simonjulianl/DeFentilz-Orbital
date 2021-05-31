@@ -52,10 +52,17 @@ note : use -p PORT_NUMBER to change the default port, default port is 3000
 
 To learn more about the resources used, the following documentation might be helpful : 
 
+**Front End**
+
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [React Documentation](https://reactjs.org/docs)
 - [Chakra UI](https://chakra-ui.com/)
 - [Storybook Documentation](https://storybook.js.org/docs)
-- [Redux Toolkit Tutorials](https://redux-toolkit.js.org/tutorials/overview)
-- [React-Redux-Firebase Authentication Documentation](http://react-redux-firebase.com/docs/auth.html)
+
+**Backend**
+
+- [Express.js](https://expressjs.com/)
+- [AWS RDS MySQL](https://aws.amazon.com/rds/)
+- [Heroku](https://heroku.com/)
+- [Sequlieze ORM] (https://sequelize.org/)
