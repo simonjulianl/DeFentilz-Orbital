@@ -65,4 +65,4 @@ To learn more about the resources used, the following documentation might be hel
 - [Express.js](https://expressjs.com/)
 - [AWS RDS MySQL](https://aws.amazon.com/rds/)
 - [Heroku](https://heroku.com/)
-- [Sequlieze ORM] (https://sequelize.org/)
+- [Sequlieze ORM](https://sequelize.org/)
