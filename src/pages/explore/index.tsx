@@ -16,47 +16,28 @@ const ExploreView = () => {
 
   return (
       <Layout>
-          <Flex justify="center" paddingTop={[10, 10]} paddingBottom={[5, 10]}>
+          <Flex justify="center" paddingTop={[2, 2, 4, 5]} paddingBottom={[2, 2, 4, 5]}>
             <SearchBar isNotMobile={isNotMobile}></SearchBar>
           </Flex>
-          {
-          isNotMobile 
-          ? <HStack justify="space-around">
-              <VStack>
-                <IconButton isRound size="lg" label={"Sports"} icon={<FontAwesomeIcon icon={faVolleyballBall}/>} aria-label="sports"/>
-                <Text align="center" width={["50px", "200px"]} fontSize={["xs", "md"]}>Sports Facilities</Text>
-              </VStack>
-              <VStack>
-                <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faHandshake}/>} aria-label="meeting" />
-                <Text align="center" width="50px" fontSize="xs">Meeting Rooms</Text>
-              </VStack>
-              <VStack>
-                <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faBook}/>} aria-label="study" />
-                <Text align="center" width="50px" fontSize="xs">Study Rooms</Text>
-              </VStack>
-            </HStack>
-          : (
-              <HStack justify="space-around">
-                <VStack>
-                  <IconButton isRound size="lg" label={"Sports"} icon={<FontAwesomeIcon icon={faVolleyballBall}/>} aria-label="sports"/>
-                  <Text align="center" width={["50px", "200px"]} fontSize={["xs", "md"]}>Sports Facilities</Text>
-                </VStack>
-                <VStack>
-                  <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faHandshake}/>} aria-label="meeting" />
-                  <Text align="center" width="50px" fontSize="xs">Meeting Rooms</Text>
-                </VStack>
-                <VStack>
-                  <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faBook}/>} aria-label="study" />
-                  <Text align="center" width="50px" fontSize="xs">Study Rooms</Text>
-                </VStack>
-              </HStack>
-            )
-          }
+          <Flex justify="space-around" wrap="wrap">
+            <VStack>
+              <IconButton isRound size={"lg"} icon={<FontAwesomeIcon icon={faVolleyballBall}/>} aria-label="sports"/>
+              <Text align="center" width={["50px", "70px", "100px", "150px"]} fontSize={["xs", "sm", "lg"]}>Sports Facilities</Text>
+            </VStack>
+            <VStack>
+              <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faHandshake}/>} aria-label="meeting" />
+              <Text align="center" width={["50px", "70px", "100px", "150px"]} fontSize={["xs", "sm", "lg"]}>Meeting Rooms</Text>
+            </VStack>
+            <VStack>
+              <IconButton isRound size="lg" icon={<FontAwesomeIcon icon={faBook}/>} aria-label="study" />
+              <Text align="center" width={["50px", "70px", "100px", "150px"]} fontSize={["xs", "sm", "lg"]}>Study Rooms</Text>
+            </VStack>
+          </Flex>
           {/* Placeholder For Carousel or Something */}
-          <Center paddingTop={[10, 10]}>
+          <Center paddingTop={[2, 5, 10]}>
             <Image
-            width={["20em", "35em", "50em"]}
-            height={["10em", "12.5em", "25em"]}
+            width={["17em", "20em", "42em", "58em", "80em"]}
+            height={["8.5em", "10em", "21em", "29em", "40em"]}
             objectFit="cover"
             src="gibberish.png"
             fallbackSrc="https://via.placeholder.com/350x150" />

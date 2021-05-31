@@ -33,15 +33,14 @@ function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpe
                     {
                         auth ? (
                             <VStack alignItems="flex-start">
-                                { navButtons.map(
-                                    button =>
-                                    GeneralButton(button, () => router.push(button.path), router))
-                                }
                                 { GeneralButton(
                                     { 
                                     label: "Log Out",
                                     path: null,
-                                    icon: <FontAwesomeIcon icon={faSignOutAlt}/> },
+                                    icon: <FontAwesomeIcon icon={faSignOutAlt}/>,
+                                    color: "black",
+                                    bgColor: "white"
+                                },
                                     logOutHandler,
                                     router
                                 )}
@@ -54,6 +53,8 @@ function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpe
                                     label: "Sign Up",
                                     path: "/signup",
                                     icon: <FontAwesomeIcon icon={faUserPlus} />,
+                                    color: "black",
+                                    bgColor: "white"
                                     },
                                     onOpenSignup,
                                     router
@@ -63,6 +64,8 @@ function NavDrawer({navButtons, onCloseDrawer, isOpenDrawer, onOpenSignup, onOpe
                                     label: "Log In",
                                     path: "/signin",
                                     icon: <FontAwesomeIcon icon={faSignInAlt} />,
+                                    color: "black",
+                                    bgColor: "white"
                                     },
                                     onOpenLogin,
                                     router
