@@ -7,6 +7,7 @@ import { IconButton, Text } from "@chakra-ui/react"
 
 import { faVolleyballBall, faHandshake, faBook, faFilm } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MainCarousel from "~/components/Carousel/Carousel";
 
 const ExploreView = () => {
   const [isNotMobile, isDisplayingInBrowser] = useMediaQuery([
@@ -33,15 +34,9 @@ const ExploreView = () => {
               <Text align="center" width={["50px", "70px", "100px", "150px"]} fontSize={["xs", "sm", "lg"]}>Study Rooms</Text>
             </VStack>
           </Flex>
-          {/* Placeholder For Carousel or Something */}
-          <Center paddingTop={[2, 5, 10]}>
-            <Image
-            width={["17em", "20em", "42em", "58em", "80em"]}
-            height={["8.5em", "10em", "21em", "29em", "40em"]}
-            objectFit="cover"
-            src="gibberish.png"
-            fallbackSrc="https://via.placeholder.com/350x150" />
-          </Center>
+          <Flex justify="center" paddingTop={[2, 5, 10]}>
+            <MainCarousel width={["100%", "80%", "40%"]}/>
+          </Flex>
       </Layout>
       );
 }
