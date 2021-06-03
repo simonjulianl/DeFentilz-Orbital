@@ -6,17 +6,9 @@ export type ButtonVariant = "Header";
 
 const buttonStyles = {
   Header: { border: "0px", size: "lg", color: "white" },
+  NavDrawer: { border: "0px", size: "lg", color: "white" },
 };
 
-// export const NavDrawerButton = ({ onOpenDrawer }) => {
-//   return (
-//     <IconButton
-//       icon={<FontAwesomeIcon icon={faBars} />}
-//       aria-label="Navigation Drawer"
-//       onClick={() => onOpenDrawer()}
-//     />
-//   );
-// };
 interface OwnProps {
   children: React.ReactNode;
   icon?: any;

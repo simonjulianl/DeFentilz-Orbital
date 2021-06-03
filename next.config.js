@@ -6,11 +6,11 @@ module.exports = {
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/explore',
-        permanent: true
-      }
-    ]
+        source: "/",
+        destination: "/explore",
+        permanent: true,
+      },
+    ];
   },
   async rewrites() {
     return [
@@ -23,5 +23,5 @@ module.exports = {
   },
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
-  }
+  },
 };
