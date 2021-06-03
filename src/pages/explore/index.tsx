@@ -1,18 +1,14 @@
 import React from "react";
 import { NextPage } from "next";
-
-import Layout from "~/components/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
 
 import { VStack, Box, Flex, Center } from "@chakra-ui/layout";
-import { HStack, Image, useMediaQuery } from "@chakra-ui/react";
 import { IconButton, Text } from "@chakra-ui/react";
 
 import {
   faVolleyballBall,
   faHandshake,
   faBook,
-  faFilm,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Page from "~/components/Page";
@@ -21,7 +17,7 @@ const ExploreView: NextPage = () => {
   return (
     // <Layout>
     <Page title="Explore" description="Explore">
-      <div>
+      <Flex direction="column" justify="flex-start">
         <Flex
           direction="row"
           justify="space-evenly"
@@ -81,7 +77,7 @@ const ExploreView: NextPage = () => {
         <Flex justify="center" paddingTop={[2, 5, 10]}>
           {/* Carousel */}
         </Flex>
-      </div>
+      </Flex>
     </Page>
   );
 };
