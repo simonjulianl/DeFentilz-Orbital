@@ -1,10 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
-import SearchBar from "~/components/SearchBar/SearchBar";
-
 import { VStack, Box, Flex, Center } from "@chakra-ui/layout";
 import { IconButton, Text } from "@chakra-ui/react";
-
 import {
   faVolleyballBall,
   faHandshake,

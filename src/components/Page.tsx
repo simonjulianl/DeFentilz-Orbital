@@ -5,7 +5,7 @@ import { Flex, Box, Center, Spacer } from "@chakra-ui/layout";
 
 import { HeaderConfig } from "~/configs/HeaderConfig";
 import { NavBarButtonConfig } from "~/configs/NavBarConfig";
-import { useMediaQuery } from "@chakra-ui/react";
+import { useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 
 interface OwnProps {
   title: string;

@@ -10,6 +10,7 @@ const buttonStyles = {
 };
 
 interface OwnProps {
+  id?: String;
   children: React.ReactNode;
   icon?: any;
   size?: "xs" | "sm" | "md" | "lg";
@@ -20,8 +21,8 @@ interface OwnProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-// fontWeight={router.pathname === label ? 'extrabold' : 'normal'}
 const BonusButton: React.FC<OwnProps> = ({
+  id,
   children,
   icon = null,
   chakraVariant = "solid",
@@ -44,6 +45,7 @@ const BonusButton: React.FC<OwnProps> = ({
       color={color}
       bgColor={bgColor}
       variant={chakraVariant}
+      fontWeight={router.pathname === id ? "extrabold" : "normal"}
     >
       {children}
     </Button>
