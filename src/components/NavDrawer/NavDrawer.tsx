@@ -1,6 +1,5 @@
 import { useAuth } from "~/firebase/auth";
 import { useRouter } from "next/router";
-
 import { VStack } from "@chakra-ui/layout";
 import {
   Drawer,
@@ -9,11 +8,8 @@ import {
   DrawerOverlay,
   DrawerContent,
   IconButton,
+  Button,
 } from "@chakra-ui/react";
-
-import GeneralButton from "~/components/Button/Button";
-import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
-
 import {
   faBars,
   faUserPlus,
@@ -21,8 +17,9 @@ import {
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
-interface Props {
+interface OwnProps {
   onCloseDrawer: () => void;
   isOpenDrawer: boolean;
   onOpenSignup: () => void;
@@ -30,24 +27,29 @@ interface Props {
   logOutHandler: () => void;
 }
 
-function NavDrawer({
+const NavDrawer: React.FC<OwnProps> = ({
   onCloseDrawer,
   isOpenDrawer,
   onOpenSignup,
   onOpenLogin,
   logOutHandler,
-}: Props) {
+}) => {
   const { auth } = useAuth();
-  const router = useRouter();
 
   return (
-    <Drawer placement="right" onClose={onCloseDrawer} isOpen={isOpenDrawer}>
+    <Drawer
+      placement="right"
+      onClose={onCloseDrawer}
+      isOpen={isOpenDrawer}
+      size="xs"
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth="1px">Navigation</DrawerHeader>
         <DrawerBody>
           {auth ? (
             <VStack alignItems="flex-start">
+              <Button>Log Out</Button>
               {/* {GeneralButton(
                 {
                   label: "Log Out",
@@ -62,43 +64,29 @@ function NavDrawer({
             </VStack>
           ) : (
             <VStack alignItems="flex-start">
-              {/* {GeneralButton(
-                {
-                  label: "Sign Up",
-                  path: "/signup",
-                  icon: <FontAwesomeIcon icon={faUserPlus} />,
-                  color: "black",
-                  bgColor: "white",
-                },
-                onOpenSignup,
-                router
-              )} */}
-              {/* {GeneralButton(
-                {
-                  label: "Log In",
-                  path: "/signin",
-                  icon: <FontAwesomeIcon icon={faSignInAlt} />,
-                  color: "black",
-                  bgColor: "white",
-                },
-                onOpenLogin,
-                router
-              )} */}
+              <Button
+                label="sign-up"
+                leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
+                color="black"
+                bgColor="white"
+                onClick={onOpenSignup}
+              >
+                Sign up
+              </Button>
+              <Button
+                label="sign-in"
+                leftIcon={<FontAwesomeIcon icon={faSignInAlt} />}
+                color="black"
+                bgColor="white"
+                onClick={onOpenLogin}
+              >
+                Sign in
+              </Button>
             </VStack>
           )}
         </DrawerBody>
       </DrawerContent>
     </Drawer>
-  );
-}
-
-export const NavDrawerButton = ({ onOpenDrawer }) => {
-  return (
-    <IconButton
-      icon={<FontAwesomeIcon icon={faBars} />}
-      aria-label="Navigation Drawer"
-      onClick={() => onOpenDrawer()}
-    />
   );
 };
 

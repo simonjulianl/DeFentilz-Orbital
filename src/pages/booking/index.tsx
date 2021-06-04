@@ -2,7 +2,7 @@ import React from "react";
 import { NextPage } from "next";
 import { VStack, Box } from "@chakra-ui/layout";
 import { Text } from "@chakra-ui/react";
-import Page from "~/components/Page";
+import Page from "~/components/Page/Page";
 import { useAuth } from "~/firebase/auth";
 
 const BookingView: NextPage = () => {

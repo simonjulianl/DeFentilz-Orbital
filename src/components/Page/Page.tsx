@@ -2,10 +2,8 @@ import Head from "next/head";
 import { withRouter } from "next/router";
 import type { Router } from "next/router";
 import { Flex, Box, Center, Spacer } from "@chakra-ui/layout";
-
-import { HeaderConfig } from "~/configs/HeaderConfig";
-import { NavBarButtonConfig } from "~/configs/NavBarConfig";
-import { useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
+import React from "react";
+import Header from "../Header/Header";
 
 interface OwnProps {
   title: string;
@@ -37,9 +35,11 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
       <Flex direction="column" height="100vh">
+        <Header />
         <Box bgColor="white" height="100vh">
           {children}
         </Box>
+        {/* <Navbar></Navbar> */}
       </Flex>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
