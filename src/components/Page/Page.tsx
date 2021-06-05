@@ -65,26 +65,25 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
           sizes="32x32"
         />
         <link
+          href="/maskable-icon-x48.png"
           rel="icon"
           type="image/png"
           sizes="48x48"
-          href="/maskable-icon-x48.png"
         />
         <link
+          href="/maskable-icon-x72.png"
           rel="icon"
           type="image/png"
           sizes="72x72"
-          href="/maskable-icon-x72.png"
         />
         <link
+          href="/maskable-icon-x96.png"
           rel="icon"
           type="image/png"
           sizes="96x96"
-          href="/maskable-icon-x96.png"
         />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#8B572A" />
-        <link rel="shortcut icon" href="favicon.ico" />
       </Head>
       <Flex direction="column" justifyContent="flex-start" height="100vh">
         <Box zIndex={9999}>
