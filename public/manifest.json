@@ -11,14 +11,28 @@
   "description": "NUS Facilities Booking App",
   "icons": [
     {
-      "src": "/maskable_icon_x48.png",
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "density": "0.75",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "density": "0.5",
+      "purpose": "any"
+    },
+    {
+      "src": "/maskable-icon-x48.png",
       "sizes": "48x48",
       "type": "image/png",
       "density": "1.0",
       "purpose": "maskable"
     },
     {
-      "src": "/maskable_icon_x72.png",
+      "src": "/maskable-icon-x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "density": "1.5",
