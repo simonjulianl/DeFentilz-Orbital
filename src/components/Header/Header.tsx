@@ -1,28 +1,23 @@
-import { Button, Image, Modal, useDisclosure } from "@chakra-ui/react";
-import { Flex, Box, HStack, Spacer } from "@chakra-ui/layout";
-
-import signinModal from "~/components/SignInModal/SignInModal";
-import signupModal from "~/components/SignUpModal/SignUpModal";
-import requestpwdModal from "~/components/ReqPwdModal/ReqPwdModal";
-
-import HeaderButton from "~/components/HeaderButton/HeaderButton";
-import { NavDrawerButton } from "~/components/NavDrawer/NavDrawer";
-import NavDrawer from "~/components/NavDrawer/NavDrawer";
-
+import {
+  Button,
+  IconButton,
+  Image,
+  Modal,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { Flex, Box, Spacer } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
-import { GenButtonInterface } from "~/interfaces/GeneralButtonInterface";
+import NavDrawer from "../NavDrawer/NavDrawer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import SignUpModal from "../SignUpModal/SignUpModal";
+import SignInModal from "../SignInModal/SignInModal";
+import ReqPwdModal from "../ReqPwdModal/ReqPwdModal";
 
-import {HeaderConfig} from "~/configs/HeaderConfig";
-
-interface Props {
-  navButtons: GenButtonInterface[];
-  isNotMobile: boolean;
-}
-
-function Header({ isNotMobile} : Props) {
+const Header: React.FC<{}> = () => {
   const router = useRouter();
   const authContext = useAuth();
 
@@ -32,23 +27,30 @@ function Header({ isNotMobile} : Props) {
   const [successChange, setSuccessChange] = useState(undefined);
   const [error, setError] = useState({ errorCode: null, errorMessage: null });
 
+  // login modal callback state
   const {
     isOpen: isOpenLogin,
     onOpen: onOpenLogin,
     onClose: onCloseLoginTemp,
   } = useDisclosure();
+
+  // signup modal callback state
   const {
     isOpen: isOpenSignup,
     onOpen: onOpenSignup,
     onClose: onCloseSignupTemp,
   } = useDisclosure();
+
+  // password modal callback state
   const {
     isOpen: isOpenPwd,
     onOpen: onOpenPwd,
     onClose: onClosePwdTemp,
   } = useDisclosure();
+
+  // drawer callback state
   const {
-    isOpen: isOpenDrawer, 
+    isOpen: isOpenDrawer,
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
@@ -67,8 +69,14 @@ function Header({ isNotMobile} : Props) {
     onClosePwdTemp();
   };
 
-  const hookVars = { name, email, password, error, successChange};
-  const settersObject = { setName, setEmail, setPassword, setError, setSuccessChange };
+  const hookVars = { name, email, password, error, successChange };
+  const settersObject = {
+    setName,
+    setEmail,
+    setPassword,
+    setError,
+    setSuccessChange,
+  };
   const modalCallbacks = {
     onOpenLogin,
     onCloseLogin,
@@ -89,68 +97,98 @@ function Header({ isNotMobile} : Props) {
   return (
     <>
       <Flex justify="space-between" align="center" bgColor="red.800">
-        <Button paddingLeft={[2, 5, 10]} variant="link" onClick={() => router.push("/")}>
-          <Image src="/4.png" fit="contain" alt="BoNUS Logo" boxSize="100px"/>
+        <Button
+          paddingLeft={[2, 5, 10]}
+          variant="link"
+          onClick={() => router.push("/")}
+        >
+          <Image
+            src="/bonus_header.png"
+            fit="contain"
+            alt="BoNUS Logo"
+            boxSize="100px"
+          />
         </Button>
         <NavDrawer
           onCloseDrawer={onCloseDrawer}
           isOpenDrawer={isOpenDrawer}
           onOpenLogin={onOpenLogin}
           onOpenSignup={onOpenSignup}
-          logOutHandler={handlerObject.logOutHandler} />
+          logOutHandler={handlerObject.logOutHandler}
+        />
         <Spacer />
-          {
-            isNotMobile 
-            ? (
-              <Box width={[null,null, "30em", "32em", "40em"]} paddingRight={[2, 5, 10]}>
-                <HStack justify="space-between">  
-                  {HeaderConfig
-                            .filter(button => button.signature != (authContext.auth ? 'signin' : 'logout'))
-                            .map((button) => {console.log(button.signature == 'signin'); return HeaderButton(button, 
-                                                          () => button.signature != 'signin' && button.signature != 'logout' 
-                                                                  ? router.push(button.path)
-                                                                  : button.signature == 'signin'
-                                                                  ? onOpenLogin()
-                                                                  : button.signature == 'logout'
-                                                                  ? handlerObject.logOutHandler()
-                                                                  : router.push('/errorPage'),
-                                                          router)})
-                  }
-                </HStack>
-              </Box>
-            )
-            : (
-              <Box paddingRight={[3, 5]}>
-                <NavDrawerButton onOpenDrawer={onOpenDrawer}/>
-              </Box>
-            )
-          }
-           </Flex>
-          <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
-          {signinModal(
-            isOpenLogin,
-            onCloseLogin,
-            handlerObject,
-            hookVars
-          )}
-        </Modal>
-        <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
-          {signupModal(
-            isOpenSignup,
-            onCloseSignup,
-            handlerObject,
-            hookVars
-          )}
-        </Modal>
-        <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
-          {requestpwdModal(
-            isOpenPwd,
-            onClosePwd,
-            handlerObject,
-            hookVars
-          )}
-        </Modal>
+        <Box paddingRight={[3, 5]}>
+          <IconButton
+            icon={<FontAwesomeIcon icon={faBars} />}
+            aria-label="Navigation Drawer"
+            onClick={onOpenDrawer}
+          />
+        </Box>
+      </Flex>
+      <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
+        <SignInModal
+          isOpen={isOpenLogin}
+          onClose={onCloseLogin}
+          hookVars={hookVars}
+          onChangeHandler={handlerObject.onChangeHandler}
+          toReqPwdHandler={handlerObject.toReqPwdHandler}
+          toSignUpHandler={handlerObject.toSignupHandler}
+          emailSignInHandler={handlerObject.toSignupHandler}
+          googleSignInHandler={handlerObject.googleSignInHandler}
+        />
+      </Modal>
+      <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
+        <SignUpModal
+          isOpen={isOpenSignup}
+          onClose={onCloseSignup}
+          onChangeHandler={handlerObject.onChangeHandler}
+          hookVars={hookVars}
+          toLoginHandler={handlerObject.toLoginHandler}
+          emailSignUpHandler={handlerObject.emailSignUpHandler}
+        />
+      </Modal>
+      <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
+        <ReqPwdModal
+          isOpen={isOpenPwd}
+          onClose={onClosePwd}
+          hookVars={hookVars}
+          onChangeHandler={handlerObject.onChangeHandler}
+          changePasswordHandler={handlerObject.changePasswordHandler}
+        />
+      </Modal>
     </>
   );
 };
+
 export default Header;
+
+// 1
+// {isNotMobile ? (
+//         <Box
+//           width={[null, null, "30em", "32em", "40em"]}
+//           paddingRight={[2, 5, 10]}
+//         >
+//           <HStack justify="space-between">
+//             {HeaderConfig.filter(
+//               (button) =>
+//                 button.signature != (authContext.auth ? "signin" : "logout")
+//             ).map((button) => {
+//               console.log(button.signature == "signin");
+//               return HeaderButton(
+//                 button,
+//                 () =>
+//                   button.signature != "signin" && button.signature != "logout"
+//                     ? router.push(button.path)
+//                     : button.signature == "signin"
+//                     ? onOpenLogin()
+//                     : button.signature == "logout"
+//                     ? handlerObject.logOutHandler()
+//                     : router.push("/errorPage"),
+//                 router
+//               );
+//             })}
+//           </HStack>
+//         </Box>
+//       ) : (
+//
+//       )}

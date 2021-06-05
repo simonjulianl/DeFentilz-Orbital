@@ -1,71 +1,60 @@
 import { NextRouter } from "next/router";
 import { AuthContext } from "~/firebase/auth";
+import {
+  hookVars,
+  settersObject,
+  modalCallbacks,
+} from "./authHandlersInterface";
 
-interface hookVars {
-    name : string,
-    email : string,
-    password : string,
-};
-
-interface settersObject {
-    setSuccessChange: (arg0: boolean | null) => void;
-    setName : (arg0: string) => void,
-    setEmail : (arg0: string) => void,
-    setPassword : (arg0: string) => void,
-    setError : (arg0: { errorCode: string,
-                        errorMessage: string}) => void,
-};
-
-interface modalCallbacks {
-    onOpenLogin: () => void,
-    onCloseLogin: () => void, 
-    onOpenSignup: () => void, 
-    onCloseSignup: () => void,
-    onOpenPwd: () => void,
-    onClosePwd: () => void,
-    onCloseDrawer: () => void,
-}
-
-function authHandlers(  hookVars : hookVars,
-                        settersObject: settersObject,
-                        modalCallbacks: modalCallbacks,
-                        authContext: AuthContext,
-                        router: NextRouter) {
-  
+export default function authHandlers(
+  hookVars: hookVars,
+  settersObject: settersObject,
+  modalCallbacks: modalCallbacks,
+  authContext: AuthContext,
+  router: NextRouter
+) {
   const resolveHandler = () => {
-      modalCallbacks.onCloseSignup();
-      modalCallbacks.onCloseLogin();
-      modalCallbacks.onCloseDrawer();
-      modalCallbacks.onClosePwd();
-  }
+    modalCallbacks.onCloseSignup();
+    modalCallbacks.onCloseLogin();
+    modalCallbacks.onCloseDrawer();
+    modalCallbacks.onClosePwd();
+  };
 
-  const errorHandler = (errorCode: string | null, errorMessage: string | null) => {
+  const errorHandler = (
+    errorCode: string | null,
+    errorMessage: string | null
+  ) => {
     console.error(errorCode + " " + errorMessage);
-    settersObject.setError({errorCode: errorCode, errorMessage: errorMessage});
-  }
-                            
-  const onChangeHandler = (event: { currentTarget: { id: any; value: any; }; }) => {
+    settersObject.setError({
+      errorCode: errorCode,
+      errorMessage: errorMessage,
+    });
+  };
+
+  const onChangeHandler = (event: {
+    currentTarget: { id: any; value: any };
+  }) => {
     const { id, value } = event.currentTarget;
     if (id === "displayName") {
-        settersObject.setName(value);
+      settersObject.setName(value);
     } else if (id === "userEmail") {
-        settersObject.setEmail(value);
+      settersObject.setEmail(value);
     } else if (id === "userPassword") {
-        settersObject.setPassword(value);
+      settersObject.setPassword(value);
     }
   };
 
-  const emailSignInHandler = (event: { preventDefault: () => void; }) => {
+  const emailSignInHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     authContext.signInWithEmail(
       hookVars.email,
       hookVars.password,
       resolveHandler,
-      errorHandler,
-    )
+      errorHandler
+    );
   };
 
-  const emailSignUpHandler = (event: { preventDefault: () => void; }) => {
+  const emailSignUpHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     authContext.signUpWithEmail(
       hookVars.email,
@@ -74,14 +63,14 @@ function authHandlers(  hookVars : hookVars,
       resolveHandler,
       errorHandler
     );
-  }
+  };
 
-  const googleSignInHandler = (event: { preventDefault: () => void; }) => {
+  const googleSignInHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     authContext.signInWithGoogle(resolveHandler, errorHandler);
   };
 
-  const changePasswordHandler = (event: { preventDefault: () => void; }) => {
+  const changePasswordHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     authContext.changePassword(
       hookVars.email,
@@ -90,10 +79,10 @@ function authHandlers(  hookVars : hookVars,
       },
       errorHandler
     );
-  }
+  };
 
   const logOutHandler = () => {
-    settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     authContext.signOut();
     router.push("/");
@@ -102,8 +91,10 @@ function authHandlers(  hookVars : hookVars,
     modalCallbacks.onCloseDrawer();
   };
 
+  // the naming convention here becomes inconsistent given logOutHandler, the naming convention above
+  // and after this line is different
   const toLoginHandler = () => {
-    settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseSignup();
     modalCallbacks.onOpenLogin();
@@ -111,7 +102,7 @@ function authHandlers(  hookVars : hookVars,
   };
 
   const toSignupHandler = () => {
-    settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenSignup();
@@ -119,24 +110,22 @@ function authHandlers(  hookVars : hookVars,
   };
 
   const toReqPwdHandler = () => {
-    settersObject.setError({errorCode: null, errorMessage: null});
+    settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onOpenPwd();
     modalCallbacks.onCloseDrawer();
-  }
+  };
 
   return {
-      onChangeHandler, 
-      emailSignUpHandler,
-      emailSignInHandler,
-      googleSignInHandler,
-      changePasswordHandler,
-      logOutHandler,
-      toLoginHandler,
-      toSignupHandler,
-      toReqPwdHandler
+    onChangeHandler,
+    emailSignUpHandler,
+    emailSignInHandler,
+    googleSignInHandler,
+    changePasswordHandler,
+    logOutHandler,
+    toLoginHandler,
+    toSignupHandler,
+    toReqPwdHandler,
   };
 }
-
-export default authHandlers;

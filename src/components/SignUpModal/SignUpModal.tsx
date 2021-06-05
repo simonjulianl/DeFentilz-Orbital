@@ -10,24 +10,42 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { FormControl, FormLabel, Link, Input, FormHelperText } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Link,
+  Input,
+  FormHelperText,
+} from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
-import ErrorAlert from "~/components/ErrorAlert/errorAlert";
+import React from "react";
+import {
+  hookVars,
+  emailSignInHandler,
+  onChangeHandler,
+  toLoginHandler,
+} from "~/firebase/authHandlersInterface";
+import Alert from "../BonusAlert/BonusAlert";
 
-type closeModalCallback = {
-  (): void;
-  (): void;
-  (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
-};
+interface OwnProps {
+  isOpen: boolean;
+  onClose: () => void;
+  hookVars: hookVars;
+  onChangeHandler: onChangeHandler;
+  toLoginHandler: toLoginHandler;
+  emailSignUpHandler: emailSignInHandler;
+}
 
-function signupModal(
-  isOpen: boolean,
-  onClose: closeModalCallback,
-  handlers: any,  // Lazy make type for this. Refer to authHandlers.tsx for type
-  hookVars
-) {
+const SignUpModal: React.FC<OwnProps> = ({
+  isOpen,
+  onClose,
+  hookVars,
+  onChangeHandler,
+  toLoginHandler,
+  emailSignUpHandler,
+}) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="xs">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign Up</ModalHeader>
@@ -38,7 +56,7 @@ function signupModal(
             <Input
               type="string"
               placeholder="E.g: Maruq"
-              onChange={(event) => handlers.onChangeHandler(event)}
+              onChange={(event) => onChangeHandler(event)}
             />
           </FormControl>
           <FormControl pb="3" id="userEmail" isRequired>
@@ -46,20 +64,21 @@ function signupModal(
             <Input
               type="email"
               placeholder="E.g: Maruq123@u.nus.edu"
-              onChange={(event) => handlers.onChangeHandler(event)}
+              onChange={(event) => onChangeHandler(event)}
             />
-            <FormHelperText>{'Please use your email address ending with "u.nus.edu"'}</FormHelperText>
-
+            <FormHelperText>
+              {'Please use your email address ending with "u.nus.edu"'}
+            </FormHelperText>
           </FormControl>
           <FormControl pb="3" id="userPassword" isRequired>
             <FormLabel>Password</FormLabel>
             <Input
               type="password"
-              onChange={(event) => handlers.onChangeHandler(event)}
+              onChange={(event) => onChangeHandler(event)}
             />
           </FormControl>
           <Flex justifyContent="space-between">
-            <Link color="blue.600" onClick={() => handlers.toLoginHandler()}>
+            <Link color="blue.600" onClick={() => toLoginHandler()}>
               Have an account? Login instead
             </Link>
           </Flex>
@@ -67,17 +86,20 @@ function signupModal(
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => handlers.emailSignUpHandler(event)}
+              onClick={(event) => emailSignUpHandler(event)}
             >
               Sign Up
             </Button>
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {hookVars.error.errorCode != null && ErrorAlert({status: 'error', error: hookVars.error})}
+          {hookVars.error.errorCode && (
+            <Alert status={"error"} code={hookVars.error.errorCode} />
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
-}
-export default signupModal;
+};
+
+export default SignUpModal;

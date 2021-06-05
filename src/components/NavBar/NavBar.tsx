@@ -1,55 +1,37 @@
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
+import React from "react";
+import { NavBarButtonsConfig } from "./NavBarConfig";
 
-import GeneralButton from "~/components/Button/Button";
-import {GenButtonInterface} from "~/interfaces/GeneralButtonInterface";
-
-import { HStack, Flex } from "@chakra-ui/layout";
-import { useMediaQuery, Button } from "@chakra-ui/react";
-
-interface Props {
-  navButtons: { label: string; path: string; icon: any }[];
-  isNotMobile: boolean
-}
-
-type onClickCallback = (event: React.MouseEvent<HTMLButtonElement>) => void;
-const NavBarButton = (property: GenButtonInterface, callback : onClickCallback, router: NextRouter) => {
-  return (
-  <Button
-    leftIcon={property.icon}
-    border="0px"
-    onClick={callback}
-    size="lg"
-    as="button"
-    bgColor="white"
-    fontWeight={router.pathname === property.path ? 'extrabold' : 'normal'}
-    key={1}
-    variant={property.variant}>
-    {property.label}
-  </Button>
-  )
-}
-
-function NavBar({navButtons}: Props) {
+const NavBar: React.FC<{}> = () => {
   const router = useRouter();
-  const [isNotMobile, isDisplayingInBrowser] = useMediaQuery([
-    "(min-width: 768px)",
-    "(display-mode: browser)",
-  ]);
-  
+
+  const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }) => {
+    return (
+      <IconButton
+        marginTop={1}
+        size="lg"
+        isActive={false}
+        icon={icon}
+        bgColor={"brown"}
+        color={router.asPath === path ? "white" : "grey.200"}
+        aria-label={label}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          router.push(path);
+        }}
+        variant="unstyled"
+      />
+    );
+  });
+
   return (
-      isNotMobile
-        ? (
-          <HStack justify="space-around">
-            {navButtons.map((button) => NavBarButton(button, () => router.push(button.path), router))}
-          </HStack>
-        )
-        : (
-          <HStack justify="space-around">
-            {navButtons.map((button) => NavBarButton({label: "", path: button.path, icon:button.icon, size:"lg"}, () => router.push(button.path), router))}
-          </HStack>
-        )
-      
-  )
-}
+    <Box bgColor="brown" minH={50}>
+      <Flex direction="row" justify="space-around">
+        {iconButtons}
+      </Flex>
+    </Box>
+  );
+};
 
 export default NavBar;
