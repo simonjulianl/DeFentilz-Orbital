@@ -2,11 +2,12 @@ import { useRouter } from "next/router";
 import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { NavBarButtonsConfig } from "./NavBarConfig";
+import { IndexKind } from "typescript";
 
 const NavBar: React.FC<{}> = () => {
   const router = useRouter();
 
-  const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }) => {
+  const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }, idx) => {
     return (
       <IconButton
         size="lg"
@@ -25,11 +26,13 @@ const NavBar: React.FC<{}> = () => {
   });
 
   return (
-    <Box bgColor="brown" minH={50}>
-      <Flex direction="row" justify="space-around">
-        {iconButtons}
-      </Flex>
-    </Box>
+    <>
+      <Box bgColor="brown" minH={50}>
+        <Flex direction="row" justify="space-around">
+          {iconButtons}
+        </Flex>
+      </Box>
+    </>
   );
 };
 

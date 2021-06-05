@@ -47,7 +47,7 @@ const SignInModal: React.FC<OwnProps> = ({
   googleSignInHandler,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+    <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign In</ModalHeader>

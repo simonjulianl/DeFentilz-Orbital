@@ -62,7 +62,7 @@ const NavDrawer: React.FC<OwnProps> = ({
               </Button>
             </VStack>
           ) : (
-            <VStack alignItems="flex-start" marginTop={50}>
+            <VStack alignItems="flex-start" marginTop={15}>
               <Button
                 label="sign-up"
                 leftIcon={<FontAwesomeIcon icon={faUserPlus} />}

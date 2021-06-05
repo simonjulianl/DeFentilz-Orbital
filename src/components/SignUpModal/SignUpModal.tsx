@@ -45,7 +45,7 @@ const SignUpModal: React.FC<OwnProps> = ({
   emailSignUpHandler,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+    <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign Up</ModalHeader>

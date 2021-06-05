@@ -103,10 +103,11 @@ const Header: React.FC<{}> = () => {
           onClick={() => router.push("/")}
         >
           <Image
+            marginTop={2}
+            marginBottom={2}
             src="/bonus_header.png"
             fit="contain"
             alt="BoNUS Logo"
-            boxSize="100px"
           />
         </Button>
         <NavDrawer
@@ -122,42 +123,41 @@ const Header: React.FC<{}> = () => {
             icon={<FontAwesomeIcon icon={faBars} />}
             aria-label="Navigation Drawer"
             onClick={() => {
+              if (isOpenLogin || isOpenPwd || isOpenDrawer) {
+                onCloseLogin();
+                onClosePwd();
+                onCloseSignup();
+              }
               isOpenDrawer ? onCloseDrawer() : onOpenDrawer();
             }}
           />
         </Box>
       </Flex>
-      <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
-        <SignInModal
-          isOpen={isOpenLogin}
-          onClose={onCloseLogin}
-          hookVars={hookVars}
-          onChangeHandler={handlerObject.onChangeHandler}
-          toReqPwdHandler={handlerObject.toReqPwdHandler}
-          toSignUpHandler={handlerObject.toSignupHandler}
-          emailSignInHandler={handlerObject.toSignupHandler}
-          googleSignInHandler={handlerObject.googleSignInHandler}
-        />
-      </Modal>
-      <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
-        <SignUpModal
-          isOpen={isOpenSignup}
-          onClose={onCloseSignup}
-          onChangeHandler={handlerObject.onChangeHandler}
-          hookVars={hookVars}
-          toLoginHandler={handlerObject.toLoginHandler}
-          emailSignUpHandler={handlerObject.emailSignUpHandler}
-        />
-      </Modal>
-      <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
-        <ReqPwdModal
-          isOpen={isOpenPwd}
-          onClose={onClosePwd}
-          hookVars={hookVars}
-          onChangeHandler={handlerObject.onChangeHandler}
-          changePasswordHandler={handlerObject.changePasswordHandler}
-        />
-      </Modal>
+      <SignInModal
+        isOpen={isOpenLogin}
+        onClose={onCloseLogin}
+        hookVars={hookVars}
+        onChangeHandler={handlerObject.onChangeHandler}
+        toReqPwdHandler={handlerObject.toReqPwdHandler}
+        toSignUpHandler={handlerObject.toSignupHandler}
+        emailSignInHandler={handlerObject.toSignupHandler}
+        googleSignInHandler={handlerObject.googleSignInHandler}
+      />
+      <SignUpModal
+        isOpen={isOpenSignup}
+        onClose={onCloseSignup}
+        onChangeHandler={handlerObject.onChangeHandler}
+        hookVars={hookVars}
+        toLoginHandler={handlerObject.toLoginHandler}
+        emailSignUpHandler={handlerObject.emailSignUpHandler}
+      />
+      <ReqPwdModal
+        isOpen={isOpenPwd}
+        onClose={onClosePwd}
+        hookVars={hookVars}
+        onChangeHandler={handlerObject.onChangeHandler}
+        changePasswordHandler={handlerObject.changePasswordHandler}
+      />
     </>
   );
 };

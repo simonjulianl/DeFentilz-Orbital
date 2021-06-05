@@ -25,17 +25,23 @@ const ExploreView: NextPage = () => {
   return (
     <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
-        <Box
-          position="fixed"
-          padding={3}
-          zIndex={1}
-          background="white"
-          width={screenWidth}
-        >
-          <SearchBar onSubmit={(content: string) => setSearchTerm(content)} />
-        </Box>
-        <Box paddingTop={65}>
-          <Flex direction="column" justify="center" paddingBottom={5}>
+        <Box>
+          <Box
+            padding={3}
+            paddingBottom={3}
+            zIndex={1}
+            position="absolute"
+            background="white"
+            width={screenWidth}
+          >
+            <SearchBar onSubmit={(content: string) => setSearchTerm(content)} />
+          </Box>
+          <Flex
+            direction="column"
+            justify="center"
+            paddingBottom={5}
+            marginTop={16}
+          >
             <BonusCarousel />
             <BonusCarousel />
             <BonusCarousel />

@@ -41,23 +41,15 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
-      <div>
-        <Box position="fixed" width="full" zIndex={9999}>
+      <Flex direction="column" justifyContent="flex-start" height="100vh">
+        <Box zIndex={9999}>
           <Header />
         </Box>
-        <Box position="fixed" width="full" marginTop={height - 50} zIndex={2}>
-          <NavBar />
-        </Box>
-        <Box
-          minHeight="100vh"
-          bgColor="transparent"
-          paddingTop={100}
-          paddingBottom={50}
-          zIndex={2}
-        >
+        <Box height="90vh" bgColor="transparent" overflowY="scroll">
           {children}
         </Box>
-      </div>
+        <NavBar />
+      </Flex>
 
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>

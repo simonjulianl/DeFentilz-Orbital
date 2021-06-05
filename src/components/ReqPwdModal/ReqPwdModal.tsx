@@ -36,7 +36,7 @@ const ReqPwdModal: React.FC<OwnProps> = ({
   changePasswordHandler,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+    <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Request Password Change</ModalHeader>
