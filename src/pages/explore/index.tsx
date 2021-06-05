@@ -8,9 +8,9 @@ import {
   faBook,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Page from "~/components/Page/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import BonusCarousel from "~/components/Carousel/Carousel";
+import Page from "~/components/Page/Page";
 
 const ExploreView: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +21,6 @@ const ExploreView: NextPage = () => {
   }, [searchTerm]);
 
   return (
-    // <Layout>
     <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
         <Box padding={3}>
