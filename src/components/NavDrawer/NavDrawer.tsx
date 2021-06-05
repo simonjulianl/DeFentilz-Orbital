@@ -1,5 +1,4 @@
 import { useAuth } from "~/firebase/auth";
-import { useRouter } from "next/router";
 import { VStack } from "@chakra-ui/layout";
 import {
   Drawer,
@@ -11,7 +10,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import {
-  faBars,
   faUserPlus,
   faSignInAlt,
   faSignOutAlt,
@@ -27,6 +25,10 @@ interface OwnProps {
   logOutHandler: () => void;
 }
 
+/**
+ * https://chakra-ui.com/guides/z-index
+ * As a general rule, we recommend not exceeding z-index values of more than 1 or 2, and to use stacking contexts to combat more complex stacking issues.
+ */
 const NavDrawer: React.FC<OwnProps> = ({
   onCloseDrawer,
   isOpenDrawer,

@@ -28,7 +28,7 @@ const ExploreView: NextPage = () => {
         <Box
           position="fixed"
           padding={3}
-          zIndex={9998}
+          zIndex={1}
           background="white"
           width={screenWidth}
         >

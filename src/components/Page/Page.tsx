@@ -42,15 +42,10 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
       <div>
-        <Box position="fixed" width="full" zIndex={9998}>
+        <Box position="fixed" width="full" zIndex={9999}>
           <Header />
         </Box>
-        <Box
-          position="fixed"
-          width="full"
-          marginTop={height - 50}
-          zIndex={9997}
-        >
+        <Box position="fixed" width="full" marginTop={height - 50} zIndex={2}>
           <NavBar />
         </Box>
         <Box
@@ -58,7 +53,7 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
           bgColor="transparent"
           paddingTop={100}
           paddingBottom={50}
-          zIndex={9997}
+          zIndex={2}
         >
           {children}
         </Box>
