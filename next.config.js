@@ -2,7 +2,13 @@ const withSass = require("@zeit/next-sass");
 module.exports = withSass();
 
 const path = require("path");
-module.exports = {
+
+const withPWA = require("next-pwa");
+
+module.exports = withPWA({
+  pwa: {
+    dest: "public",
+  },
   async redirects() {
     return [
       {
@@ -24,4 +30,4 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
-};
+});

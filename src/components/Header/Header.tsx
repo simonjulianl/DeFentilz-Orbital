@@ -1,10 +1,4 @@
-import {
-  Button,
-  IconButton,
-  Image,
-  Modal,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, IconButton, Image, useDisclosure } from "@chakra-ui/react";
 import { Flex, Box, Spacer } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -16,6 +10,13 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SignUpModal from "../SignUpModal/SignUpModal";
 import SignInModal from "../SignInModal/SignInModal";
 import ReqPwdModal from "../ReqPwdModal/ReqPwdModal";
+
+// The following import prevents a Font Awesome icon server-side rendering bug,
+// where the icons flash from a very large icon down to a properly sized one:
+import "@fortawesome/fontawesome-svg-core/styles.css";
+// Prevent fontawesome from adding its CSS since we did it manually above:
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false; /* eslint-disable import/first */
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
