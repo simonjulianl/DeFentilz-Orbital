@@ -81,13 +81,13 @@ function useProvideAuth() {
     if (email === "") {
       errorHandler("404", "Please fill in your email address");
       return false;
-    } else if (email.split('@')[1] !== "u.nus.edu") {
+    } else if (email.split("@")[1] !== "u.nus.edu") {
       errorHandler("404", "This is not a valid NUS email address");
       return false;
     }
     errorHandler(null, null);
     return true;
-  }
+  };
 
   const handleAuthChange = async (authState: firebase.User | null) => {
     if (!authState) {
@@ -139,7 +139,8 @@ function useProvideAuth() {
 
   const signInWithGoogle = async (
     resolveHandler: Function,
-    errorHandler: Function) => {
+    errorHandler: Function
+  ) => {
     setLoading(true);
     return firebase
       .auth()
@@ -157,49 +158,49 @@ function useProvideAuth() {
     email: string,
     password: string,
     displayName: string,
-    resolveHandler: Function, 
+    resolveHandler: Function,
     errorHandler: Function
   ) => {
     setLoading(true);
-    if(displayName === ''){
+    if (displayName === "") {
       errorHandler("404", "Please input display name");
       return;
     }
-    if(basicEmailChecker(email, errorHandler)){
+    if (basicEmailChecker(email, errorHandler)) {
       return firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        signedUpandIn(response, "email", displayName);
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((response) => {
+          signedUpandIn(response, "email", displayName);
+          resolveHandler();
+        })
+        .catch((error) => {
+          errorHandler(error.code, error.message);
+        });
     }
-    return ;
+    return;
   };
 
   const signInWithEmail = async (
     email: string,
     password: string,
-    resolveHandler: Function = () => {}, 
+    resolveHandler: Function = () => {},
     errorHandler: Function
   ) => {
     setLoading(true);
     if (basicEmailChecker(email, errorHandler)) {
       return firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        signedIn(response, "email");
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((response) => {
+          signedIn(response, "email");
+          resolveHandler();
+        })
+        .catch((error) => {
+          errorHandler(error.code, error.message);
+        });
     }
-    return ;
+    return;
   };
 
   const changePassword = async (
@@ -207,19 +208,19 @@ function useProvideAuth() {
     resolveHandler: Function,
     errorHandler: Function
   ) => {
-    setLoading(true);    
+    setLoading(true);
     if (basicEmailChecker(email, errorHandler)) {
       return firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then((response) => {
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+        .auth()
+        .sendPasswordResetEmail(email)
+        .then((response) => {
+          resolveHandler();
+        })
+        .catch((error) => {
+          errorHandler(error.code, error.message);
+        });
     }
-    return ;
+    return;
   };
 
   const signOut = async () => {

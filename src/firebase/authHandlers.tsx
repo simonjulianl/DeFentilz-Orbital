@@ -97,24 +97,24 @@ export default function authHandlers(
     settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseSignup();
-    modalCallbacks.onOpenLogin();
     modalCallbacks.onCloseDrawer();
+    modalCallbacks.onOpenLogin();
   };
 
   const toSignupHandler = () => {
     settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
-    modalCallbacks.onOpenSignup();
     modalCallbacks.onCloseDrawer();
+    modalCallbacks.onOpenSignup();
   };
 
   const toReqPwdHandler = () => {
     settersObject.setError({ errorCode: null, errorMessage: null });
     settersObject.setSuccessChange(null);
     modalCallbacks.onCloseLogin();
-    modalCallbacks.onOpenPwd();
     modalCallbacks.onCloseDrawer();
+    modalCallbacks.onOpenPwd();
   };
 
   return {

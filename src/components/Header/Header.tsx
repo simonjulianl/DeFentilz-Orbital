@@ -117,11 +117,9 @@ const Header: React.FC<{}> = () => {
             icon={<FontAwesomeIcon icon={faBars} />}
             aria-label="Navigation Drawer"
             onClick={() => {
-              if (isOpenLogin || isOpenPwd || isOpenDrawer) {
-                onCloseLogin();
-                onClosePwd();
-                onCloseSignup();
-              }
+              onCloseLogin();
+              onClosePwd();
+              onCloseSignup();
               isOpenDrawer ? onCloseDrawer() : onOpenDrawer();
             }}
           />
