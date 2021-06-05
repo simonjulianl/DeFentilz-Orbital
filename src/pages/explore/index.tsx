@@ -43,8 +43,6 @@ const ExploreView: NextPage = () => {
             marginTop={16}
           >
             <BonusCarousel />
-            <BonusCarousel />
-            <BonusCarousel />
           </Flex>
           <Flex
             direction="row"

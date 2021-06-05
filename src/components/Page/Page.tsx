@@ -64,24 +64,6 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
           type="image/png"
           sizes="32x32"
         />
-        <link
-          href="/maskable-icon-x48.png"
-          rel="icon"
-          type="image/png"
-          sizes="48x48"
-        />
-        <link
-          href="/maskable-icon-x72.png"
-          rel="icon"
-          type="image/png"
-          sizes="72x72"
-        />
-        <link
-          href="/maskable-icon-x96.png"
-          rel="icon"
-          type="image/png"
-          sizes="96x96"
-        />
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#8B572A" />
       </Head>
