@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { Flex, Box, Spacer } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
 import NavDrawer from "../NavDrawer/NavDrawer";
@@ -121,7 +121,9 @@ const Header: React.FC<{}> = () => {
           <IconButton
             icon={<FontAwesomeIcon icon={faBars} />}
             aria-label="Navigation Drawer"
-            onClick={onOpenDrawer}
+            onClick={() => {
+              isOpenDrawer ? onCloseDrawer() : onOpenDrawer();
+            }}
           />
         </Box>
       </Flex>

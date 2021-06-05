@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { withRouter } from "next/router";
 import type { Router } from "next/router";
-import { Flex, Box, Center, Spacer } from "@chakra-ui/layout";
-import React from "react";
+import { Flex, Box, Center, Spacer, VStack } from "@chakra-ui/layout";
+import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import NavBar from "../NavBar/NavBar";
 
@@ -14,6 +14,12 @@ interface OwnProps {
 }
 
 const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    setHeight(screen.height);
+  }, [height]);
+
   return (
     <div>
       <Head>
@@ -35,13 +41,29 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         />
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
       </Head>
-      <Flex direction="column" height="100vh">
-        <Header />
-        <Box bgColor="white" height="100vh">
+      <div>
+        <Box position="fixed" width="full" zIndex={9998}>
+          <Header />
+        </Box>
+        <Box
+          position="fixed"
+          width="full"
+          marginTop={height - 50}
+          zIndex={9997}
+        >
+          <NavBar />
+        </Box>
+        <Box
+          minHeight="100vh"
+          bgColor="transparent"
+          paddingTop={100}
+          paddingBottom={50}
+          zIndex={9997}
+        >
           {children}
         </Box>
-        <NavBar />
-      </Flex>
+      </div>
+
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
     </div>

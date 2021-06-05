@@ -49,21 +49,18 @@ const NavDrawer: React.FC<OwnProps> = ({
         <DrawerBody>
           {auth ? (
             <VStack alignItems="flex-start">
-              <Button>Log Out</Button>
-              {/* {GeneralButton(
-                {
-                  label: "Log Out",
-                  path: null,
-                  icon: <FontAwesomeIcon icon={faSignOutAlt} />,
-                  color: "black",
-                  bgColor: "white",
-                },
-                logOutHandler,
-                router
-              )} */}
+              <Button
+                label="log-out"
+                leftIcon={<FontAwesomeIcon icon={faSignOutAlt} />}
+                color="black"
+                bgColor="white"
+                onClick={logOutHandler}
+              >
+                Log Out
+              </Button>
             </VStack>
           ) : (
-            <VStack alignItems="flex-start">
+            <VStack alignItems="flex-start" marginTop={50}>
               <Button
                 label="sign-up"
                 leftIcon={<FontAwesomeIcon icon={faUserPlus} />}

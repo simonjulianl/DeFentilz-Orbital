@@ -9,7 +9,6 @@ const NavBar: React.FC<{}> = () => {
   const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }) => {
     return (
       <IconButton
-        marginTop={1}
         size="lg"
         isActive={false}
         icon={icon}
