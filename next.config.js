@@ -9,6 +9,9 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
   },
+  images: {
+    domains: ["lorempixel.com"],
+  },
   async redirects() {
     return [
       {
