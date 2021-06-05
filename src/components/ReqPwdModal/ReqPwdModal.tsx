@@ -1,63 +1,76 @@
 import {
-    Button,
-    Stack,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-  } from "@chakra-ui/react";
+  Button,
+  Stack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
-import ErrorAlert from "~/components/ErrorAlert/errorAlert";
+import Alert from "../BonusAlert/BonusAlert";
 
+import {
+  changePasswordHandler,
+  hookVars,
+  onChangeHandler,
+} from "~/firebase/authHandlersInterface";
+import { PASSWORD_CHANGE_SUCCESS } from "../BonusAlert/AlertConfig";
 
-type closeModalCallback = {
-    (): void;
-    (): void;
-    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
-};
+interface OwnProps {
+  isOpen: boolean;
+  onClose: () => void;
+  hookVars: hookVars;
+  onChangeHandler: onChangeHandler;
+  changePasswordHandler: changePasswordHandler;
+}
 
-function requestpwdModal(
-    isOpen: boolean,
-    onClose: closeModalCallback,
-    handlers,
-    hookVars: any
-) {
-return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-    <ModalOverlay />
-    <ModalContent>
+const ReqPwdModal: React.FC<OwnProps> = ({
+  isOpen,
+  onClose,
+  hookVars,
+  onChangeHandler,
+  changePasswordHandler,
+}) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+      <ModalOverlay />
+      <ModalContent>
         <ModalHeader>Request Password Change</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-        <FormControl pb="3" id="userEmail" isRequired>
+          <FormControl pb="3" id="userEmail" isRequired>
             <FormLabel>Email address of Account</FormLabel>
             <Input
-            type="email"
-            placeholder="E.g: faruq123@yahoo.com"
-            onChange={(event) => handlers.onChangeHandler(event)}
+              type="email"
+              placeholder="E.g: faruq123@yahoo.com"
+              onChange={(event) => onChangeHandler(event)}
             />
-        </FormControl>
-        <Stack w="100%" justifyContent="center">
+          </FormControl>
+          <Stack w="100%" justifyContent="center">
             <Button
-            leftIcon={<EmailIcon />}
-            colorScheme="blue"
-            onClick={(event) => handlers.changePasswordHandler(event)}
+              leftIcon={<EmailIcon />}
+              colorScheme="blue"
+              onClick={(event) => changePasswordHandler(event)}
             >
-            Request Password Change
+              Request Password Change
             </Button>
-        </Stack>
+          </Stack>
         </ModalBody>
         <ModalFooter>
-            {hookVars.error.errorCode != null && ErrorAlert({status: 'error', error: hookVars.error})}
-            {hookVars.successChange != null && ErrorAlert({status: 'success', error: {errorCode: null, errorMessage: "We have sent a password change link to the above email!"}})}
+          {hookVars.error.errorCode && (
+            <Alert status={"error"} code={hookVars.error.errorCode} />
+          )}
+          {hookVars.error.errorCode != null && (
+            <Alert status={"success"} code={PASSWORD_CHANGE_SUCCESS} />
+          )}
         </ModalFooter>
-    </ModalContent>
+      </ModalContent>
     </Modal>
-);
-}
-  export default requestpwdModal;
-  
+  );
+};
+
+export default ReqPwdModal;

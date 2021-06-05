@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Page from "~/components/Page/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
+import BonusCarousel from "~/components/Carousel/Carousel";
 
 const ExploreView: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,16 +24,12 @@ const ExploreView: NextPage = () => {
     // <Layout>
     <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
-        <Flex
-          mx="auto"
-          direction="row"
-          paddingTop={[2, 2, 4, 5]}
-          s
-          paddingBottom={[2, 2, 4, 5]}
-        >
+        <Box padding={3}>
           <SearchBar onSubmit={(content: string) => setSearchTerm(content)} />
+        </Box>
+        <Flex justify="center" paddingTop={2} paddingBottom={5}>
+          <BonusCarousel />
         </Flex>
-
         <Flex direction="row" justify="space-around" align="center" wrap="wrap">
           <VStack>
             <IconButton
@@ -79,9 +76,6 @@ const ExploreView: NextPage = () => {
               Study Rooms
             </Text>
           </VStack>
-        </Flex>
-        <Flex justify="center" paddingTop={[2, 5, 10]}>
-          {/* Carousel */}
         </Flex>
       </Flex>
     </Page>

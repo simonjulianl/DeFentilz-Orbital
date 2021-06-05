@@ -41,7 +41,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
     <form onSubmit={onSubmitEnterHandler}>
       <InputGroup>
         <Input
-          minW={250}
           type="text"
           id="header-search"
           placeholder="Search NUS Facilities..."

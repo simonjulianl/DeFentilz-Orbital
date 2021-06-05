@@ -5,17 +5,17 @@ import {
   Modal,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Flex, Box, HStack, Spacer } from "@chakra-ui/layout";
+import { Flex, Box, Spacer } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { HeaderConfig } from "~/configs/HeaderConfig";
 import { useAuth } from "~/firebase/auth";
 import authHandlers from "~/firebase/authHandlers";
-import HeaderButton from "../Button/Button";
-import NavDrawer, { NavDrawerButton } from "../NavDrawer/NavDrawer";
-import requestpwdModal from "../ReqPwdModal/ReqPwdModal";
+import NavDrawer from "../NavDrawer/NavDrawer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import SignUpModal from "../SignUpModal/SignUpModal";
+import SignInModal from "../SignInModal/SignInModal";
+import ReqPwdModal from "../ReqPwdModal/ReqPwdModal";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
@@ -126,13 +126,35 @@ const Header: React.FC<{}> = () => {
         </Box>
       </Flex>
       <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
-        {/* {signinModal(isOpenLogin, onCloseLogin, handlerObject, hookVars)} */}
+        <SignInModal
+          isOpen={isOpenLogin}
+          onClose={onCloseLogin}
+          hookVars={hookVars}
+          onChangeHandler={handlerObject.onChangeHandler}
+          toReqPwdHandler={handlerObject.toReqPwdHandler}
+          toSignUpHandler={handlerObject.toSignupHandler}
+          emailSignInHandler={handlerObject.toSignupHandler}
+          googleSignInHandler={handlerObject.googleSignInHandler}
+        />
       </Modal>
       <Modal isOpen={isOpenSignup} onClose={onCloseSignup}>
-        {/* {signupModal(isOpenSignup, onCloseSignup, handlerObject, hookVars)} */}
+        <SignUpModal
+          isOpen={isOpenSignup}
+          onClose={onCloseSignup}
+          onChangeHandler={handlerObject.onChangeHandler}
+          hookVars={hookVars}
+          toLoginHandler={handlerObject.toLoginHandler}
+          emailSignUpHandler={handlerObject.emailSignUpHandler}
+        />
       </Modal>
       <Modal isOpen={isOpenPwd} onClose={onClosePwd}>
-        {/* {requestpwdModal(isOpenPwd, onClosePwd, handlerObject, hookVars)} */}
+        <ReqPwdModal
+          isOpen={isOpenPwd}
+          onClose={onClosePwd}
+          hookVars={hookVars}
+          onChangeHandler={handlerObject.onChangeHandler}
+          changePasswordHandler={handlerObject.changePasswordHandler}
+        />
       </Modal>
     </>
   );

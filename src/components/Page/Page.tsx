@@ -4,6 +4,7 @@ import type { Router } from "next/router";
 import { Flex, Box, Center, Spacer } from "@chakra-ui/layout";
 import React from "react";
 import Header from "../Header/Header";
+import NavBar from "../NavBar/NavBar";
 
 interface OwnProps {
   title: string;
@@ -39,7 +40,7 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <Box bgColor="white" height="100vh">
           {children}
         </Box>
-        {/* <Navbar></Navbar> */}
+        <NavBar />
       </Flex>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
