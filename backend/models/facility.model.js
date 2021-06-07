@@ -9,6 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -20,17 +21,21 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       description: {
-        type: DataTypes.TEXT,
-        defaultValue:
-          "An NUS facility :), waiting for more detailed description to be filled in",
+        type: DataTypes.STRING(512),
+        defaultValue: "An NUS Facility :)",
+        validate: { notEmpty: true },
       },
       rating: {
         type: DataTypes.FLOAT,
       },
+      rate: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0,
+      },
     },
     {
       tableName: "Facilities",
-      indexes: [{ unique: true, fields: ["Name"] }],
+      indexes: [{ fields: ["name"] }, { fields: ["type"] }],
     }
   );
 

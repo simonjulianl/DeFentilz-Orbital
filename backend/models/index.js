@@ -21,6 +21,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     maxIdleTime: 30,
   },
   language: "en",
+  define: {
+    timestamps: false,
+  },
+  sync: { force: true },
 });
 
 // check the connection has been established
@@ -40,5 +44,14 @@ db.sequelize = sequelize;
 
 // models
 db.facilities = require("./facility.model")(sequelize, Sequelize);
+db.bookings = require("./booking.model")(sequelize, Sequelize);
+db.rewards = require("./reward.model")(sequelize, Sequelize);
+db.users = require("./user.model")(sequelize, Sequelize);
+
+// set up the association
+db.users.hasMany(db.bookings);
+db.facilities.hasMany(db.bookings);
+db.rewards.hasOne(db.bookings);
+db.rewards.belongsTo(db.users);
 
 module.exports = db;
