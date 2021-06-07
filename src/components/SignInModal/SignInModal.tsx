@@ -90,7 +90,6 @@ const SignInModal: React.FC<OwnProps> = ({
               leftIcon={<EmailIcon />}
               colorScheme="blue"
               onClick={(event) => {
-                console.log("Submitted by Clicking");
                 emailSignInHandler(event);
               }}
             >

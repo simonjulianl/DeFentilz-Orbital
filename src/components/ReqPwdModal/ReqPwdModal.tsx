@@ -61,10 +61,10 @@ const ReqPwdModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {hookVars.error.errorCode && (
+          {hookVars.error.errorCode != null && hookVars.error.errorCode != 'password_change_success' && (
             <Alert status={"error"} code={hookVars.error.errorCode} />
           )}
-          {hookVars.error.errorCode != null && (
+          {hookVars.error.errorCode == 'password_change_success' && (
             <Alert status={"success"} code={PASSWORD_CHANGE_SUCCESS} />
           )}
         </ModalFooter>
