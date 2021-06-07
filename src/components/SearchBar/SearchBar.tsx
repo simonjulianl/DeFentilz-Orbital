@@ -6,9 +6,10 @@ import React from "react";
 
 interface OwnProps {
   onSubmit: (content: String) => void;
+  value: null | string | string[];
 }
 
-const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
+const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
   const onSubmitEnterHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -18,7 +19,7 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
     var result = searchBar.value;
 
     // refresh the value
-    searchBar.value = "";
+    // searchBar.value = "";
 
     // callback function to the lifted state searchTerm
     onSubmit(result);
@@ -34,7 +35,7 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
     onSubmit(searchBar.value);
 
     // refresh the value of searchbar
-    searchBar.value = "";
+    // searchBar.value = "";
   };
 
   return (
@@ -46,6 +47,7 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
           placeholder="Search NUS Facilities..."
           name="search"
           variant="outline"
+          value={null}
         />
         <InputRightAddon
           children={
