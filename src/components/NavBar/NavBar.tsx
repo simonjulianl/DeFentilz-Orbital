@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { NavBarButtonsConfig } from "./NavBarConfig";
-import { IndexKind } from "typescript";
 
 const NavBar: React.FC<{}> = () => {
   const router = useRouter();
@@ -10,6 +9,7 @@ const NavBar: React.FC<{}> = () => {
   const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }, idx) => {
     return (
       <IconButton
+        key={idx}
         size="lg"
         isActive={false}
         icon={icon}

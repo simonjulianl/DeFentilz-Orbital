@@ -1,46 +1,36 @@
-const mysql = require("mysql");
-const express = require("express");
-// configuring environment variable setting
+// environment variable
 const dotenv = require("dotenv");
 dotenv.config();
 
-// TODO : Add https ssl certificate to prevent CORS issue
-// const fs = require('fs');
-// const https = require('https');
-// const privateKey = fs.readFileSync("sslcert/server.key", "utf8");
-// const certificate = fs.readFileSync("sslcert/server.crt", "utf8");
+// sync with the model if required
+// const db = require("./models");
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync the database");
+// });
 
+const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
-// const credentials = {
-//   key: privateKey,
-//   cert: certificate
-// }
 
-// const httpsServer = https.createServer(credentials, app)
+var corsOptions = {
+  // for extension
+  origin: "",
+};
 
-const con = mysql.createConnection({
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
-  port: parseInt(process.env.RDS_PORT),
-  database: process.env.DB_NAME,
-});
+app.use(cors(corsOptions));
 
-// establish connection
-con.connect((err) => {
-  if (err) {
-    console.log("Error connecting to Db");
-    return;
-  }
-  console.log("Connection established");
-});
+// parse request of content type
+app.use(express.json());
 
-// some api
-app.get("*", (req, res) => res.send("BoNUS Server"));
+// parse request from urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// home page api
+app.get("/", (req, res) => res.json({ message: "Welcome to BoNUS Server" }));
+
+require("./routes/facilities.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
 });
-
-con.end((err) => {});
