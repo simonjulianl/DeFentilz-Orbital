@@ -5,6 +5,7 @@ import Page from "~/components/Page/Page";
 import { NextPage } from "next";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import { useRouter } from 'next/router'
+import SearchResult from "~/components/SearchResult/SearchResult";
 
 const SearchView: NextPage = () => {
   const router = useRouter();
@@ -32,9 +33,12 @@ const SearchView: NextPage = () => {
               value={q} />
         </Box>
         <Center>
-          <Text>
-            Searching for: {q}
-          </Text>
+          <VStack>
+            <Text>
+              Searching for: {q}
+            </Text>
+            <SearchResult queryTerm={q}/>
+          </VStack>
         </Center>
       </Flex>
     </Page>
