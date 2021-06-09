@@ -12,5 +12,14 @@ module.exports = (app) => {
   // get all the facility similar to the name
   router.get("/:name", facilities.findByName);
 
+  // find a single facility with id
+  router.get("/:id", facilities.findOne);
+
+  // update a single facility with id
+  router.put("/:id", facilities.update);
+
+  // delete a single facility with id
+  router.delete("/:id", facilities.delete);
+
   app.use("/api/facilities", router);
 };

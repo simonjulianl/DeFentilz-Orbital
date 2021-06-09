@@ -23,7 +23,6 @@ module.exports = (sequelize, Sequelize) => {
     {
       tableName: "Bookings",
       indexes: [{ fields: ["startingTime"] }],
-      timestamps: false,
     }
   );
 

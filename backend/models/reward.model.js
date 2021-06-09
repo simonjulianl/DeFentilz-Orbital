@@ -21,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       value: {
         type: DataTypes.FLOAT,
-        default: 0,
+        defaultValue: 0,
       },
     },
     {

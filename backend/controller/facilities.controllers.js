@@ -64,3 +64,65 @@ exports.findByName = (req, res) => {
       });
     });
 };
+
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Facility.findByPk(id)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving Facility with id=" + id,
+      });
+    });
+};
+
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Facility.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Facility was updated successfully !",
+        });
+      } else {
+        res.send({
+          message: `Cannot update Facility with id=${id}. `,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Facility with id=" + id,
+      });
+    });
+};
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Facility.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Facility was deleted successfully",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Facility with id=${id}`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error deleting facility with id=" + id,
+      });
+    });
+};
