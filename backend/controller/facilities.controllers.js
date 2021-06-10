@@ -11,25 +11,18 @@ exports.create = (req, res) => {
     });
   }
 
-<<<<<<< HEAD
   if (!types.includes(req.body.type)) {
-=======
-  if (!(req.body.type in types)) {
->>>>>>> origin
     res.status(400).send({
       message: "types must be of SPORT, MEETING, STUDY, or OTHER ",
     });
   }
 
-<<<<<<< HEAD
   if (req.body.rate == undefined || req.body.rate < 0) {
     res.status(400).send({
       message: "rate cannot be empty or negative, if its free please input 0 ",
     });
   }
 
-=======
->>>>>>> origin
   const facility = {
     name: req.body.name,
     type: req.body.type,
@@ -77,7 +70,6 @@ exports.findByName = (req, res) => {
       });
     });
 };
-<<<<<<< HEAD
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
@@ -140,5 +132,3 @@ exports.delete = (req, res) => {
       });
     });
 };
-=======
->>>>>>> origin

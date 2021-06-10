@@ -9,7 +9,6 @@ module.exports = (app) => {
   // get all the facility
   router.get("/", facilities.findAll);
 
-<<<<<<< HEAD
   // find a single facility with id
   router.get("/:id", facilities.findOne);
 
@@ -21,10 +20,6 @@ module.exports = (app) => {
 
   // delete a single facility with id
   router.delete("/:id", facilities.delete);
-=======
-  // get all the facility similar to the name
-  router.get("/:name", facilities.findByName);
->>>>>>> origin
 
   app.use("/api/facilities", router);
 };
