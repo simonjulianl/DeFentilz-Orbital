@@ -24,7 +24,11 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   define: {
     timestamps: false,
   },
+<<<<<<< HEAD
+  sync: { force: false },
+=======
   sync: { force: true },
+>>>>>>> origin
 });
 
 // check the connection has been established
@@ -51,7 +55,22 @@ db.users = require("./user.model")(sequelize, Sequelize);
 // set up the association
 db.users.hasMany(db.bookings);
 db.facilities.hasMany(db.bookings);
+<<<<<<< HEAD
+db.rewards.hasOne(db.bookings, {
+  foreignKey: {
+    name: "rewardId",
+    allowNull: true,
+  },
+});
+db.rewards.belongsTo(db.users, {
+  foreignKey: {
+    name: "userEmail",
+    allowNull: true,
+  },
+});
+=======
 db.rewards.hasOne(db.bookings);
 db.rewards.belongsTo(db.users);
+>>>>>>> origin
 
 module.exports = db;

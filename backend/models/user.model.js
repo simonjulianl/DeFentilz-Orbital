@@ -14,10 +14,18 @@ module.exports = (sequelize, Sequelize) => {
       },
       name: {
         type: DataTypes.STRING,
+<<<<<<< HEAD
+        allowNull: false 
+      },
+      walletValue: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0,
+=======
       },
       walletValue: {
         type: DataTypes.FLOAT,
         default: 0,
+>>>>>>> origin
       },
     },
     {
