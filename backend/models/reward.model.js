@@ -19,20 +19,9 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-<<<<<<< HEAD
-      description: {
-        type: DataTypes.STRING(512),
-        defaultValue: "BoNUS Voucher :)",
-        validate: { notEmpty: true },
-      },
-      value: {
-        type: DataTypes.FLOAT,
-        defaultValue: 0,
-=======
       value: {
         type: DataTypes.FLOAT,
         default: 0,
->>>>>>> origin
       },
     },
     {
