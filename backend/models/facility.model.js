@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 
+// TODO : add location
+
 module.exports = (sequelize, Sequelize) => {
   const Facility = sequelize.define(
     "facilities",
@@ -15,6 +17,11 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "NUS",
       },
       type: {
         type: DataTypes.ENUM("SPORT", "MEETING", "STUDY", "OTHER"),
@@ -35,7 +42,11 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       tableName: "Facilities",
-      indexes: [{ fields: ["name"] }, { fields: ["type"] }],
+      indexes: [
+        { fields: ["name"] },
+        { fields: ["type"] },
+        { fields: ["location"] },
+      ],
     }
   );
 

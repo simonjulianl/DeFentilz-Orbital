@@ -26,6 +26,7 @@ exports.create = (req, res) => {
   const facility = {
     name: req.body.name,
     type: req.body.type,
+    location: req.body.location,
     description: req.body.description,
     rate: req.body.rating,
   };
@@ -58,6 +59,24 @@ exports.findAll = (req, res) => {
 exports.findByName = (req, res) => {
   const name = req.params.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+
+  Facility.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving the facilities",
+      });
+    });
+};
+
+exports.findByLocation = (req, res) => {
+  const location = req.params.location;
+  var condition = location
+    ? { location: { [Op.like]: `%${location}%` } }
+    : null;
 
   Facility.findAll({ where: condition })
     .then((data) => {
