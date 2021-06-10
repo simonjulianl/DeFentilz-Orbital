@@ -1,7 +1,3 @@
-// environment variable
-const dotenv = require("dotenv");
-dotenv.config();
-
 // sync with the model if required
 // const db = require("./models");
 // db.sequelize.sync({ force: true }).then(() => {

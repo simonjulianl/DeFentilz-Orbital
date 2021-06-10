@@ -13,7 +13,7 @@ module.exports = (app) => {
   router.get("/:email", users.findByEmail);
 
   // find users with name
-  router.get("/:name", users.findByName);
+  router.get("/name/:name", users.findByName);
 
   // update a single user with email
   router.put("/:email", users.update);

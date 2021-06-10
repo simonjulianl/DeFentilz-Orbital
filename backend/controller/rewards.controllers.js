@@ -23,8 +23,9 @@ exports.create = (req, res) => {
 
   const reward = {
     issueDate: req.body.issueDate,
-    expiryDate: req.body.email,
+    expiryDate: req.body.expiryDate,
     value: req.body.value,
+    description: req.body.description,
   };
 
   Reward.create(reward)
@@ -54,7 +55,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Reward.findByPk({ where: { id: id } })
+  Reward.findByPk(id)
     .then((data) => {
       res.send(data);
     })
@@ -86,7 +87,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating reward with id=" + id,
+        message: err.message || "Error updating reward with id=" + id,
       });
     });
 };

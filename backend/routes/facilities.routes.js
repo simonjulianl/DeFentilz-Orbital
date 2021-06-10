@@ -9,11 +9,11 @@ module.exports = (app) => {
   // get all the facility
   router.get("/", facilities.findAll);
 
-  // get all the facility similar to the name
-  router.get("/:name", facilities.findByName);
-
   // find a single facility with id
   router.get("/:id", facilities.findOne);
+
+  // get all the facility similar to the name
+  router.get("/name/:name", facilities.findByName);
 
   // update a single facility with id
   router.put("/:id", facilities.update);

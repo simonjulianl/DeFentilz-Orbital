@@ -2,7 +2,34 @@ const db = require("../models");
 const Booking = db.bookings;
 const Op = db.Sequelize.Op;
 
-exports.create = (req, res) => {
+function isBookingConflicting(start, end, facilId, update = false) {
+  // data is stored in GMT+0 in mysql statement
+  const condition = {
+    [Op.and]: [
+      {
+        startingTime: {
+          [Op.lt]: new Date(end),
+        },
+      },
+      {
+        endingTime: {
+          [Op.gt]: new Date(start),
+        },
+      },
+    ],
+    facilityId: facilId,
+  };
+
+  return Booking.count({ where: condition }).then((count) => {
+    if (update) {
+      return count === 1 ? false : true;
+    } else {
+      return count === 0 ? false : true;
+    }
+  });
+}
+
+function checkBody(req, res) {
   if (!req.body.facilityId) {
     res.status(400).send({
       message: "facilityId cannot be empty ",
@@ -15,34 +42,57 @@ exports.create = (req, res) => {
     });
   }
 
-  if (!startingTime) {
+  if (!req.body.startingTime) {
     res.status(400).send({
       message: "startingTime cannot be empty ",
     });
   }
 
-  if (!endingTime) {
+  if (!req.body.endingTime) {
     res.status(400).send({
       message: "endingTime cannot be empty ",
     });
   }
 
+  if (req.body.startingTime === req.body.endingTime) {
+    res.status(400).send({
+      message: "startingTime and endingTime cannot be the same",
+    });
+  }
+}
+
+exports.create = (req, res) => {
+  checkBody(req, res);
   const booking = {
     startingTime: req.body.startingTime,
     endingTime: req.body.endingTime,
     userEmail: req.body.userEmail,
-    facilityId: req.body.userEmail,
+    facilityId: req.body.facilityId,
   };
 
-  Booking.create(booking)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
+  // check if the facility is booked during that timing
+  isBookingConflicting(
+    booking.startingTime,
+    booking.endingTime,
+    booking.facilityId
+  ).then((isConflicting) => {
+    if (isConflicting) {
       res.status(500).send({
-        message: err.message || "Some error occured while creating the booking",
+        message: "Conflicting Booking",
       });
-    });
+    } else {
+      Booking.create(booking)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occured while creating the booking",
+          });
+        });
+    }
+  });
 };
 
 exports.findAll = (req, res) => {
@@ -105,25 +155,38 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Booking.update(req.body, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Booking was updated successfully !",
-        });
-      } else {
-        res.send({
-          message: `Cannot update Booking with id=${id}. `,
-        });
-      }
-    })
-    .catch((err) => {
+  isBookingConflicting(
+    req.body.startingTime,
+    req.body.endingTime,
+    req.body.facilityId,
+    true
+  ).then((isConflicting) => {
+    if (isConflicting) {
       res.status(500).send({
-        message: "Error updating Booking with id=" + id,
+        message: "Conflicting booking",
       });
-    });
+    } else {
+      Booking.update(req.body, {
+        where: { id: id },
+      })
+        .then((num) => {
+          if (num == 1) {
+            res.send({
+              message: "Booking was updated successfully !",
+            });
+          } else {
+            res.send({
+              message: `Cannot update Booking with id=${id}. `,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message: err.message || "Error updating Booking with id=" + id,
+          });
+        });
+    }
+  });
 };
 
 exports.delete = (req, res) => {

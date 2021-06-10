@@ -1,4 +1,5 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, AsyncQueueError } = require("sequelize");
+const moment = require("moment");
 
 module.exports = (sequelize, Sequelize) => {
   const Booking = sequelize.define(
@@ -14,10 +15,20 @@ module.exports = (sequelize, Sequelize) => {
       startingTime: {
         type: DataTypes.DATE,
         allowNull: false,
+        get() {
+          return moment(this.getDataValue("startingTime"))
+            .local()
+            .format("YYYY-MM-DD hh:mm:ss");
+        },
       },
       endingTime: {
         type: DataTypes.DATE,
         allowNull: false,
+        get() {
+          return moment(this.getDataValue("endingTime"))
+            .local()
+            .format("YYYY-MM-DD hh:mm:ss");
+        },
       },
     },
     {

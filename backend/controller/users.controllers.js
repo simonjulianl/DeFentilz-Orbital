@@ -46,7 +46,7 @@ exports.findAll = (req, res) => {
 exports.findByEmail = (req, res) => {
   const email = req.params.email;
 
-  User.findByPk({ where: { email: email } })
+  User.findByPk(email)
     .then((data) => {
       res.send(data);
     })
@@ -63,7 +63,7 @@ exports.findByName = (req, res) => {
   const name = req.params.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-  User.findAll({ where: { condition } })
+  User.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
