@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 // sync with the model if required
 // const db = require("./models");
 // db.sequelize.sync({ force: true }).then(() => {
@@ -7,7 +10,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const PORT = 80; // heroku port
+const PORT = process.env.PORT || 3000; // heroku port
 
 var corsOptions = {
   // for extension
