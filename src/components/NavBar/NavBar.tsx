@@ -10,6 +10,7 @@ const NavBar: React.FC<{}> = () => {
   const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }, idx) => {
     return (
       <IconButton
+        key={idx}
         size="lg"
         isActive={false}
         icon={icon}

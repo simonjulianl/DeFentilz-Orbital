@@ -1,10 +1,7 @@
+import { Text, Spinner, Badge, Image, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, HStack} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import { Box, Center, Text, VStack, Spinner, Badge, HStack, Spacer, Icon } from "@chakra-ui/react";
-import { Heading, Flex, Image, Button} from "@chakra-ui/react";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import React from "react";
+import SearchCardModal from "../SearchCardModal/SearchCardModal";
 
 interface OwnProps {
   name: string,
@@ -16,15 +13,21 @@ interface OwnProps {
 }
 
 const SearchCard: React.FC<OwnProps> = ({name, type, description, image, location, rating}) => {
-  const router = useRouter();
+  const {
+    isOpen: isOpen,
+    onOpen: onOpen,
+    onClose: onClose,
+  } = useDisclosure();
 
   return (
     <Box
-      width={["xs", null, "sm", "md"]}
-      height={["xs", null, "sm", "md"]}
+      width={["2xs", "xs", "sm", "md"]}
       borderWidth={"1px"}
       borderRadius="xl"
-      overflow="hidden">
+      overflow="hidden"
+      onClick={() => onOpen()}
+      shadow="lg"
+      >
       <Flex
       direction="row"
       >
@@ -65,26 +68,24 @@ const SearchCard: React.FC<OwnProps> = ({name, type, description, image, locatio
                     </Badge>
                   </Box>
                 </HStack>
-                <HStack justify={"space-around"} mt="1">
-                  {
-                    Array(5)
-                    .fill("")
-                    .map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        color={i < rating ? "teal.500" : "gray.300"}
-                      />
-                    ))
-                  }
-                </HStack>
               </Box>
-              <Button colorScheme="teal" onClick={() => router.push('/booking')}>
-                Book Now!
-              </Button>
+              <HStack fontSize="md" letterSpacing="tight" spacing="1">
+                <Text paddingTop="1.5"> {rating} </Text>
+                <StarIcon viewBox="0 0 24 24" color="yellow.400"/>
+              </HStack>              
             </HStack>
           </Box>
         </Box>
       </Flex>
+      <SearchCardModal
+        isOpen={isOpen}
+        onClose={onClose}
+        name={name}
+        type={type} 
+        description={description} 
+        image={image}
+        location={location}
+        rating={rating} />
     </Box>
   );
 };
