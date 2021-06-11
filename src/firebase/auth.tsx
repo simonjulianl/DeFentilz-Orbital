@@ -77,16 +77,11 @@ const formatAuthState = (user: firebase.User): Auth => ({
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null); // Declares state variable "auth" with setter "setAuth"
   const [loading, setLoading] = useState<boolean>(true);
-  const basicEmailChecker = (email: string | null, errorHandler: Function) => {
-    if (email === "") {
-      errorHandler("404", "Please fill in your email address");
-      return false;
-    } else if (email.split("@")[1] !== "u.nus.edu") {
-      errorHandler("404", "This is not a valid NUS email address");
-      return false;
+  const basicEmailChecker = (email: string | null) => {
+    if (email.split("@")[1] !== "u.nus.edu") {
+      return true;
     }
-    errorHandler(null, null);
-    return true;
+    return false;
   };
 
   const handleAuthChange = async (authState: firebase.User | null) => {
@@ -163,22 +158,23 @@ function useProvideAuth() {
   ) => {
     setLoading(true);
     if (displayName === "") {
-      errorHandler("404", "Please input display name");
+      errorHandler("no-name", "Please input display name");
       return;
     }
-    if (basicEmailChecker(email, errorHandler)) {
-      return firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then((response) => {
-          signedUpandIn(response, "email", displayName);
-          resolveHandler();
-        })
-        .catch((error) => {
-          errorHandler(error.code, error.message);
-        });
+    if (basicEmailChecker(email)) {
+      errorHandler("wrong-email-format", "Incorrect Email");
+      return;
     }
-    return;
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        signedUpandIn(response, "email", displayName);
+        resolveHandler();
+      })
+      .catch((error) => {
+        errorHandler(error.code, error.message);
+      });
   };
 
   const signInWithEmail = async (
@@ -188,19 +184,20 @@ function useProvideAuth() {
     errorHandler: Function
   ) => {
     setLoading(true);
-    if (basicEmailChecker(email, errorHandler)) {
-      return firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((response) => {
-          signedIn(response, "email");
-          resolveHandler();
-        })
-        .catch((error) => {
-          errorHandler(error.code, error.message);
-        });
+    if (basicEmailChecker(email)) {
+      errorHandler("wrong-email-format", "Incorrect Email");
+      return;
     }
-    return;
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        signedIn(response, "email");
+        resolveHandler();
+      })
+      .catch((error) => {
+        errorHandler(error.code, error.message);
+      });
   };
 
   const changePassword = async (
@@ -209,18 +206,20 @@ function useProvideAuth() {
     errorHandler: Function
   ) => {
     setLoading(true);
-    if (basicEmailChecker(email, errorHandler)) {
-      return firebase
-        .auth()
-        .sendPasswordResetEmail(email)
-        .then((response) => {
-          resolveHandler();
-        })
-        .catch((error) => {
-          errorHandler(error.code, error.message);
-        });
+    if (basicEmailChecker(email)) {
+      errorHandler("wrong-email-format", "Incorrect Email");
+      return;
     }
-    return;
+    return firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then((response) => {
+        errorHandler("password_change_success", "Email Sent");
+        resolveHandler();
+      })
+      .catch((error) => {
+        errorHandler(error.code, error.message);
+      });
   };
 
   const signOut = async () => {

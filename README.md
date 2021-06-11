@@ -27,13 +27,13 @@ yarn run build
 To run the app in development development
 
 ```bash
-npx next dev
+yarn run dev
 ```
 
 To run the app in production mode
 
 ```bash
-npx next start
+yarn run start
 ```
 
 To run the server app using nodemon for live update and auto-refresh
@@ -60,7 +60,6 @@ To learn more about the resources used, the following documentation might be hel
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [React Documentation](https://reactjs.org/docs)
 - [Chakra UI](https://chakra-ui.com/)
-- [Storybook Documentation](https://storybook.js.org/docs)
 
 **Backend**
 
@@ -68,3 +67,6 @@ To learn more about the resources used, the following documentation might be hel
 - [AWS RDS MySQL](https://aws.amazon.com/rds/)
 - [Heroku](https://heroku.com/)
 - [Sequlieze ORM](https://sequelize.org/)
+- [Firebase](https://firebase.google.com/docs/auth)
+
+For backend documentation, plesae visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)

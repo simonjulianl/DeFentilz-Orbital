@@ -132,7 +132,7 @@ const Header: React.FC<{}> = () => {
         onChangeHandler={handlerObject.onChangeHandler}
         toReqPwdHandler={handlerObject.toReqPwdHandler}
         toSignUpHandler={handlerObject.toSignupHandler}
-        emailSignInHandler={handlerObject.toSignupHandler}
+        emailSignInHandler={handlerObject.emailSignInHandler}
         googleSignInHandler={handlerObject.googleSignInHandler}
       />
       <SignUpModal
@@ -155,34 +155,3 @@ const Header: React.FC<{}> = () => {
 };
 
 export default Header;
-
-// 1
-// {isNotMobile ? (
-//         <Box
-//           width={[null, null, "30em", "32em", "40em"]}
-//           paddingRight={[2, 5, 10]}
-//         >
-//           <HStack justify="space-between">
-//             {HeaderConfig.filter(
-//               (button) =>
-//                 button.signature != (authContext.auth ? "signin" : "logout")
-//             ).map((button) => {
-//               console.log(button.signature == "signin");
-//               return HeaderButton(
-//                 button,
-//                 () =>
-//                   button.signature != "signin" && button.signature != "logout"
-//                     ? router.push(button.path)
-//                     : button.signature == "signin"
-//                     ? onOpenLogin()
-//                     : button.signature == "logout"
-//                     ? handlerObject.logOutHandler()
-//                     : router.push("/errorPage"),
-//                 router
-//               );
-//             })}
-//           </HStack>
-//         </Box>
-//       ) : (
-//
-//       )}

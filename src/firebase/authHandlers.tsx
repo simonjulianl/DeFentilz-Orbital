@@ -24,7 +24,7 @@ export default function authHandlers(
     errorCode: string | null,
     errorMessage: string | null
   ) => {
-    console.error(errorCode + " " + errorMessage);
+    console.error("Error Code: " + errorCode + "; Error Message: " + errorMessage);
     settersObject.setError({
       errorCode: errorCode,
       errorMessage: errorMessage,
@@ -74,9 +74,7 @@ export default function authHandlers(
     event.preventDefault();
     authContext.changePassword(
       hookVars.email,
-      () => {
-        settersObject.setSuccessChange(true);
-      },
+      () => settersObject.setSuccessChange(true),
       errorHandler
     );
   };

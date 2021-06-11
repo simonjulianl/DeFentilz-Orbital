@@ -37,5 +37,5 @@ yarn-error.log*
 # vercel
 .vercel
 
-# sw
-sw.js.map
+# database
+/backend/config/

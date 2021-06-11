@@ -50,7 +50,7 @@ const NavDrawer: React.FC<OwnProps> = ({
         <DrawerHeader borderBottomWidth="1px">Navigation</DrawerHeader>
         <DrawerBody>
           {auth ? (
-            <VStack alignItems="flex-start">
+            <VStack alignItems="flex-start" marginTop={15}>
               <Button
                 label="log-out"
                 leftIcon={<FontAwesomeIcon icon={faSignOutAlt} />}
