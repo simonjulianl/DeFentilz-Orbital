@@ -1,9 +1,13 @@
-import { Text, Spinner, Badge, Image, useDisclosure } from "@chakra-ui/react";
-import { Box, Flex, HStack} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import SearchCardModal from "../SearchCardModal/SearchCardModal";
+import { Box, Flex, HStack} from "@chakra-ui/react";
+import { Text, Spinner, Badge, Image, useDisclosure } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useState } from "react";
+
+import SearchCardModal from "~/components/SearchCardModal/SearchCardModal";
 
 interface OwnProps {
+  id: number,
   name: string,
   type: string, 
   description: string, 
@@ -12,7 +16,12 @@ interface OwnProps {
   rating: number
 }
 
-const SearchCard: React.FC<OwnProps> = ({name, type, description, image, location, rating}) => {
+const SearchCard: React.FC<OwnProps> = ({id, name, type, description, image, location, rating}) => {
+  const [error, setError] = useState(false);
+  useEffect(() => {
+
+  }, [error])
+
   const {
     isOpen: isOpen,
     onOpen: onOpen,
@@ -36,11 +45,12 @@ const SearchCard: React.FC<OwnProps> = ({name, type, description, image, locatio
             width={"100%"}
             height={"100%"}
             objectFit="fill"
-            src={image}
+            src={error ? '/next.png' : image}
             alt={name}
             fallback={
               <Spinner />
             }
+            onError={() => setError(true)}
           />
           
           <Box p="3">
@@ -80,6 +90,7 @@ const SearchCard: React.FC<OwnProps> = ({name, type, description, image, locatio
       <SearchCardModal
         isOpen={isOpen}
         onClose={onClose}
+        id={id}
         name={name}
         type={type} 
         description={description} 

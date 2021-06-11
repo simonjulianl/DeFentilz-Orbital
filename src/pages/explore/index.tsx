@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { VStack, Box, Flex, Center } from "@chakra-ui/layout";
+import { VStack, Box, Flex} from "@chakra-ui/layout";
 import { IconButton, Text } from "@chakra-ui/react";
 import {
   faVolleyballBall,
@@ -34,13 +34,13 @@ const ExploreView: NextPage = () => {
             width={screenWidth}
           >
             <SearchBar onSubmit={(content: string) => router.push({
-              pathname: '/search',
+              pathname: '/booking/search',
               query: {
                 q: content
               } 
             }
             )}
-            value={null} />
+            value={undefined} />
           </Box>
           <Flex
             direction="column"

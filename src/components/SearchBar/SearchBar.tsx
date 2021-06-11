@@ -47,7 +47,7 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
           placeholder="Search NUS Facilities..."
           name="search"
           variant="outline"
-          value={null}
+          value={undefined}
         />
         <InputRightAddon
           children={

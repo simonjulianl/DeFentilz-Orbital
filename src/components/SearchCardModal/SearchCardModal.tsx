@@ -3,6 +3,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
+  ModalCloseButton, 
   ModalHeader,
   ModalContent,
   ModalBody,
@@ -16,10 +17,15 @@ import {
   Spinner, 
   Button,
 } from "@chakra-ui/react";
+import axios, { AxiosRequestConfig } from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useAuth } from "~/firebase/auth";
 
 interface OwnProps {
   isOpen: boolean;
   onClose: () => void;
+  id: number,
   name: string,
   type: string, 
   description: string, 
@@ -31,6 +37,7 @@ interface OwnProps {
 const SearchCardModal: React.FC<OwnProps> = ({
   isOpen,
   onClose,
+  id, 
   name, 
   type, 
   description, 
@@ -38,6 +45,9 @@ const SearchCardModal: React.FC<OwnProps> = ({
   location, 
   rating
 }) => {
+  const router = useRouter();
+  const authContext = useAuth();
+  
   return (
     <Modal 
       isOpen={isOpen}
@@ -48,7 +58,8 @@ const SearchCardModal: React.FC<OwnProps> = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader marginX="-5">
+        <ModalCloseButton />
+        <ModalHeader marginX="-5" marginY="1.5">
           <Image
             borderRadius="lg"
             width={"100%"}
@@ -120,9 +131,19 @@ const SearchCardModal: React.FC<OwnProps> = ({
           </Text>          
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="teal">
-            Book Now!
-          </Button>
+          {
+            authContext.auth
+            ? (
+              <Button colorScheme="teal" onClick={() => router.push('/booking')}>
+                Book Now!
+              </Button>
+            )
+            : (
+              <Button isDisabled>
+                Sign In to Book
+              </Button>
+            )
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>
