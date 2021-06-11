@@ -8,12 +8,19 @@ import Page from "~/components/Page/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import SearchCard from "~/components/SearchCard/SearchCard";
 
+import FormData from "form-data";
+import axios from "axios";
+
 const SearchView: NextPage = () => {
   const router = useRouter();
   let { q } = router.query;
   if(Array.isArray(q)){ // because q technically string | string[]
     q = q.reduce((x, y) => (x + y));
   }
+
+  // axios.get('https://bonus-server.herokuapp.com/api/bookings', )
+  //       .then(x => console.log(x))
+  //       .catch(e => console.error(e));
 
   const sampleQueryResult = [
     {
@@ -42,11 +49,18 @@ const SearchView: NextPage = () => {
   ];
 
   const [screenWidth, setScreenWidth] = useState(0);
-  const [searchResult, setSearchResult] = useState(sampleQueryResult); // Simulate API Call to search
+  const [searchResult, setSearchResult] = useState([]); // Simulate API Call to search
 
+  // Make API Call here   
   useEffect(() => {
-    // Make API Call here 
-    setSearchResult(sampleQueryResult);
+    axios.get("https://bonus-server.herokuapp.com/api/facilities")
+    .then(response => response.data)
+    .then(response => {
+      console.log(response);
+      setSearchResult(response);
+    })
+    .catch(error => console.log('error', error));
+
     setScreenWidth(screen.width);
   }, [screenWidth, q]);
 
