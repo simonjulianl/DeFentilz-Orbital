@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 5000; // heroku port
 
 var corsOptions = {
   // for extension
-  origin: "",
+  origin: "https://bonus.vercel.app",
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
