@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const rewards = require("../controller/rewards.controllers.js");
 
-  var router = require("express").Router();
+  const router = require("express").Router();
 
   // create new reward
   router.post("/", rewards.create);

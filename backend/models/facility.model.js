@@ -1,7 +1,5 @@
 const { DataTypes } = require("sequelize");
 
-// TODO : add location
-
 module.exports = (sequelize, Sequelize) => {
   const Facility = sequelize.define(
     "facilities",
@@ -17,6 +15,11 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg",
       },
       location: {
         type: DataTypes.STRING,
