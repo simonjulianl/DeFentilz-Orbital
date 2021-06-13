@@ -53,6 +53,7 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <meta property="og:title" content={`BoNUS`} key="ogtitle" />
         <link rel="manifest" href="/manifest.json" />
         <link
+<<<<<<< HEAD
           rel="icon"
           type="image/png"
           sizes="48x48"
@@ -71,6 +72,20 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
           href="/icons/maskable-icon-x96.png"
         />
         <link rel="apple-touch-icon" href="/icons/apple-icon.png"></link>
+=======
+          href="/favicon-16x16.png"
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+        />
+        <link
+          href="/favicon-32x32.png"
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+        />
+        <link rel="apple-touch-icon" href="/apple-icon.png"></link>
+>>>>>>> parent of 6fccd28 (Fix icon bug)
         <meta name="theme-color" content="#8B572A" />
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta
