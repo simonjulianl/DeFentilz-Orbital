@@ -21,7 +21,7 @@ const SearchView: NextPage = () => {
   useEffect(() => {    
     const config : AxiosRequestConfig = {
       method: 'get',
-      url: keyword === 'squash' || keyword === 'Squash' ? "https://run.mocky.io/v3/e6ee97ca-77ae-4011-b77f-0f6d26a4c561" : 'https://run.mocky.io/v3/f63f9c65-5358-4c79-bddc-93776a4f16a9',
+      url: encodeURI("https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities?search=" + keyword),
       timeout: 10000,
     };
 

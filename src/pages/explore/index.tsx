@@ -65,6 +65,14 @@ const ExploreView: NextPage = () => {
                 size={"lg"}
                 icon={<FontAwesomeIcon icon={faVolleyballBall} />}
                 aria-label="sports"
+                onClick={() => {
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: 'sports'
+                    }
+                  })
+                }}
               />
               <Text
                 align="center"
@@ -80,6 +88,14 @@ const ExploreView: NextPage = () => {
                 size="lg"
                 icon={<FontAwesomeIcon icon={faHandshake} />}
                 aria-label="meeting"
+                onClick={() => {
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: 'meeting'
+                    }
+                  })
+                }}
               />
               <Text
                 align="center"
@@ -95,6 +111,14 @@ const ExploreView: NextPage = () => {
                 size="lg"
                 icon={<FontAwesomeIcon icon={faBook} />}
                 aria-label="study"
+                onClick={() => {
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: 'study'
+                    }
+                  })
+                }}
               />
               <Text
                 align="center"

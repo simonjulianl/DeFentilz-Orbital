@@ -19,7 +19,6 @@ interface OwnProps {
 const SearchCard: React.FC<OwnProps> = ({id, name, type, description, image, location, rating}) => {
   const [error, setError] = useState(false);
   useEffect(() => {
-
   }, [error])
 
   const {
@@ -60,11 +59,12 @@ const SearchCard: React.FC<OwnProps> = ({id, name, type, description, image, loc
                 fontWeight="semibold"
                 as="h4"
                 lineHeight="tight"
-                isTruncated
                 d="flex"
                 alignItems="baseline"
                 >
-                  {name}
+                  <Text noOfLines={2}>
+                    {name}
+                  </Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">
@@ -80,8 +80,12 @@ const SearchCard: React.FC<OwnProps> = ({id, name, type, description, image, loc
                 </HStack>
               </Box>
               <HStack fontSize="md" letterSpacing="tight" spacing="1">
-                <Text paddingTop="1.5"> {rating} </Text>
-                <StarIcon viewBox="0 0 24 24" color="yellow.400"/>
+                <Text paddingTop="1.5"> {rating === null ? "No Rating Yet" : rating} </Text>
+                { 
+                  rating === null
+                  ? <></>
+                  : <StarIcon viewBox="0 0 24 24" color="yellow.400"/>
+                }
               </HStack>              
             </HStack>
           </Box>
