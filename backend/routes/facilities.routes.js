@@ -20,6 +20,9 @@ module.exports = (app) => {
   // get all the facility similar to the location
   router.get("/location/:location", facilities.findByLocation);
 
+  // get all the facility by type
+  router.get("/type/:type", facilities.findByType);
+
   // update a single facility with id
   router.put("/:id", facilities.update);
 
