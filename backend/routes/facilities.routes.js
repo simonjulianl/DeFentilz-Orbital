@@ -1,7 +1,9 @@
 module.exports = (app) => {
   const facilities = require("../controller/facilities.controllers.js");
+  const multer = require("multer");
+  const upload = multer({ storage: multer.memoryStorage() });
 
-  var router = require("express").Router();
+  const router = require("express").Router();
 
   // create new facility
   router.post("/", facilities.create);
@@ -23,6 +25,9 @@ module.exports = (app) => {
 
   // delete a single facility with id
   router.delete("/:id", facilities.delete);
+
+  // upload a facility picture to aws s3 bucket
+  router.post("/images", upload.single("image"), facilities.postImage);
 
   app.use("/api/facilities", router);
 };

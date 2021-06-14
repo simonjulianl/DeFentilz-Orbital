@@ -1,6 +1,7 @@
 const db = require("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
+const { uploadFile } = require("../S3/index");
 
 exports.create = (req, res) => {
   if (!req.body.email) {
@@ -18,6 +19,7 @@ exports.create = (req, res) => {
   const user = {
     email: req.body.email,
     name: req.body.name,
+    profilePictureUrl: req.body.profilePictureUrl,
   };
 
   User.create(user)
@@ -120,4 +122,18 @@ exports.delete = (req, res) => {
         message: "Error deleting user with email=" + email,
       });
     });
+};
+
+exports.postImage = async (req, res) => {
+  const file = req.file;
+  const base64Image = file.buffer.toString("base64");
+
+  try {
+    const result = await uploadFile(file, base64Image);
+    res.send({
+      imageUrl: `${result.Location}`,
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Error posting user image, " + err });
+  }
 };

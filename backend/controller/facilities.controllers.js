@@ -1,6 +1,7 @@
 const db = require("../models");
 const Facility = db.facilities;
 const Op = db.Sequelize.Op;
+const { uploadFile } = require("../S3/index");
 
 const types = ["SPORT", "MEETING", "STUDY", "OTHER"];
 
@@ -17,9 +18,9 @@ exports.create = (req, res) => {
     });
   }
 
-  if (req.body.rate == undefined || req.body.rate < 0) {
+  if (req.body.rate && req.body.rate < 0) {
     res.status(400).send({
-      message: "rate cannot be empty or negative, if its free please input 0 ",
+      message: "rate cannot be negative ",
     });
   }
 
@@ -27,6 +28,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     type: req.body.type,
     location: req.body.location,
+    imageUrl: req.body.imageUrl,
     description: req.body.description,
     rate: req.body.rating,
   };
@@ -150,4 +152,18 @@ exports.delete = (req, res) => {
         message: "Error deleting facility with id=" + id,
       });
     });
+};
+
+exports.postImage = async (req, res) => {
+  const file = req.file;
+  const base64Image = file.buffer.toString("base64");
+
+  try {
+    const result = await uploadFile(file, base64Image);
+    res.send({
+      imageUrl: `${result.Location}`,
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Error posting facility image, " + err });
+  }
 };
