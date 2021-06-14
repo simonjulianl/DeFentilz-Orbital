@@ -60,10 +60,12 @@ exports.findAll = (req, res) => {
 
 exports.findByName = (req, res) => {
   const keywords = req.params.name.split(" ");
-  // mysql regex is case insensitive
 
+  // mysql regex is case insensitive
   const generateRegex = (keywords) =>
-    keywords.map((key) => "(?=.*" + key + ")").reduce((key, acc) => key + acc);
+    keywords
+      .map((key) => "(?=.*" + key + ".*)")
+      .reduce((key, acc) => key + acc);
 
   var condition =
     keywords.length > 0
