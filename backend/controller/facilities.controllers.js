@@ -59,8 +59,16 @@ exports.findAll = (req, res) => {
 };
 
 exports.findByName = (req, res) => {
-  const name = req.params.name;
-  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  const keywords = req.params.name.split(" ");
+  // mysql regex is case insensitive
+
+  const generateRegex = (keywords) =>
+    keywords.map((key) => "(?=.*" + key + ")").reduce((key, acc) => key + acc);
+
+  var condition =
+    keywords.length > 0
+      ? { name: { [Op.regexp]: generateRegex(keywords) } }
+      : null;
 
   Facility.findAll({ where: condition })
     .then((data) => {
