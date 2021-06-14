@@ -16,6 +16,11 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      profilePictureUrl: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_profile_picture.jpeg",
+      },
       walletValue: {
         type: DataTypes.FLOAT,
         defaultValue: 0,

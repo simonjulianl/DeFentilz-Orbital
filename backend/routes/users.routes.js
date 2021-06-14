@@ -1,7 +1,9 @@
 module.exports = (app) => {
   const users = require("../controller/users.controllers.js");
+  const multer = require("multer");
+  const upload = multer({ storage: multer.memoryStorage() });
 
-  var router = require("express").Router();
+  const router = require("express").Router();
 
   // create new user
   router.post("/", users.create);
@@ -20,6 +22,9 @@ module.exports = (app) => {
 
   // delete a single user with email
   router.delete("/:email", users.delete);
+
+  // upload a user profile picture to amazon aws s3 bucket
+  router.post("/images", upload.single("image"), users.postImage);
 
   app.use("/api/users", router);
 };
