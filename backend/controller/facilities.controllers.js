@@ -92,6 +92,26 @@ exports.findByLocation = (req, res) => {
     });
 };
 
+exports.findByType = (req, res) => {
+  const type = req.params.type;
+
+  if (!types.includes(type)) {
+    res.status(400).send({
+      message: "types must be of SPORT, MEETING, STUDY, or OTHER ",
+    });
+  }
+
+  Facility.findAll({ where: { type: type } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Some error occured while retrieving facility by type ",
+      });
+    });
+};
+
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
