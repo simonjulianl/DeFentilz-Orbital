@@ -33,14 +33,17 @@ const ExploreView: NextPage = () => {
             background="white"
             width={screenWidth}
           >
-            <SearchBar onSubmit={(content: string) => router.push({
-              pathname: '/booking/search',
-              query: {
-                q: content
-              } 
-            }
-            )}
-            value={undefined} />
+            <SearchBar
+              onSubmit={
+                (content : string) => 
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: content
+                    }
+                  })
+              }
+            />
           </Box>
           <Flex
             direction="column"

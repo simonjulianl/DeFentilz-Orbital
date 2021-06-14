@@ -45,7 +45,7 @@ const SearchCard: React.FC<OwnProps> = ({id, name, type, description, image, loc
             width={"100%"}
             height={"100%"}
             objectFit="fill"
-            src={error ? '/next.png' : image}
+            src={error ? '/notAvail.png' : image}
             alt={name}
             fallback={
               <Spinner />

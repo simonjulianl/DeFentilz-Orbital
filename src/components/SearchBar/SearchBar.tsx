@@ -1,15 +1,14 @@
 import { Input, InputGroup, InputRightAddon } from "@chakra-ui/react";
-import { Button, IconButton } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 interface OwnProps {
   onSubmit: (content: String) => void;
-  value: null | string | string[];
 }
 
-const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
+const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
   const onSubmitEnterHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -17,9 +16,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
       "header-search"
     ) as HTMLInputElement;
     var result = searchBar.value;
-
-    // refresh the value
-    // searchBar.value = "";
 
     // callback function to the lifted state searchTerm
     onSubmit(result);
@@ -33,9 +29,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
     ) as HTMLInputElement;
 
     onSubmit(searchBar.value);
-
-    // refresh the value of searchbar
-    // searchBar.value = "";
   };
 
   return (
@@ -47,7 +40,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit, value}) => {
           placeholder="Search NUS Facilities..."
           name="search"
           variant="outline"
-          value={undefined}
         />
         <InputRightAddon
           children={

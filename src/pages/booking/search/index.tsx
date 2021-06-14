@@ -12,10 +12,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const SearchView: NextPage = () => {
   const router = useRouter();
-  let { q } = router.query;
-  if(Array.isArray(q)){ // because q technically string | string[]
-    q = q.reduce((x, y) => (x + y));
-  }
+  let { keyword } = router.query;
 
   const [searchResult, setSearchResult] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -24,7 +21,7 @@ const SearchView: NextPage = () => {
   useEffect(() => {    
     const config : AxiosRequestConfig = {
       method: 'get',
-      url: q === 'squash' || q === 'Squash' ? "https://run.mocky.io/v3/e6ee97ca-77ae-4011-b77f-0f6d26a4c561" : 'https://run.mocky.io/v3/f63f9c65-5358-4c79-bddc-93776a4f16a9',
+      url: keyword === 'squash' || keyword === 'Squash' ? "https://run.mocky.io/v3/e6ee97ca-77ae-4011-b77f-0f6d26a4c561" : 'https://run.mocky.io/v3/f63f9c65-5358-4c79-bddc-93776a4f16a9',
       timeout: 10000,
     };
 
@@ -45,7 +42,7 @@ const SearchView: NextPage = () => {
         message: error.response.statusText
       })
     });
-  }, [q]);
+  }, [keyword]);
 
   return (
     <Page title="Search" description="Search">
@@ -53,18 +50,21 @@ const SearchView: NextPage = () => {
         <Box
         padding={3}
         >
-          <SearchBar onSubmit={(content: string) => router.push({
-                pathname: '/booking/search',
-                query: {
-                  q: content
-                } 
+          <SearchBar
+              onSubmit={
+                (content : string) => 
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: content
+                    }
+                  })
               }
-              )}
-              value={q} />
+            />
         </Box>
         <VStack>
           <Text>
-            Searching for: {q}
+            Searching for: {keyword}
           </Text>
           {
             isLoading
