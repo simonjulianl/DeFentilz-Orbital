@@ -3,7 +3,7 @@ import { AuthContext } from "~/firebase/auth";
 import {
   hookVars,
   settersObject,
-  modalCallbacks,
+  modalCallbacks
 } from "./authHandlersInterface";
 
 export default function authHandlers(
@@ -21,13 +21,13 @@ export default function authHandlers(
   };
 
   const errorHandler = (
-    errorCode: string | null,
-    errorMessage: string | null
+    errorCode: string,
+    errorMessage: string
   ) => {
     console.error("Error Code: " + errorCode + "; Error Message: " + errorMessage);
     settersObject.setError({
-      errorCode: errorCode,
-      errorMessage: errorMessage,
+      code: errorCode,
+      message: errorMessage,
     });
   };
 
@@ -60,7 +60,13 @@ export default function authHandlers(
       hookVars.email,
       hookVars.password,
       hookVars.name,
-      resolveHandler,
+      () => {
+        console.log("Success Code: signup-successful. Message: Sign up is successful");
+        settersObject.setSuccess({
+          code: 'signup-successful',
+          message: "Sign up is successful"
+        });
+    },
       errorHandler
     );
   };
@@ -74,14 +80,19 @@ export default function authHandlers(
     event.preventDefault();
     authContext.changePassword(
       hookVars.email,
-      () => settersObject.setSuccessChange(true),
+      () => {
+        console.log("Success Code: password-change-successful. Message: Password Change is Successful. Please check your email");
+        settersObject.setSuccess({
+        code: 'password-change-successful',
+        message: 'Password Change is Successful. Please check your email'
+      });
+    },
       errorHandler
     );
   };
 
   const logOutHandler = () => {
-    settersObject.setError({ errorCode: null, errorMessage: null });
-    settersObject.setSuccessChange(null);
+    settersObject.setError(null);
     authContext.signOut();
     router.push("/");
     modalCallbacks.onCloseLogin();
@@ -92,24 +103,21 @@ export default function authHandlers(
   // the naming convention here becomes inconsistent given logOutHandler, the naming convention above
   // and after this line is different
   const toLoginHandler = () => {
-    settersObject.setError({ errorCode: null, errorMessage: null });
-    settersObject.setSuccessChange(null);
+    settersObject.setError(null);
     modalCallbacks.onCloseSignup();
     modalCallbacks.onCloseDrawer();
     modalCallbacks.onOpenLogin();
   };
 
   const toSignupHandler = () => {
-    settersObject.setError({ errorCode: null, errorMessage: null });
-    settersObject.setSuccessChange(null);
+    settersObject.setError(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onCloseDrawer();
     modalCallbacks.onOpenSignup();
   };
 
   const toReqPwdHandler = () => {
-    settersObject.setError({ errorCode: null, errorMessage: null });
-    settersObject.setSuccessChange(null);
+    settersObject.setError(null);
     modalCallbacks.onCloseLogin();
     modalCallbacks.onCloseDrawer();
     modalCallbacks.onOpenPwd();

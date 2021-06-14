@@ -18,11 +18,11 @@ module.exports = withPWA({
   async redirects() {
     return [
       {
-        source: "/",
-        destination: "/explore",
+        source: '/',
+        destination: '/home',
         permanent: true,
       },
-    ];
+    ]
   },
   async rewrites() {
     return [

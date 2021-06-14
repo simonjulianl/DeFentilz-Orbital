@@ -1,5 +1,4 @@
 import { Context, createContext, useContext, useEffect, useState } from "react";
-import { addUser } from "./db";
 import firebase from "./firebase";
 
 interface Auth {
@@ -8,6 +7,7 @@ interface Auth {
   name: string | null;
   photoUrl: string | null;
   token: string | null;
+  emailVerified: boolean;
 }
 
 export interface AuthContext {
@@ -72,64 +72,69 @@ const formatAuthState = (user: firebase.User): Auth => ({
   name: user.displayName,
   photoUrl: user.photoURL,
   token: null,
+  emailVerified: user.emailVerified
 });
 
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null); // Declares state variable "auth" with setter "setAuth"
   const [loading, setLoading] = useState<boolean>(true);
-  const basicEmailChecker = (email: string | null) => {
-    if (email.split("@")[1] !== "u.nus.edu") {
-      return true;
-    }
-    return false;
-  };
 
-  const handleAuthChange = async (authState: firebase.User | null) => {
-    if (!authState) {
+  const basicEmailChecker = (email: string | null) => email.split("@")[1] !== "u.nus.edu";
+
+  const handleAuthChange = async (user: firebase.User | null) => {
+    if (!user) {
       setLoading(false);
       return;
     }
-    const formattedAuth = formatAuthState(authState);
-    formattedAuth.token = await authState.getIdToken();
+
+    const formattedAuth = formatAuthState(user);
+    formattedAuth.token = await user.getIdToken();
     setAuth(formattedAuth);
     setLoading(false);
-  };
-
-  const signedIn = async (
-    response: firebase.auth.UserCredential,
-    provider: String = "google"
-  ) => {
-    if (!response.user) {
-      throw new Error("No User");
-    }
-    const authUser = formatAuthState(response.user);
-    setAuth(authUser);
-    // await addUser({ ...authUser, provider });
-  };
-
-  const signedUpandIn = async (
-    response: firebase.auth.UserCredential,
-    provider: String = "email",
-    displayName: string | null = null
-  ) => {
-    if (!response.user) {
-      throw new Error("No User");
-    }
-
-    await response.user.updateProfile({
-      displayName: displayName,
-      photoURL: null,
-    });
-
-    const authUser = formatAuthState(firebase.auth().currentUser);
-    authUser.name = displayName;
-    setAuth(authUser);
-    await addUser({ ...authUser, provider });
   };
 
   const clear = () => {
     setAuth(null);
     setLoading(true);
+  };
+
+  const signedIn = async (
+    response: firebase.auth.UserCredential
+  ) => {
+    if (!response.user) {
+      throw {
+        code: "no-user",
+        message: "No User"
+      }
+    } else if (!response.user.emailVerified) {
+      throw {
+        code: "unverified-email",
+        message: "Unverified Email"
+      };
+    }
+
+    console.log(response.user.displayName);
+    const authUser = formatAuthState(response.user);
+    setAuth(authUser);
+  };
+
+  const signedUp = async (
+    response: firebase.auth.UserCredential,
+    displayName: string
+  ) => {
+    if (!response.user) {
+      throw {
+        code: "no-user",
+        message: "No User"
+      }
+    }
+
+    await response.user.updateProfile({
+      displayName: displayName
+    });
+
+    setAuth(null);
+    return response;
   };
 
   const signInWithGoogle = async (
@@ -140,13 +145,9 @@ function useProvideAuth() {
     return firebase
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((response) => {
-        signedIn(response, "google");
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+      .then((response) => signedIn(response))
+      .then(() => resolveHandler())
+      .catch((error) => errorHandler(error.code, error.message));
   };
 
   const signUpWithEmail = async (
@@ -160,21 +161,18 @@ function useProvideAuth() {
     if (displayName === "") {
       errorHandler("no-name", "Please input display name");
       return;
-    }
-    if (basicEmailChecker(email)) {
+    } else if (basicEmailChecker(email)) {
       errorHandler("wrong-email-format", "Incorrect Email");
       return;
     }
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        signedUpandIn(response, "email", displayName);
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+      .then(response => signedUp(response, displayName))
+      .then(response => response.user.sendEmailVerification())
+      .then(() => firebase.auth().signOut().then(() => clear()))
+      .then(() => resolveHandler())
+      .catch((error) => errorHandler(error.code, error.message));
   };
 
   const signInWithEmail = async (
@@ -188,22 +186,24 @@ function useProvideAuth() {
       errorHandler("wrong-email-format", "Incorrect Email");
       return;
     }
+
     return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        signedIn(response, "email");
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+      .then((response) => signedIn(response))
+      .catch((unverifiedError) => 
+        firebase.auth()
+        .signOut()
+        .then(clear)
+        .then(() => { throw unverifiedError }))
+      .then(() => resolveHandler())
+      .catch((error) => errorHandler(error.code, error.message));
   };
 
   const changePassword = async (
     email: string,
     resolveHandler: Function,
-    errorHandler: Function
+    errorHandler: Function,
   ) => {
     setLoading(true);
     if (basicEmailChecker(email)) {
@@ -213,13 +213,8 @@ function useProvideAuth() {
     return firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then((response) => {
-        errorHandler("password_change_success", "Email Sent");
-        resolveHandler();
-      })
-      .catch((error) => {
-        errorHandler(error.code, error.message);
-      });
+      .then(() => resolveHandler())
+      .catch((error) => errorHandler(error.code, error.message));
   };
 
   const signOut = async () => {

@@ -3,6 +3,8 @@ import {
   INVALID_EMAIL,
   NAME_NOT_FOUND,
   PASSWORD_CHANGE_SUCCESS,
+  SIGNUP_SUCCESS,
+  UNVERIFIED_EMAIL,
   USER_EXIST,
   USER_NOT_FOUND,
   WEAK_PASSWORD,
@@ -31,6 +33,10 @@ const BonusAlert: React.FC<OwnProps> = ({ status, code }) => {
         return "This user already exist. Please login instead"
       case WRONG_PASSWORD:
         return "Incorrect password provided"
+      case SIGNUP_SUCCESS:
+        return "We have sent a verification link to the above email. Your account is unusable until email address is verified"
+      case UNVERIFIED_EMAIL:
+        return "Email has not been verified. Please go to your email and click the link to verify."
       default:
         return "Unhandled Error";
     }

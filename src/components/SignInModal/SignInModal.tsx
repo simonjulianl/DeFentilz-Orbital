@@ -57,9 +57,8 @@ const SignInModal: React.FC<OwnProps> = ({
             pb="3"
             id="userEmail"
             isRequired
-            onSubmit={() => console.log("Submitted")}
           >
-            <FormLabel>Email address</FormLabel>
+            <FormLabel>NUS Email address</FormLabel>
             <Input
               type="email"
               placeholder="E.g: Maruq123@u.nus.edu"
@@ -77,7 +76,7 @@ const SignInModal: React.FC<OwnProps> = ({
             <Link
               pb="3"
               color="blue.600"
-              onClick={() => toReqPwdHandler()} // Find a better way to do this
+              onClick={() => toReqPwdHandler()}
             >
               Forgot Password?
             </Link>
@@ -89,9 +88,7 @@ const SignInModal: React.FC<OwnProps> = ({
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => {
-                emailSignInHandler(event);
-              }}
+              onClick={(event) => emailSignInHandler(event)}
             >
               Log In
             </Button>
@@ -105,9 +102,10 @@ const SignInModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {hookVars.error.errorCode && (
-            <Alert status={"error"} code={hookVars.error.errorCode} />
-          )}
+          { hookVars.error
+            ? <Alert status={"error"} code={hookVars.error.code} />
+            : <></>
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>
