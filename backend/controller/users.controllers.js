@@ -20,6 +20,7 @@ exports.create = (req, res) => {
     email: req.body.email,
     name: req.body.name,
     profilePictureUrl: req.body.profilePictureUrl,
+    admin: req.body.isAdmin,
   };
 
   User.create(user)

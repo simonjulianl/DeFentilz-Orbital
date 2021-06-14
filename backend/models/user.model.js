@@ -25,6 +25,10 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.FLOAT,
         defaultValue: 0,
       },
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       tableName: "Users",
