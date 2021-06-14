@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputRightAddon } from "@chakra-ui/react";
-import { Button, IconButton } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -17,9 +17,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
     ) as HTMLInputElement;
     var result = searchBar.value;
 
-    // refresh the value
-    searchBar.value = "";
-
     // callback function to the lifted state searchTerm
     onSubmit(result);
   };
@@ -32,9 +29,6 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
     ) as HTMLInputElement;
 
     onSubmit(searchBar.value);
-
-    // refresh the value of searchbar
-    searchBar.value = "";
   };
 
   return (

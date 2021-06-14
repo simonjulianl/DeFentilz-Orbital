@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { VStack, Box, Flex, Center } from "@chakra-ui/layout";
+import { VStack, Box, Flex} from "@chakra-ui/layout";
 import { IconButton, Text } from "@chakra-ui/react";
 import {
   faVolleyballBall,
@@ -11,16 +11,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import BonusCarousel from "~/components/Carousel/Carousel";
 import Page from "~/components/Page/Page";
+import { useRouter } from "next/router";
 
 const ExploreView: NextPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
   const [screenWidth, setScreenWidth] = useState(0);
 
   useEffect(() => {
-    // should connect the api here
-    console.log("Refresh the page now of search term " + searchTerm);
     setScreenWidth(screen.width);
-  }, [searchTerm, screenWidth]);
+  }, [screenWidth]);
 
   return (
     <Page title="Explore" description="Explore">
@@ -34,7 +33,17 @@ const ExploreView: NextPage = () => {
             background="white"
             width={screenWidth}
           >
-            <SearchBar onSubmit={(content: string) => setSearchTerm(content)} />
+            <SearchBar
+              onSubmit={
+                (content : string) => 
+                  router.push({
+                    pathname: '/booking/search', 
+                    query: {
+                      keyword: content
+                    }
+                  })
+              }
+            />
           </Box>
           <Flex
             direction="column"
