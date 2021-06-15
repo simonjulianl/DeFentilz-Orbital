@@ -3,7 +3,16 @@ import { Box, VStack, Flex, Text, Spinner, Alert, AlertIcon, AlertTitle, AlertDe
 
 import { NextPage } from "next";
 import { useRouter } from 'next/router'
-
+import { VStack, Box, Flex } from "@chakra-ui/layout";
+import { IconButton, Text } from "@chakra-ui/react";
+import {
+  faVolleyballBall,
+  faHandshake,
+  faBook,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SearchBar from "~/components/SearchBar/SearchBar";
+import BonusCarousel from "~/components/Carousel/Carousel";
 import Page from "~/components/Page/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import SearchCard from "~/components/SearchCard/SearchCard";
@@ -47,18 +56,23 @@ const ExploreView: NextPage = () => {
   return (
     <Page title="Search" description="Search">
       <Flex direction="column" justify="flex-start">
-        <Box
-        padding={3}
-        >
-          <SearchBar
-              onSubmit={
-                (content : string) => 
-                  router.push({
-                    pathname: '/explore', 
-                    query: {
-                      keyword: content
-                    }
-                  })
+        <Box>
+          <Box
+            padding={3}
+            paddingBottom={3}
+            zIndex={1}
+            position="absolute"
+            background="white"
+            width={screenWidth}
+          >
+            <SearchBar
+              onSubmit={(content: string) =>
+                router.push({
+                  pathname: "/explore",
+                  query: {
+                    keyword: content,
+                  },
+                })
               }
             />
         </Box>
