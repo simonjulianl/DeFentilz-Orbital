@@ -9,6 +9,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Spacer,
 } from "@chakra-ui/react";
 
 import { NextPage } from "next";
@@ -63,75 +64,71 @@ const ExploreView: NextPage = () => {
   return (
     <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
-        <Box>
-          <Box
-            padding={3}
-            paddingBottom={3}
-            zIndex={1}
-            position="absolute"
-            background="white"
-            width={screenWidth}
-          >
-            <SearchBar
-              onSubmit={(content: string) =>
-                router.push({
-                  pathname: "/explore",
-                  query: {
-                    keyword: content,
-                  },
-                })
-              }
-            />
-          </Box>
-          <VStack>
-            <Text>Searching for: {keyword}</Text>
-            {isLoading ? (
-              <Box>
-                LOADING
-                <Spinner ml="2" />
-              </Box>
-            ) : error === null ? (
-              searchResult.length > 0 ? (
-                searchResult.map(
-                  ({
-                    id,
-                    name,
-                    type,
-                    description,
-                    location,
-                    image,
-                    rating,
-                  }) => (
-                    <SearchCard
-                      key={id}
-                      id={id}
-                      name={name}
-                      type={type}
-                      description={description}
-                      image={image}
-                      location={location}
-                      rating={rating}
-                    />
-                  )
+        <VStack
+          pt={3}
+          pos="fixed"
+          background="white"
+          width={screenWidth}
+        >
+          <SearchBar
+            onSubmit={(content: string) =>
+              router.push({
+                pathname: "/explore",
+                query: {
+                  keyword: content,
+                },
+              })
+            }
+          />
+          <Text>Searching for: {keyword}</Text>
+        </VStack>
+        <VStack pt={["25%", "25%", "15%", "5%"]}>
+          {isLoading ? (
+            <Box>
+              LOADING
+              <Spinner ml="2" />
+            </Box>
+          ) : error === null ? (
+            searchResult.length > 0 ? (
+              searchResult.map(
+                ({
+                  id,
+                  name,
+                  type,
+                  description,
+                  location,
+                  image,
+                  rating,
+                }) => (
+                  <SearchCard
+                    key={id}
+                    id={id}
+                    name={name}
+                    type={type}
+                    description={description}
+                    image={image}
+                    location={location}
+                    rating={rating}
+                  />
                 )
-              ) : (
-                <Text>No Results Found</Text>
               )
             ) : (
-              <Alert status="error" flexDirection="column">
-                <AlertIcon />
-                <AlertTitle>
-                  {error.code === 404 ? "SERVER NOT FOUND" : "UNKNOWN ERROR"}
-                </AlertTitle>
-                <AlertDescription>
-                  {error.code === 404
-                    ? "Please check your network connection"
-                    : "CODE: " + error.code + " MESSAGE: " + error.message}
-                </AlertDescription>
-              </Alert>
-            )}
-          </VStack>
-        </Box>
+              <Text>No Results Found</Text>
+            )
+          ) : (
+            <Alert status="error" flexDirection="column">
+              <AlertIcon />
+              <AlertTitle>
+                {error.code === 404 ? "SERVER NOT FOUND" : "UNKNOWN ERROR"}
+              </AlertTitle>
+              <AlertDescription>
+                {error.code === 404
+                  ? "Please check your network connection"
+                  : "CODE: " + error.code + " MESSAGE: " + error.message}
+              </AlertDescription>
+            </Alert>
+          )}
+        </VStack>
       </Flex>
     </Page>
   );
