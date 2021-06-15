@@ -9,7 +9,7 @@ module.exports = withPWA({
   pwa: {
     disable: process.env.NODE_ENV === "development",
     register: true,
-    sw: "service-worker.js",
+    sw: "sw.js",
     dest: "public",
   },
   images: {
@@ -18,11 +18,11 @@ module.exports = withPWA({
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/home',
-        permanent: true,
+        source: "/",
+        destination: "/home",
+        permanent: false,
       },
-    ]
+    ];
   },
   async rewrites() {
     return [

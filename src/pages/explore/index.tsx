@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Box, VStack, Flex, Text, Spinner, Alert, AlertIcon, AlertTitle, AlertDescription} from "@chakra-ui/react";
+import {
+  Box,
+  VStack,
+  Flex,
+  Text,
+  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
 
 import { NextPage } from "next";
-import { useRouter } from 'next/router'
-import { VStack, Box, Flex } from "@chakra-ui/layout";
-import { IconButton, Text } from "@chakra-ui/react";
-import {
-  faVolleyballBall,
-  faHandshake,
-  faBook,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SearchBar from "~/components/SearchBar/SearchBar";
-import BonusCarousel from "~/components/Carousel/Carousel";
+import { useRouter } from "next/router";
 import Page from "~/components/Page/Page";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import SearchCard from "~/components/SearchCard/SearchCard";
@@ -27,34 +27,41 @@ const ExploreView: NextPage = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {    
-    const config : AxiosRequestConfig = {
-      method: 'get',
-      url: encodeURI("https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities?search=" + keyword),
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    setScreenWidth(screen.width);
+
+    const config: AxiosRequestConfig = {
+      method: "get",
+      url: encodeURI(
+        "https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities?search=" +
+          keyword
+      ),
       timeout: 10000,
     };
 
     setLoading(true);
-    
+
     axios(config)
-    .then(response => response.data)
-    .then(response => {
-      setLoading(false);
-      setError(null);
-      setSearchResult(response);
-    })
-    .catch(error => {
-      setLoading(false);
-      setError(error);
-      setError({
-        code: error.response.status,
-        message: error.response.statusText
+      .then((response) => response.data)
+      .then((response) => {
+        setLoading(false);
+        setError(null);
+        setSearchResult(response);
       })
-    });
-  }, [keyword]);
+      .catch((error) => {
+        setLoading(false);
+        setError(error);
+        setError({
+          code: error.response.status,
+          message: error.response.statusText,
+        });
+      });
+  }, [keyword, screenWidth]);
 
   return (
-    <Page title="Search" description="Search">
+    <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
         <Box>
           <Box
@@ -75,52 +82,56 @@ const ExploreView: NextPage = () => {
                 })
               }
             />
-        </Box>
-        <VStack>
-          <Text>
-            Searching for: {keyword}
-          </Text>
-          {
-            isLoading
-            ? <Box>
+          </Box>
+          <VStack>
+            <Text>Searching for: {keyword}</Text>
+            {isLoading ? (
+              <Box>
                 LOADING
-                <Spinner ml="2"/>
+                <Spinner ml="2" />
               </Box>
-            : error === null
-            ?  searchResult.length > 0 
-            ? searchResult.map(
-              ({id, name, type, description, location, image, rating}) =>
-                <SearchCard
-                  key={id}
-                  id={id}
-                  name={name}
-                  type={type}
-                  description={description}
-                  image={image}
-                  location={location}
-                  rating={rating}/>
+            ) : error === null ? (
+              searchResult.length > 0 ? (
+                searchResult.map(
+                  ({
+                    id,
+                    name,
+                    type,
+                    description,
+                    location,
+                    image,
+                    rating,
+                  }) => (
+                    <SearchCard
+                      key={id}
+                      id={id}
+                      name={name}
+                      type={type}
+                      description={description}
+                      image={image}
+                      location={location}
+                      rating={rating}
+                    />
+                  )
+                )
+              ) : (
+                <Text>No Results Found</Text>
               )
-            : <Text>No Results Found</Text>
-            : <Alert
-                status="error"
-                flexDirection="column"
-              >
+            ) : (
+              <Alert status="error" flexDirection="column">
                 <AlertIcon />
                 <AlertTitle>
-                  {error.code === 404 
-                    ? 'SERVER NOT FOUND' 
-                    : 'UNKNOWN ERROR'}
+                  {error.code === 404 ? "SERVER NOT FOUND" : "UNKNOWN ERROR"}
                 </AlertTitle>
                 <AlertDescription>
-                  {
-                    error.code === 404 
-                    ? 'Please check your network connection'
-                    : 'CODE: ' + error.code + ' MESSAGE: ' + error.message
-                  }
+                  {error.code === 404
+                    ? "Please check your network connection"
+                    : "CODE: " + error.code + " MESSAGE: " + error.message}
                 </AlertDescription>
               </Alert>
-            }
-        </VStack>
+            )}
+          </VStack>
+        </Box>
       </Flex>
     </Page>
   );

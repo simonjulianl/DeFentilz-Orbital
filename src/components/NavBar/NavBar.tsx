@@ -14,7 +14,7 @@ const NavBar: React.FC<{}> = () => {
         isActive={false}
         icon={icon}
         bgColor={"brown"}
-        color={router.asPath === path ? "white" : "grey.200"}
+        color={router.asPath.startsWith(path) ? "white" : "grey.200"}
         aria-label={label}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
