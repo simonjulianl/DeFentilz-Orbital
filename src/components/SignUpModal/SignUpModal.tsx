@@ -60,7 +60,7 @@ const SignUpModal: React.FC<OwnProps> = ({
             />
           </FormControl>
           <FormControl pb="3" id="userEmail" isRequired>
-            <FormLabel>Email address</FormLabel>
+            <FormLabel>NUS Email address</FormLabel>
             <Input
               type="email"
               placeholder="E.g: Maruq123@u.nus.edu"
@@ -93,9 +93,13 @@ const SignUpModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {hookVars.error.errorCode && (
-            <Alert status={"error"} code={hookVars.error.errorCode} />
-          )}
+          {
+            hookVars.success && hookVars.success.code === "signup-successful"
+            ? <Alert status={"success"} code={hookVars.success.code} />
+            : hookVars.error
+            ? <Alert status={"error"} code={hookVars.error.code} />
+            : <></>
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>

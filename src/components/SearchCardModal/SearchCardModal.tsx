@@ -17,7 +17,6 @@ import {
   Spinner, 
   Button,
 } from "@chakra-ui/react";
-import axios, { AxiosRequestConfig } from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuth } from "~/firebase/auth";
@@ -47,6 +46,10 @@ const SearchCardModal: React.FC<OwnProps> = ({
 }) => {
   const router = useRouter();
   const authContext = useAuth();
+
+  const [error, setError] = useState(false);
+  useEffect(() => {
+  }, [error])
   
   return (
     <Modal 
@@ -60,17 +63,18 @@ const SearchCardModal: React.FC<OwnProps> = ({
       <ModalContent>
         <ModalCloseButton />
         <ModalHeader marginX="-5" marginY="1.5">
-          <Image
-            borderRadius="lg"
-            width={"100%"}
-            height={"100%"}
-            objectFit="fill"
-            src={image}
-            alt={name}
-            fallback={
-              <Spinner />
-            }
-          />
+        <Box maxWidth={'100%'}>
+            <Image
+              borderRadius="lg"
+              objectFit="cover"
+              src={error ? '/notAvail2.png' : image}
+              alt={name}
+              fallback={
+                <Spinner />
+              }
+              onError={() => setError(true)}
+            />
+          </Box>
         </ModalHeader>
         <ModalBody>
         <Center>
@@ -109,14 +113,17 @@ const SearchCardModal: React.FC<OwnProps> = ({
                   Rating
               </Text>
               <Box justifyContent="left">
-                {Array(5)
-                  .fill("")
-                  .map((_, idx) => 
-                    <StarIcon
-                      key={idx}
-                      viewBox="0 0 30 30"
-                      color={idx < rating ? "yellow.300" : "gray.300"}
-                    />)}    
+                {rating === null
+                  ? <Text>{"No Rating"}</Text>
+                  : Array(5)
+                    .fill("")
+                    .map((_, idx) => 
+                      <StarIcon
+                        key={idx}
+                        viewBox="0 0 30 30"
+                        color={idx < rating ? "yellow.300" : "gray.300"}
+                      />)
+                }    
               </Box>
             </Box>    
           </HStack>

@@ -26,9 +26,15 @@ const SearchCard: React.FC<OwnProps> = ({
   rating,
 }) => {
   const [error, setError] = useState(false);
-  useEffect(() => {}, [error]);
 
-  const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
+  useEffect(() => {
+  }, [error])
+
+  const {
+    isOpen: isOpen,
+    onOpen: onOpen,
+    onClose: onClose,
+  } = useDisclosure();
 
   return (
     <Box
@@ -55,14 +61,15 @@ const SearchCard: React.FC<OwnProps> = ({
             <HStack justify={"space-between"}>
               <Box>
                 <Box
-                  fontWeight="semibold"
-                  as="h4"
-                  lineHeight="tight"
-                  isTruncated
-                  d="flex"
-                  alignItems="baseline"
+                fontWeight="semibold"
+                as="h4"
+                lineHeight="tight"
+                d="flex"
+                alignItems="baseline"
                 >
-                  {name}
+                  <Text noOfLines={2}>
+                    {name}
+                  </Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">
@@ -78,9 +85,13 @@ const SearchCard: React.FC<OwnProps> = ({
                 </HStack>
               </Box>
               <HStack fontSize="md" letterSpacing="tight" spacing="1">
-                <Text paddingTop="1.5"> {rating} </Text>
-                <StarIcon viewBox="0 0 24 24" color="yellow.400" />
-              </HStack>
+                <Text paddingTop="1.5"> {rating === null ? "No Rating Yet" : rating} </Text>
+                { 
+                  rating === null
+                  ? <></>
+                  : <StarIcon viewBox="0 0 24 24" color="yellow.400"/>
+                }
+              </HStack>              
             </HStack>
           </Box>
         </Box>

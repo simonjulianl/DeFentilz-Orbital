@@ -11,14 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
-import Alert from "../BonusAlert/BonusAlert";
+import Alert from "~/components/BonusAlert/BonusAlert";
 
 import {
   changePasswordHandler,
   hookVars,
   onChangeHandler,
 } from "~/firebase/authHandlersInterface";
-import { PASSWORD_CHANGE_SUCCESS } from "../BonusAlert/AlertConfig";
 
 interface OwnProps {
   isOpen: boolean;
@@ -43,7 +42,7 @@ const ReqPwdModal: React.FC<OwnProps> = ({
         <ModalCloseButton />
         <ModalBody>
           <FormControl pb="3" id="userEmail" isRequired>
-            <FormLabel>Email address of Account</FormLabel>
+            <FormLabel>NUS Email address of Account</FormLabel>
             <Input
               type="email"
               placeholder="E.g: faruq123@yahoo.com"
@@ -61,12 +60,13 @@ const ReqPwdModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {hookVars.error.errorCode != null && hookVars.error.errorCode != 'password_change_success' && (
-            <Alert status={"error"} code={hookVars.error.errorCode} />
-          )}
-          {hookVars.error.errorCode == 'password_change_success' && (
-            <Alert status={"success"} code={PASSWORD_CHANGE_SUCCESS} />
-          )}
+          {
+            hookVars.success && hookVars.success.code === 'password-change-successful'
+            ? <Alert status={"success"} code={hookVars.success.code} />
+            : hookVars.error
+            ? <Alert status={"error"} code={hookVars.error.code} />
+            : <></>
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>

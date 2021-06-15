@@ -1,20 +1,27 @@
+export interface errorObj {
+  code: string;
+  message: string;
+}
+
+export interface successObj {
+  code: string; 
+  message: string;
+}
+
 export interface hookVars {
   name: string;
   email: string;
   password: string;
-  error: {
-    errorCode: any;
-    errorMessage: any;
-  };
-  successChange: any;
+  error?: errorObj;
+  success?: successObj;
 }
 
 export interface settersObject {
-  setSuccessChange: (arg0: boolean | null) => void;
   setName: (arg0: string) => void;
   setEmail: (arg0: string) => void;
   setPassword: (arg0: string) => void;
-  setError: (arg0: { errorCode: string; errorMessage: string }) => void;
+  setError: (arg0? : errorObj) => void;
+  setSuccess: (arg0? : successObj) => void;
 }
 
 export interface modalCallbacks {
@@ -27,8 +34,8 @@ export interface modalCallbacks {
   onCloseDrawer: () => void;
 }
 
-export type resolveHandler = () => void;
-export type errorHandler = (errorCode?: string, errorMessage?: string) => void;
+export type resolveHandler = (success?: successObj) => void;
+export type errorHandler = (error?: errorObj) => void;
 export type onChangeHandler = (event: {
   currentTarget: {
     id: any;

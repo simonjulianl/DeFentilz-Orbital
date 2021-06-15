@@ -9,7 +9,6 @@ const ProfileView: NextPage = () => {
   const authContext = useAuth();
 
   return (
-    // <Layout>
     <Page title="Profile" description="Profile">
       <VStack>
         <Box>
@@ -19,6 +18,7 @@ const ProfileView: NextPage = () => {
               <>
                 <Text>{"Display Name: " + authContext.auth.name}</Text>
                 <Text>{"Email Address: " + authContext.auth.email}</Text>
+                <Text>{"Bookings: Currently No Bookings Yet"}</Text>
               </>
             ) : (
               <Text align="center">

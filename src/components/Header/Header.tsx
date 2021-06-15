@@ -10,16 +10,17 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SignUpModal from "../SignUpModal/SignUpModal";
 import SignInModal from "../SignInModal/SignInModal";
 import ReqPwdModal from "../ReqPwdModal/ReqPwdModal";
+import { errorObj, successObj } from "~/firebase/authHandlersInterface";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
   const authContext = useAuth();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [successChange, setSuccessChange] = useState(undefined);
-  const [error, setError] = useState({ errorCode: null, errorMessage: null });
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [success, setSuccess] = useState<successObj | null>(null);
+  const [error, setError] = useState<errorObj | null>(null);
 
   // login modal callback state
   const {
@@ -49,27 +50,31 @@ const Header: React.FC<{}> = () => {
     onClose: onCloseDrawer,
   } = useDisclosure();
 
-  const resetError = () => setError({ errorCode: null, errorMessage: null });
+  const resetSuccess = () => setSuccess(null);
+  const resetError = () => setError(null);
   const onCloseLogin = () => {
     resetError();
+    resetSuccess();
     onCloseLoginTemp();
   };
   const onCloseSignup = () => {
     resetError();
+    resetSuccess();
     onCloseSignupTemp();
   };
   const onClosePwd = () => {
     resetError();
+    resetSuccess();
     onClosePwdTemp();
   };
 
-  const hookVars = { name, email, password, error, successChange };
+  const hookVars = { name, email, password, error, success };
   const settersObject = {
     setName,
     setEmail,
     setPassword,
     setError,
-    setSuccessChange,
+    setSuccess,
   };
   const modalCallbacks = {
     onOpenLogin,
