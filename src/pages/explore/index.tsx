@@ -8,8 +8,7 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
-  Spacer,
+  AlertDescription
 } from "@chakra-ui/react";
 
 import { NextPage } from "next";

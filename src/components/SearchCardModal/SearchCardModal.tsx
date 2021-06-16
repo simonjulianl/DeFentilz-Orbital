@@ -141,7 +141,15 @@ const SearchCardModal: React.FC<OwnProps> = ({
           {
             authContext.auth
             ? (
-              <Button colorScheme="teal" onClick={() => router.push('/booking')}>
+              <Button
+                colorScheme="teal"
+                onClick={() => router.push({
+                  pathname: '/explore/facilities', 
+                  query: {
+                    id: id
+                  }
+                })
+              }>
                 Book Now!
               </Button>
             )
