@@ -5,26 +5,37 @@ import {
   faShoppingCart,
   faSignInAlt,
   faSignOutAlt,
+  faUserShield,
 } from "@fortawesome/free-solid-svg-icons";
 
-/*
-these data is used for desktop version of the header, currently such support 
-is not implemented yet until the admin feature is released
-*/
-export const HeaderConfig = [
+export interface HeaderData {
+  label: string;
+  path: string;
+  icon: JSX.Element;
+  variant: string;
+  color: string;
+  showBeforeLogged: boolean;
+  showAfterLogged: boolean;
+}
+
+export const HeaderConfig: HeaderData[] = [
   {
-    label: "Explore",
-    path: "/explore",
+    label: "Home",
+    path: "/home",
     icon: <FontAwesomeIcon icon={faHome} />,
     variant: "link",
     color: "white",
+    showBeforeLogged: true,
+    showAfterLogged: true,
   },
   {
     label: "My Booking",
-    path: "/booking",
+    path: "/explore",
     icon: <FontAwesomeIcon icon={faShoppingCart} />,
     variant: "link",
     color: "white",
+    showBeforeLogged: true,
+    showAfterLogged: true,
   },
   {
     label: "Profile",
@@ -32,6 +43,8 @@ export const HeaderConfig = [
     icon: <FontAwesomeIcon icon={faUser} />,
     variant: "link",
     color: "white",
+    showBeforeLogged: true,
+    showAfterLogged: true,
   },
   {
     label: "Log Out",
@@ -39,7 +52,8 @@ export const HeaderConfig = [
     icon: <FontAwesomeIcon icon={faSignOutAlt} />,
     variant: "link",
     color: "white",
-    signature: "logout",
+    showBeforeLogged: false,
+    showAfterLogged: true,
   },
   {
     label: "Sign In",
@@ -47,6 +61,17 @@ export const HeaderConfig = [
     icon: <FontAwesomeIcon icon={faSignInAlt} />,
     variant: "link",
     color: "white",
-    signature: "signin",
+    showBeforeLogged: true,
+    showAfterLogged: false,
   },
 ];
+
+export const adminHeader: HeaderData = {
+  label: "Admin",
+  path: "/admin",
+  icon: <FontAwesomeIcon icon={faUserShield} />,
+  variant: "link",
+  color: "white",
+  showBeforeLogged: false,
+  showAfterLogged: true,
+};

@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Box,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
@@ -47,17 +48,18 @@ const SignInModal: React.FC<OwnProps> = ({
   googleSignInHandler,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={useBreakpointValue({ base: "xs", md: "md", xl: "xl" })}
+      isCentered={true}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign In</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl
-            pb="3"
-            id="userEmail"
-            isRequired
-          >
+          <FormControl pb="3" id="userEmail" isRequired>
             <FormLabel>NUS Email address</FormLabel>
             <Input
               type="email"
@@ -73,11 +75,7 @@ const SignInModal: React.FC<OwnProps> = ({
             />
           </FormControl>
           <Flex justifyContent="space-between">
-            <Link
-              pb="3"
-              color="blue.600"
-              onClick={() => toReqPwdHandler()}
-            >
+            <Link pb="3" color="blue.600" onClick={() => toReqPwdHandler()}>
               Forgot Password?
             </Link>
             <Link color="blue.600" onClick={() => toSignUpHandler()}>
@@ -102,10 +100,11 @@ const SignInModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          { hookVars.error
-            ? <Alert status={"error"} code={hookVars.error.code} />
-            : <></>
-          }
+          {hookVars.error ? (
+            <Alert status={"error"} code={hookVars.error.code} />
+          ) : (
+            <></>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

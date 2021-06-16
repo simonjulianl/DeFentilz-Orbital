@@ -1,21 +1,21 @@
- 
 import { StarIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
-  ModalCloseButton, 
+  ModalCloseButton,
   ModalHeader,
   ModalContent,
   ModalBody,
   ModalFooter,
-  Box, 
+  Box,
   Center,
-  HStack, 
+  HStack,
   Text,
   Heading,
   Image,
-  Spinner, 
+  Spinner,
   Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,38 +24,37 @@ import { useAuth } from "~/firebase/auth";
 interface OwnProps {
   isOpen: boolean;
   onClose: () => void;
-  id: number,
-  name: string,
-  type: string, 
-  description: string, 
-  image: string,
-  location: string
-  rating: number
+  id: number;
+  name: string;
+  type: string;
+  description: string;
+  image: string;
+  location: string;
+  rating: number;
 }
 
 const SearchCardModal: React.FC<OwnProps> = ({
   isOpen,
   onClose,
-  id, 
-  name, 
-  type, 
-  description, 
+  id,
+  name,
+  type,
+  description,
   image,
-  location, 
-  rating
+  location,
+  rating,
 }) => {
   const router = useRouter();
   const authContext = useAuth();
 
   const [error, setError] = useState(false);
-  useEffect(() => {
-  }, [error])
-  
+  useEffect(() => {}, [error]);
+
   return (
-    <Modal 
+    <Modal
       isOpen={isOpen}
       onClose={onClose}
-      size="xs"
+      size={useBreakpointValue({ base: "xs", md: "md", xl: "xl" })}
       isCentered={true}
       scrollBehavior={"inside"}
     >
@@ -63,94 +62,68 @@ const SearchCardModal: React.FC<OwnProps> = ({
       <ModalContent>
         <ModalCloseButton />
         <ModalHeader marginX="-5" marginY="1.5">
-        <Box maxWidth={'100%'}>
+          <Box maxWidth={"100%"}>
             <Image
               borderRadius="lg"
               objectFit="cover"
-              src={error ? '/notAvail2.png' : image}
+              src={error ? "/notAvail2.png" : image}
               alt={name}
-              fallback={
-                <Spinner />
-              }
+              fallback={<Spinner />}
               onError={() => setError(true)}
             />
           </Box>
         </ModalHeader>
         <ModalBody>
-        <Center>
-          <Heading size="lg">
-              {name}
-          </Heading>
+          <Center>
+            <Heading size="lg">{name}</Heading>
           </Center>
           <HStack justifyContent="space-between">
             <Box>
-              <Text
-                mt="3"
-                fontWeight="semibold"
-                as="h4">
-                  Facility Type
+              <Text mt="3" fontWeight="semibold" as="h4">
+                Facility Type
               </Text>
-              <Text>
-                {type}
-              </Text>          
+              <Text>{type}</Text>
             </Box>
             <Box>
-              <Text
-                mt="3"
-                fontWeight="semibold"
-                as="h4">
-                  Location
+              <Text mt="3" fontWeight="semibold" as="h4">
+                Location
               </Text>
-              <Text>
-                {location}
-              </Text>      
+              <Text>{location}</Text>
             </Box>
             <Box>
-              <Text
-                mt="3"
-                fontWeight="semibold"
-                as="h4">
-                  Rating
+              <Text mt="3" fontWeight="semibold" as="h4">
+                Rating
               </Text>
               <Box justifyContent="left">
-                {rating === null
-                  ? <Text>{"No Rating"}</Text>
-                  : Array(5)
+                {rating === null ? (
+                  <Text>{"No Rating"}</Text>
+                ) : (
+                  Array(5)
                     .fill("")
-                    .map((_, idx) => 
+                    .map((_, idx) => (
                       <StarIcon
                         key={idx}
                         viewBox="0 0 30 30"
                         color={idx < rating ? "yellow.300" : "gray.300"}
-                      />)
-                }    
+                      />
+                    ))
+                )}
               </Box>
-            </Box>    
+            </Box>
           </HStack>
-          <Text
-            mt="3"
-            fontWeight="semibold"
-            as="h4">
+          <Text mt="3" fontWeight="semibold" as="h4">
             About this place
           </Text>
-          <Text>
-            {description}
-          </Text>          
+          <Text>{description}</Text>
         </ModalBody>
         <ModalFooter>
-          {
-            authContext.auth
-            ? (
-              <Button colorScheme="teal" onClick={() => router.push('/booking')}>
-                Book Now!
-              </Button>
-            )
-            : (
-              <Button isDisabled>
-                Sign In to Book
-              </Button>
-            )
-          }
+          {authContext.auth ? (
+            <Button colorScheme="teal" onClick={() => router.push("/booking")}>
+              Book Now!
+            </Button>
+          ) : (
+            <Button isDisabled>Sign In to Book</Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

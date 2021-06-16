@@ -40,6 +40,9 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
           placeholder="Search NUS Facilities..."
           name="search"
           variant="outline"
+          _focus={{
+            backgroundColor: "white",
+          }}
         />
         <InputRightAddon
           children={
