@@ -23,7 +23,7 @@ import {
   toSignUpHandler,
 } from "~/firebase/authHandlersInterface";
 import React from "react";
-import Alert from "../BonusAlert/BonusAlert";
+import Alert from "~/components/BonusAlert/BonusAlert";
 
 interface OwnProps {
   isOpen: boolean;

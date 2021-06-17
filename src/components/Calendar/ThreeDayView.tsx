@@ -1,10 +1,13 @@
 import TimeGrid from 'react-big-calendar/lib/TimeGrid';
+import { Navigate } from 'react-big-calendar'
 import * as dates from 'date-arithmetic'
 import React from 'react';
 
-import { Navigate} from 'react-big-calendar';
+interface OwnProps {
+    date : Date
+}
 
-class listView extends React.Component<{ date: Date }> {
+class ThreeDayView extends React.Component<OwnProps> {
     render() {
       const rangeFn = (date : Date) => {
             let start = date
@@ -22,25 +25,29 @@ class listView extends React.Component<{ date: Date }> {
         }
         let { date } = this.props;
         let range = rangeFn(date);
-        return <TimeGrid {...this.props} range={range} eventOffset={15} />
+        return <TimeGrid
+                    {...this.props}
+                    range={range}
+                    eventOffset={15}
+                />
     }
-  
-    static navigate = (date: Date, action: Navigate.PREV | Navigate.NEXT | Navigate.DATE) => {
-        switch (action) {
-        case Navigate.PREVIOUS:
-            return dates.add(date, -3, 'day')
-    
-        case Navigate.NEXT:
-            return dates.add(date, 3, 'day')
-    
-        default:
-            return date
-        }
-    }
-  
+
     static title = (date: Date) => {
         return `Date: ${date.toLocaleDateString()}`
     }
+
+    static navigate = (date, action) => {
+        switch (action) {
+          case Navigate.prev:
+            return dates.add(date, -3, 'day')
+      
+          case Navigate.next:
+            return dates.add(date, 3, 'day')
+      
+          default:
+            return date
+        }
+      }
 }
 
-export default listView;
+export default ThreeDayView;

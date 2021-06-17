@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
-import listView from "~/components/Calendar/listView";
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Calendar as BigCalendar, Views, momentLocalizer} from 'react-big-calendar';
-import Agenda from "react-big-calendar/lib/Agenda";
+
+import Toolbar from '~/components/Calendar/CalendarToolbar';
+import ThreeDayView from "~/components/Calendar/ThreeDayView";
+
 import moment from 'moment';
 import { useEffect } from "react";
 
@@ -27,7 +29,6 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList }) => {
   }, [bookings]);
 
   const handleSelectSlot = ({start, end}) => {
-    console.log("Selected Start: " + start + " . End: " + end);
     const newBooking : Booking = {
       title: "My Booking",
       start, 
@@ -41,8 +42,17 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList }) => {
     });    
   }
 
-  const handleSelectEvent = ({ title,  start, end}) => {
-    console.log("Event Selected: " + title);
+  const handleSelectEvent = (event) => {
+    const r = window.confirm("Would you like to remove this event?")
+    if(r === true){
+
+      setBookings((prevState) => {
+        const bookings = [...prevState]
+        const idx = bookings.indexOf(event);
+        bookings.splice(idx, 1); // Keep immutable
+        return bookings;
+      })
+    }
   }
 
   return (
@@ -52,15 +62,19 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList }) => {
         localizer={localizer}
         events={bookings}
         defaultView={Views.DAY}
+        longPressThreshold={200}
         style={{ height: 500, padding: 3}}
         views={{
-            day: true,
-            week: listView,
-            myweek: Agenda
+            day: true, 
+            month: true,
+            threeDay: ThreeDayView
           }}
-        messages={{myweek: "List", week: "3-Day"}}
+        messages={{threeDay: "3-Day"}}
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}
+        components={{
+          toolbar: Toolbar
+        }}
       />
     </Box>
   )

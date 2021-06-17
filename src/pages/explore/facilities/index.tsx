@@ -35,12 +35,24 @@ interface fetchType {
     image: string
 }
 
+interface fetchBookingType {
+  id: number,
+  name: string
+  location: string
+  type: string,
+  description: string, 
+  rating: number | null, 
+  rate: number, 
+  image: string
+}
+
 const ContentDetailView: NextPage = () => {
   const router = useRouter();
   let { id } = router.query;
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [fetchResult, setFetchResult] = useState<[fetchType] | []>([]); // Invalid data type for actual API ...
+  const [fetchBookingResult, setFetchBookingResult] = useState<[fetchBookingType] | []>([]);
   const [error, setError] = useState(null);
 
   const [screenWidth, setScreenWidth] = useState(0);
