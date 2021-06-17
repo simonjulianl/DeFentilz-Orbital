@@ -2,10 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faUser,
-  faShoppingCart,
   faSignInAlt,
   faSignOutAlt,
   faUserShield,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface HeaderData {
@@ -29,9 +29,9 @@ export const HeaderConfig: HeaderData[] = [
     showAfterLogged: true,
   },
   {
-    label: "My Booking",
+    label: "Explore",
     path: "/explore",
-    icon: <FontAwesomeIcon icon={faShoppingCart} />,
+    icon: <FontAwesomeIcon icon={faSearch} />,
     variant: "link",
     color: "white",
     showBeforeLogged: true,

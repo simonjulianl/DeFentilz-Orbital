@@ -180,7 +180,12 @@ const Header: React.FC<{}> = () => {
 
   return (
     <>
-      <Flex justify="space-between" align="center" bgColor="red.800">
+      <Flex
+        justify="space-between"
+        align="center"
+        bgColor="red.800"
+        height={"8vh"}
+      >
         <Button
           paddingLeft={[2, 5, 10]}
           variant="link"

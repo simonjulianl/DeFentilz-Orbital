@@ -21,6 +21,7 @@ const APIStarter = {
 const APIUrl = {
   getSingleUserByEmail: url + APIStarter.users,
   getUsersByName: url + APIStarter.users + "/name",
+  getAllFacilities: url + APIStarter.facilities,
 };
 
 export default APIUrl;

@@ -6,17 +6,19 @@ import { useRouter } from "next/router";
 
 import AdminPage from "~/components/Page/AdminPage";
 
-const AdminHome: NextPage = () => {
+const FacilityEdit: NextPage = () => {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {}, [isLoading]);
 
+  const { id } = router.query;
+
   return (
-    <AdminPage title="AdminHome" description="AdminHome">
+    <AdminPage title="FacilityEdit" description="FacilityEdit">
       test
     </AdminPage>
   );
 };
 
-export default AdminHome;
+export default FacilityEdit;
