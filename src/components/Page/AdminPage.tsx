@@ -4,6 +4,7 @@ import { Router, useRouter, withRouter } from "next/router";
 import Page from "~/components/Page/Page";
 
 import Sidebar from "~/components/Sidebar/sidebar";
+import { useAuth } from "~/firebase/auth";
 
 interface OwnProps {
   title: string;
@@ -18,12 +19,20 @@ const AdminPage: React.FC<OwnProps> = ({
   children,
   router,
 }) => {
+  const authContext = useAuth();
+
   return (
-    <Page title={title} description={description}>
-      <Sidebar />
-      <Flex marginLeft={200}>{children}</Flex>
-      test
-    </Page>
+    <>
+      {authContext.auth ? (
+        <Page title={title} description={description}>
+          <Sidebar />
+          <Flex marginLeft={200}>{children}</Flex>
+          test
+        </Page>
+      ) : (
+        "Error Page under Construction, please login through normal route for now"
+      )}
+    </>
   );
 };
 

@@ -11,8 +11,14 @@ const firebaseConfig = {
 try {
   firebase.initializeApp(firebaseConfig);
 
-  // sign out after initialization
-  firebase.auth().signOut();
+  // sign out after initialization in production
+  switch (process.env.ENVIRONMENT) {
+    case "PRODUCTION":
+      firebase.auth().signOut();
+      break;
+    default:
+      break;
+  }
 } catch (err) {
   if (!/already exists/.test(err.message)) {
     console.error("Firebase initialization error", err.stack);

@@ -68,6 +68,7 @@ const ExploreView: NextPage = () => {
           {useBreakpointValue({
             base: (
               <SearchBar
+                name="explore-search"
                 onSubmit={(content: string) =>
                   router.push({
                     pathname: "/explore",

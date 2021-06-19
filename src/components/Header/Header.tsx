@@ -229,6 +229,7 @@ const Header: React.FC<{}> = () => {
             <>
               <Box marginLeft="5vh" width={"23vw"}>
                 <SearchBar
+                  name="header-search"
                   onSubmit={(content: string) =>
                     router.push({
                       pathname: "/explore",
