@@ -10,6 +10,9 @@ const firebaseConfig = {
 
 try {
   firebase.initializeApp(firebaseConfig);
+
+  // sign out after initialization
+  firebase.auth().signOut();
 } catch (err) {
   if (!/already exists/.test(err.message)) {
     console.error("Firebase initialization error", err.stack);
