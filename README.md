@@ -69,4 +69,4 @@ To learn more about the resources used, the following documentation might be hel
 - [Sequlieze ORM](https://sequelize.org/)
 - [Firebase](https://firebase.google.com/docs/auth)
 
-For backend documentation, plesae visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)
+For backend documentation, please visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)
