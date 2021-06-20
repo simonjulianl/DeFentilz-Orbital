@@ -35,6 +35,7 @@ const SearchCard: React.FC<OwnProps> = ({
 
   return (
     <Box
+      minHeight={{ md: "35vh" }}
       width={["2xs"]}
       borderWidth={"1px"}
       borderRadius="xl"
@@ -43,11 +44,14 @@ const SearchCard: React.FC<OwnProps> = ({
       shadow="lg"
     >
       <Flex direction="row">
-        <Box width={"100%"} height={"100%"}>
+        <Box
+          width={{ base: "100%", md: "15vw" }}
+          height={{ base: "100%", md: "25vh" }}
+        >
           <Image
             width={"100%"}
             height={"100%"}
-            objectFit="fill"
+            fill="responsive"
             src={error ? "/notAvail.png" : image}
             alt={name}
             fallback={<Spinner />}

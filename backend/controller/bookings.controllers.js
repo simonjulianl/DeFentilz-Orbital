@@ -77,7 +77,7 @@ exports.create = (req, res) => {
     booking.facilityId
   ).then((isConflicting) => {
     if (isConflicting) {
-      res.status(500).send({
+      return res.status(500).send({
         message: "Conflicting Booking",
       });
     } else {

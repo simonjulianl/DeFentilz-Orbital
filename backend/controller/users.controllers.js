@@ -5,13 +5,13 @@ const { uploadFile } = require("../S3/index");
 
 exports.create = (req, res) => {
   if (!req.body.email) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "Email cannot be empty",
     });
   }
 
   if (!req.body.name) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "Name cannot be empty",
     });
   }

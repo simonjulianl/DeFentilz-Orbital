@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Spacer, Spinner } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import axios, { AxiosRequestConfig } from "axios";
@@ -21,7 +21,6 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import SearchBar from "~/components/SearchBar/SearchBar";
-import { facilities } from "backend/models";
 import { generateRegex } from "~/util/searchBar";
 
 const FacilityAdminView: NextPage = () => {
@@ -38,7 +37,7 @@ const FacilityAdminView: NextPage = () => {
   useEffect(() => {
     if (facilities.length === 0) {
       const config: AxiosRequestConfig = {
-        method: "get",
+        method: "GET",
         url: APIUrl.getAllFacilities,
         timeout: 5000,
       };
@@ -46,7 +45,6 @@ const FacilityAdminView: NextPage = () => {
       axios(config)
         .then((response) => response.data)
         .then((facilities) => {
-          console.log(facilities);
           setFacilities(facilities);
           setDisplayedFacilities(facilities);
           setLoading(false);
@@ -82,13 +80,16 @@ const FacilityAdminView: NextPage = () => {
   ];
 
   const generateView = () => (
-    <Flex direction="column" justify="start">
-      <Flex direction="row" marginLeft={5} my={5}>
+    <Flex direction="column" justify="start" maxW={"80vw"}>
+      <Flex direction="row" marginLeft={5} my={5} width={"80vw"}>
         <Menu>
-          <MenuButton as={Button}> Type </MenuButton>
+          <MenuButton as={Button} colorScheme="teal">
+            Type
+          </MenuButton>
           <MenuList>
             {menuList.map((menu) => (
               <MenuItem
+                key={menu.name}
                 id={menu.name}
                 onClick={() =>
                   setDisplayedFacilities(
@@ -114,8 +115,18 @@ const FacilityAdminView: NextPage = () => {
             }}
           />
         </Box>
+        <Spacer />
+        <Button
+          size="md"
+          colorScheme="teal"
+          variant="solid"
+          leftMargin={10}
+          onClick={() => router.push("/admin/facilities/0")}
+        >
+          Add New
+        </Button>
       </Flex>
-      <Flex>
+      <Flex direction="row" maxW={"80vw"} wrap="wrap">
         {displayedFacilities.map((facility) => (
           <Box
             key={facility.id}
