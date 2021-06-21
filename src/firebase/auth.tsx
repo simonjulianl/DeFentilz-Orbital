@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Context, createContext, useContext, useEffect, useState } from "react";
+import { errorObj } from "./authHandlersInterface";
 import APIUrl from "~/config/backendUrl";
 import { User } from "~/config/interface";
 import firebase from "./firebase";
@@ -21,23 +22,23 @@ export interface AuthContext {
     email: string,
     password: string,
     displayName: string,
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => Promise<void>;
   signInWithEmail: (
     email: string,
     password: string,
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => Promise<void>;
   signInWithGoogle: (
-    errorHandler: Function,
-    resolveHandler: Function
+    errorHandler: () => void,
+    resolveHandler: (error: errorObj) => void
   ) => Promise<void>;
   changePassword: (
     email: string,
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -45,28 +46,10 @@ export interface AuthContext {
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
   loading: true,
-  signUpWithEmail: async (
-    email: string,
-    password: string,
-    displayName: string,
-    resolveHandler: Function,
-    errorHandler: Function
-  ) => {},
-  signInWithEmail: async (
-    email: string,
-    password: string,
-    resolveHandler: Function,
-    errorHandler: Function
-  ) => {},
-  signInWithGoogle: async (
-    resolveHandler: Function,
-    errorHandler: Function
-  ) => {},
-  changePassword: async (
-    email: string,
-    resolveHandler: Function,
-    errorHandler: Function
-  ) => {},
+  signUpWithEmail: async () => {},
+  signInWithEmail: async () => {},
+  signInWithGoogle: async () => {},
+  changePassword: async () => {},
   signOut: async () => {},
 });
 
@@ -83,7 +66,7 @@ const formatAuthState = (user: firebase.User): Auth => {
 };
 
 function useProvideAuth() {
-  const [auth, setAuth] = useState<Auth | null>(null); // Declares state variable "auth" with setter "setAuth"
+  const [auth, setAuth] = useState<Auth | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const basicEmailChecker = (email: string | null) =>
@@ -156,8 +139,8 @@ function useProvideAuth() {
   };
 
   const signInWithGoogle = async (
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => {
     setLoading(true);
     return firebase
@@ -165,22 +148,28 @@ function useProvideAuth() {
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((response) => signedIn(response))
       .then(() => resolveHandler())
-      .catch((error) => errorHandler(error.code, error.message));
+      .catch((error) => errorHandler(error));
   };
 
   const signUpWithEmail = async (
     email: string,
     password: string,
     displayName: string,
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => {
     setLoading(true);
     if (displayName === "") {
-      errorHandler("no-name", "Please input display name");
+      errorHandler({
+        code: "no-name",
+        message: "Please input display name"
+      });
       return;
     } else if (basicEmailChecker(email)) {
-      errorHandler("wrong-email-format", "Incorrect Email");
+      errorHandler({
+        code: "wrong-email-format",
+        message: "Incorrect Email"
+      });
       return;
     }
     return firebase
@@ -195,18 +184,21 @@ function useProvideAuth() {
           .then(() => clear())
       )
       .then(() => resolveHandler())
-      .catch((error) => errorHandler(error.code, error.message));
+      .catch((error) => errorHandler(error));
   };
 
   const signInWithEmail = async (
     email: string,
     password: string,
-    resolveHandler: Function = () => {},
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void
   ) => {
     setLoading(true);
     if (basicEmailChecker(email)) {
-      errorHandler("wrong-email-format", "Incorrect Email");
+      errorHandler({
+        code: "wrong-email-format",
+        message: "Incorrect Email"
+      });
       return;
     }
 
@@ -224,24 +216,30 @@ function useProvideAuth() {
           })
       )
       .then(() => resolveHandler())
-      .catch((error) => errorHandler(error.code, error.message));
+      .catch((error) => {
+        console.log(error);
+        errorHandler(error)
+      });
   };
 
   const changePassword = async (
     email: string,
-    resolveHandler: Function,
-    errorHandler: Function
+    resolveHandler: () => void,
+    errorHandler: (error: errorObj) => void,
   ) => {
     setLoading(true);
     if (basicEmailChecker(email)) {
-      errorHandler("wrong-email-format", "Incorrect Email");
+      errorHandler({
+        code: "wrong-email-format",
+        message: "Incorrect Email"
+      });
       return;
     }
     return firebase
       .auth()
       .sendPasswordResetEmail(email)
       .then(() => resolveHandler())
-      .catch((error) => errorHandler(error.code, error.message));
+      .catch((error) => errorHandler(error));
   };
 
   const signOut = async () => {

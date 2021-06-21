@@ -19,8 +19,8 @@ export type Facility = {
 
 export type Booking = {
   id: number;
-  startingTime: Date;
-  endingTime: Date;
+  startingTime: string;
+  endingTime: string;
   userEmail: string;
   facilityId: number;
   rewardId?: number;
@@ -28,8 +28,8 @@ export type Booking = {
 
 export type Reward = {
   id: number;
-  issueDate: Date;
-  expiryDate: Date;
+  issueDate: string;
+  expiryDate: string;
   description: string;
   value: number;
   userEmail?: string;

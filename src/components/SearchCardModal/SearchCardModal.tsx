@@ -60,9 +60,9 @@ const SearchCardModal: React.FC<OwnProps> = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalCloseButton />
-        <ModalHeader marginX="-5" marginY="1.5">
-          <Box maxWidth={"100%"}>
+        <ModalHeader marginX="-5">
+        <Box maxWidth={'100%'}>
+            <ModalCloseButton mt="3"/>
             <Image
               borderRadius="lg"
               objectFit="cover"
@@ -75,7 +75,9 @@ const SearchCardModal: React.FC<OwnProps> = ({
         </ModalHeader>
         <ModalBody>
           <Center>
-            <Heading size="lg">{name}</Heading>
+            <Heading size="lg">
+                {name}
+            </Heading>
           </Center>
           <HStack justifyContent="space-between">
             <Box>
@@ -117,13 +119,27 @@ const SearchCardModal: React.FC<OwnProps> = ({
           <Text>{description}</Text>
         </ModalBody>
         <ModalFooter>
-          {authContext.auth ? (
-            <Button colorScheme="teal" onClick={() => router.push("/booking")}>
-              Book Now!
-            </Button>
-          ) : (
-            <Button isDisabled>Sign In to Book</Button>
-          )}
+          {
+            authContext.auth
+            ? (
+              <Button
+                colorScheme="teal"
+                onClick={() => router.push({
+                  pathname: '/explore/facilities', 
+                  query: {
+                    id: id
+                  }
+                })
+              }>
+                Book Now!
+              </Button>
+            )
+            : (
+              <Button isDisabled>
+                Sign In to Book
+              </Button>
+            )
+          }
         </ModalFooter>
       </ModalContent>
     </Modal>

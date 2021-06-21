@@ -26,7 +26,7 @@ import {
   onChangeHandler,
   toLoginHandler,
 } from "~/firebase/authHandlersInterface";
-import Alert from "../BonusAlert/BonusAlert";
+import Alert from "~/components/BonusAlert/BonusAlert";
 
 interface OwnProps {
   isOpen: boolean;
