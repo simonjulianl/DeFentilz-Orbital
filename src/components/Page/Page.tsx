@@ -123,24 +123,6 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
           sizes="192x192"
           href="/android-icon-192x192.png"
         />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="96x96"
-          href="/favicon-96x96.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
         <link rel="apple-touch-icon" href="/icons/apple-icon.png"></link>
         <meta name="theme-color" content="#8B572A" />
         <meta name="msapplication-TileColor" content="#ffffff" />

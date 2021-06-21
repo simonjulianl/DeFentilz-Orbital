@@ -1,15 +1,11 @@
-const withSass = require("@zeit/next-sass");
-module.exports = withSass();
-
-const path = require("path");
-
 const withPWA = require("next-pwa");
 
 module.exports = withPWA({
   pwa: {
     disable: process.env.NODE_ENV === "development",
-    register: true,
+    register: false,
     sw: "sw.js",
+    scope: "/",
     dest: "public",
   },
   images: {
@@ -29,8 +25,5 @@ module.exports = withPWA({
         permanent: false,
       },
     ];
-  },
-  sassOptions: {
-    includePaths: [path.join(__dirname, "styles")],
   },
 });
