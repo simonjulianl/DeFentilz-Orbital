@@ -23,7 +23,8 @@
     "**/*.ts",
     "**/*.tsx",
     "backend/index.js",
-    "backend/index.mjs"
+    "backend/index.mjs",
+    "src/pages/explore/[...slug].tss"
   ],
   "exclude": ["node_modules"]
 }

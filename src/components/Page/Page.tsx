@@ -11,6 +11,7 @@ import NavBar from "../NavBar/NavBar";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { useBreakpointValue } from "@chakra-ui/react";
 config.autoAddCss = false; /* eslint-disable import/first */
 
 interface OwnProps {
@@ -151,10 +152,14 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <Box zIndex={9999}>
           <Header />
         </Box>
-        <Box height="90vh" bgColor="transparent" overflowY="scroll">
+        <Box
+          height={{ base: "90vh", xl: "100vh" }}
+          bgColor="transparent"
+          overflowY={{ base: "scroll", xl: "hidden" }}
+        >
           {children}
         </Box>
-        <NavBar />
+        {useBreakpointValue({ base: <NavBar />, md: <></> })}
       </Flex>
 
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>

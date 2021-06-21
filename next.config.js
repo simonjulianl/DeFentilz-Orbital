@@ -13,7 +13,10 @@ module.exports = withPWA({
     dest: "public",
   },
   images: {
-    domains: ["lorempixel.com"],
+    domains: [
+      "lorempixel.com",
+      "bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com",
+    ],
   },
   async redirects() {
     return [
@@ -21,15 +24,6 @@ module.exports = withPWA({
         source: "/",
         destination: "/home",
         permanent: false,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      // Rewrite everything to `pages/index`
-      {
-        source: "/:any*",
-        destination: "/",
       },
     ];
   },

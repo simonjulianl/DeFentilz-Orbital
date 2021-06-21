@@ -3,6 +3,7 @@ import { AuthProvider } from "~/firebase/auth";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
+import { useEffect } from "react";
 
 const breakpoints = createBreakpoints({
   sm: "23em", // Small Phones
@@ -15,6 +16,7 @@ const breakpoints = createBreakpoints({
 const theme = extendTheme({ breakpoints });
 
 function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {}, []);
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>

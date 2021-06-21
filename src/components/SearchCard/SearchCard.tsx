@@ -14,6 +14,7 @@ interface OwnProps {
   image: string;
   location: string;
   rating: number;
+  showModal?: boolean;
 }
 
 const SearchCard: React.FC<OwnProps> = ({
@@ -24,33 +25,33 @@ const SearchCard: React.FC<OwnProps> = ({
   image,
   location,
   rating,
+  showModal = true,
 }) => {
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-  }, [error])
+  useEffect(() => {}, [error]);
 
-  const {
-    isOpen: isOpen,
-    onOpen: onOpen,
-    onClose: onClose,
-  } = useDisclosure();
+  const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
 
   return (
     <Box
-      width={["2xs", "xs", "sm", "md"]}
+      minHeight={{ md: "35vh" }}
+      width={["2xs"]}
       borderWidth={"1px"}
       borderRadius="xl"
       overflow="hidden"
-      onClick={() => onOpen()}
+      onClick={() => showModal && onOpen()}
       shadow="lg"
     >
       <Flex direction="row">
-        <Box width={"100%"} height={"100%"}>
+        <Box
+          width={{ base: "100%", md: "15vw" }}
+          height={{ base: "100%", md: "25vh" }}
+        >
           <Image
             width={"100%"}
             height={"100%"}
-            objectFit="fill"
+            fill="responsive"
             src={error ? "/notAvail.png" : image}
             alt={name}
             fallback={<Spinner />}
@@ -61,15 +62,13 @@ const SearchCard: React.FC<OwnProps> = ({
             <HStack justify={"space-between"}>
               <Box>
                 <Box
-                fontWeight="semibold"
-                as="h4"
-                lineHeight="tight"
-                d="flex"
-                alignItems="baseline"
+                  fontWeight="semibold"
+                  as="h4"
+                  lineHeight="tight"
+                  d="flex"
+                  alignItems="baseline"
                 >
-                  <Text noOfLines={2}>
-                    {name}
-                  </Text>
+                  <Text noOfLines={2}>{name}</Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">
@@ -85,13 +84,16 @@ const SearchCard: React.FC<OwnProps> = ({
                 </HStack>
               </Box>
               <HStack fontSize="md" letterSpacing="tight" spacing="1">
-                <Text paddingTop="1.5"> {rating === null ? "No Rating Yet" : rating} </Text>
-                { 
-                  rating === null
-                  ? <></>
-                  : <StarIcon viewBox="0 0 24 24" color="yellow.400"/>
-                }
-              </HStack>              
+                <Text paddingTop="1.5">
+                  {" "}
+                  {rating === null ? "No Rating Yet" : rating}{" "}
+                </Text>
+                {rating === null ? (
+                  <></>
+                ) : (
+                  <StarIcon viewBox="0 0 24 24" color="yellow.400" />
+                )}
+              </HStack>
             </HStack>
           </Box>
         </Box>

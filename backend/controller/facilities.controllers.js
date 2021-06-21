@@ -7,19 +7,19 @@ const types = ["SPORT", "MEETING", "STUDY", "OTHER"];
 
 exports.create = (req, res) => {
   if (!req.body.name) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "Name cannot be empty",
     });
   }
 
   if (!types.includes(req.body.type)) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "types must be of SPORT, MEETING, STUDY, or OTHER ",
     });
   }
 
   if (req.body.rate && req.body.rate < 0) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "rate cannot be negative ",
     });
   }
@@ -30,7 +30,7 @@ exports.create = (req, res) => {
     location: req.body.location,
     imageUrl: req.body.imageUrl,
     description: req.body.description,
-    rate: req.body.rating,
+    rate: req.body.rate,
   };
 
   Facility.create(facility)

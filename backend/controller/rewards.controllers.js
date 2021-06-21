@@ -4,19 +4,19 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   if (!req.body.issueDate) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "issueDate cannot be empty",
     });
   }
 
   if (!req.body.expiryDate) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "expiryDate cannot be empty",
     });
   }
 
   if (!req.body.value) {
-    res.status(400).send({
+    return res.status(400).send({
       message: "value cannot be empty",
     });
   }

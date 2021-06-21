@@ -9,6 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import {
   FormControl,
@@ -45,7 +46,12 @@ const SignUpModal: React.FC<OwnProps> = ({
   emailSignUpHandler,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={useBreakpointValue({ base: "xs", md: "md", xl: "xl" })}
+      isCentered={true}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign Up</ModalHeader>
@@ -93,13 +99,13 @@ const SignUpModal: React.FC<OwnProps> = ({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          {
-            hookVars.success && hookVars.success.code === "signup-successful"
-            ? <Alert status={"success"} code={hookVars.success.code} />
-            : hookVars.error
-            ? <Alert status={"error"} code={hookVars.error.code} />
-            : <></>
-          }
+          {hookVars.success && hookVars.success.code === "signup-successful" ? (
+            <Alert status={"success"} code={hookVars.success.code} />
+          ) : hookVars.error ? (
+            <Alert status={"error"} code={hookVars.error.code} />
+          ) : (
+            <></>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
