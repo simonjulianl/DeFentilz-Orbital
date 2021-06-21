@@ -1,4 +1,3 @@
-console.log(process.env.ENVIRONMENT);
 switch (process.env.ENVIRONMENT) {
   case "TEST":
     var url = "http://localhost:5000";

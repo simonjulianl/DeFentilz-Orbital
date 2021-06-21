@@ -23,8 +23,6 @@ import { HeaderData, HeaderConfig, adminHeader } from "./HeaderConfig";
 import SearchBar from "../SearchBar/SearchBar";
 import { useEffect } from "react";
 import { User } from "~/config/interface";
-import APIUrl from "~/config/backendUrl";
-import axios from "axios";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
@@ -39,22 +37,10 @@ const Header: React.FC<{}> = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (user != null) return;
-    if (authContext.auth && authContext.auth.emailVerified) {
-      async function checkUserIsAdmin() {
-        const response = await axios
-          .get<User>(APIUrl.getSingleUserByEmail + `/${authContext.auth.email}`)
-          .then((response) => response.data)
-          .catch((err) => {
-            throw err;
-          });
-
-        setUser(response);
-      }
-
-      checkUserIsAdmin();
+    if (authContext.auth) {
+      setUser(authContext.auth.user);
     }
-  });
+  }, [authContext.auth]);
 
   // login modal callback state
   const {
