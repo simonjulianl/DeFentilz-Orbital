@@ -8,7 +8,8 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 import { NextPage } from "next";
@@ -62,22 +63,23 @@ const ExploreView: NextPage = () => {
   return (
     <Page title="Explore" description="Explore">
       <Flex direction="column" justify="flex-start">
-        <VStack
-          pt={3}
-          pos="fixed"
-          background="white"
-          width={screenWidth}
-        >
-          <SearchBar
-            onSubmit={(content: string) =>
-              router.push({
-                pathname: "/explore",
-                query: {
-                  keyword: content,
-                },
-              })
-            }
-          />
+        <VStack pt={3} pos="fixed" background="white" width={screenWidth}>
+          {useBreakpointValue({
+            base: (
+              <SearchBar
+                name="explore-search"
+                onSubmit={(content: string) =>
+                  router.push({
+                    pathname: "/explore",
+                    query: {
+                      keyword: content,
+                    },
+                  })
+                }
+              />
+            ),
+            md: <></>,
+          })}
           <Text>Searching for: {keyword}</Text>
         </VStack>
         <VStack pt={["25%", "25%", "15%", "5%"]}>
@@ -89,15 +91,7 @@ const ExploreView: NextPage = () => {
           ) : error === null ? (
             searchResult.length > 0 ? (
               searchResult.map(
-                ({
-                  id,
-                  name,
-                  type,
-                  description,
-                  location,
-                  image,
-                  rating,
-                }) => (
+                ({ id, name, type, description, location, image, rating }) => (
                   <SearchCard
                     key={id}
                     id={id}

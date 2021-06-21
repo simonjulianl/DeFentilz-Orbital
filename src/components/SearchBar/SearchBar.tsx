@@ -5,15 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 interface OwnProps {
+  name: string;
   onSubmit: (content: String) => void;
 }
 
-const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
+const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
   const onSubmitEnterHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const searchBar = e.currentTarget.elements.namedItem(
-      "header-search"
+      name
     ) as HTMLInputElement;
     var result = searchBar.value;
 
@@ -24,9 +25,7 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
   const iconSubmitHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const searchBar = document.getElementById(
-      "header-search"
-    ) as HTMLInputElement;
+    const searchBar = document.getElementById(name) as HTMLInputElement;
 
     onSubmit(searchBar.value);
   };
@@ -36,10 +35,13 @@ const SearchBar: React.FC<OwnProps> = ({ onSubmit }) => {
       <InputGroup>
         <Input
           type="text"
-          id="header-search"
+          id={name}
           placeholder="Search NUS Facilities..."
           name="search"
           variant="outline"
+          _focus={{
+            backgroundColor: "white",
+          }}
         />
         <InputRightAddon
           children={

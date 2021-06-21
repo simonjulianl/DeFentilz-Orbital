@@ -6,7 +6,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Development Setup
 
-[Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) the latest `npm` and `node` versions on your local machine
+[Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) the latest `npm` and `node` versions on your local machine.
 You should have the latest `npm` and `node` versions installed on your local machine before running.
 
 Install all dependencies using yarn for this project (ensure that package-lock.json which comes from npm package manager is not in the file) :
@@ -15,6 +15,10 @@ Install all dependencies using yarn for this project (ensure that package-lock.j
 npm install yarn
 yarn install
 ```
+
+## Environment Variables
+
+to get the key to the AWS RDS, firebase, AWS S3, and other environment variables configuration for this project. Please contact either Amadeus or Simon
 
 ## Scripts
 
@@ -69,4 +73,4 @@ To learn more about the resources used, the following documentation might be hel
 - [Sequlieze ORM](https://sequelize.org/)
 - [Firebase](https://firebase.google.com/docs/auth)
 
-For backend documentation, plesae visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)
+For backend documentation, please visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { withRouter } from "next/router";
 import type { Router } from "next/router";
-import { Flex, Box, Center, Spacer, VStack } from "@chakra-ui/layout";
+import { Flex, Box } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import NavBar from "../NavBar/NavBar";
@@ -11,6 +11,8 @@ import NavBar from "../NavBar/NavBar";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { useBreakpointValue } from "@chakra-ui/react";
+import { useAuth } from "~/firebase/auth";
 config.autoAddCss = false; /* eslint-disable import/first */
 
 interface OwnProps {
@@ -22,10 +24,10 @@ interface OwnProps {
 
 const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
   const [height, setHeight] = useState(0);
-
+  const authContext = useAuth();
   useEffect(() => {
     setHeight(screen.height);
-  }, [height]);
+  }, [height, authContext.auth]);
 
   return (
     <div>
@@ -151,10 +153,14 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <Box zIndex={9999}>
           <Header />
         </Box>
-        <Box height="90vh" bgColor="transparent" overflowY="scroll">
+        <Box
+          height={{ base: "90vh", xl: "100vh" }}
+          bgColor="transparent"
+          overflowY={{ base: "scroll", xl: "hidden" }}
+        >
           {children}
         </Box>
-        <NavBar />
+        {useBreakpointValue({ base: <NavBar />, md: <></> })}
       </Flex>
 
       <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>

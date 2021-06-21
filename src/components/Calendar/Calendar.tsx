@@ -7,22 +7,30 @@ import { Calendar as BigCalendar, Views, momentLocalizer} from 'react-big-calend
 import Toolbar from '~/components/Calendar/CalendarToolbar';
 import ThreeDayView from "~/components/Calendar/ThreeDayView";
 import BookingModal from "~/components/Calendar/BookingModal";
-import { Booking, ModalState } from '~/components/Calendar/BookingType';
+import { ModalState } from '~/components/Calendar/BookingType';
+
+import { Booking } from '~/config/interface';
 
 import moment from 'moment';
-import { AuthContext } from "~/firebase/auth";
+import { AuthContext, useAuth } from "~/firebase/auth";
 
 interface OwnProps {
-    authContext: AuthContext,
     bookingsList : Booking[],
     facilityId: number,
     onChange: () => void
 }
 
+interface MyBooking extends Booking {
+  title? : string
+}
+
 const localizer = momentLocalizer(moment);
-const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, onChange}) => {
-  const [myBooking, setMyBooking] = useState<Booking>({
+const Calendar : React.FC<OwnProps> = ({ bookingsList, facilityId, onChange}) => {
+  const authContext = useAuth();
+
+  const [myBooking, setMyBooking] = useState<MyBooking>({
     title: null,
+    id: null,
     startingTime: null,
     endingTime: null,
     facilityId: null,
@@ -36,10 +44,11 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, 
   } = useDisclosure();
 
   const handleSelectSlot = ({start, end}) => {
-    const newBooking = {
+    const newBooking : MyBooking = {
       title: "My Booking",
-      startingTime: start.toString(), 
-      endingTime: end.toString(),
+      id: null,
+      startingTime: start, 
+      endingTime: end,
       userEmail: authContext.auth.email,
       facilityId: facilityId
     }
@@ -49,7 +58,6 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, 
   }
 
   const handleSelectBooking = (booking: Booking) => {
-    console.log(booking.id);
     if (booking.userEmail === authContext.auth.email ) {
       setMyBooking(booking);
       setState(ModalState.Delete);
@@ -73,13 +81,20 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, 
       <BigCalendar
         selectable
         localizer={localizer}
-        events={bookingsList}
-        titleAccessor={(booking: Booking) => 
-                        booking.userEmail === authContext.auth.email
+        events={bookingsList.map(booking => {
+          return {
+            startingTime: new Date(booking.startingTime),
+            endingTime: new Date(booking.endingTime),
+            title: booking.userEmail === authContext.auth.email
                         ? 'My Booking'
-                        : 'Someone\'s Booking'}
-        startAccessor={(booking: Booking) => new Date(booking.startingTime)}
-        endAccessor={(booking: Booking) => new Date(booking.endingTime)}
+                        : 'Someone\'s Booking',
+            userEmail: booking.userEmail,
+            facilityId: booking.facilityId,
+            id: booking.id
+          }
+        })}
+        startAccessor={(booking: Booking) => (booking.startingTime)}
+        endAccessor={(booking: Booking) => (booking.endingTime)}
         defaultView={Views.DAY}
         longPressThreshold={200}
         eventPropGetter={(eventStyleGetter)}
@@ -96,7 +111,7 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, 
           toolbar: Toolbar
         }}
       />
-        <BookingModal
+      <BookingModal
           isOpen={isOpen}
           onClose={onClose}
           booking={myBooking}
@@ -104,6 +119,35 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, authContext, facilityId, 
           state={state}
         /> 
     </Box>
+
+  
+    // <BigCalendar
+    //   selectable
+    //   localizer={localizer}
+    //   events={bookingsList.map(x =>{
+    //     return {
+    //       end: new Date('June 21, 2021 20:00:00'),
+    //       start: new Date('June 21, 2021 21:00:00'),
+    //       title: "Testing"
+    //     }
+    //   })}
+    //   titleAccessor={"title"}
+    //   startAccessor={"start"}
+    //   endAccessor={"end"}
+    //   defaultView={Views.DAY}
+    //   longPressThreshold={200}
+    //   eventPropGetter={(eventStyleGetter)}
+    //   style={{ height: 500, padding: 3}}
+    //   views={{
+    //     day: true, 
+    //     month: true,
+    //     threeDay: ThreeDayView
+    //   }}
+    //   messages={{threeDay: "3-Day"}}
+    //   components={{
+    //     toolbar: Toolbar
+    //   }}
+    // />
   )
 }
 

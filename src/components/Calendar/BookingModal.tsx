@@ -13,7 +13,8 @@
   VStack,
 } from "@chakra-ui/react";
 import axios, { AxiosRequestConfig } from "axios";
-import { Booking, ModalState} from "~/components/Calendar/BookingType";
+import { ModalState} from "~/components/Calendar/BookingType";
+import { Booking } from "~/config/interface";
 
 interface OwnProps {
   isOpen: boolean;
@@ -30,7 +31,6 @@ const BookingModal: React.FC<OwnProps> = ({
   booking,
   state,
 }) => {
-
     const dateFormat = (date: string) => {
         const options : Intl.DateTimeFormatOptions = {
             weekday: 'long',

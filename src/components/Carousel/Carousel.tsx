@@ -16,28 +16,14 @@ const BonusCarousel: React.FC<{}> = () => {
         layout="responsive"
         width={400}
         height={250}
-        src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg"
+        src="https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg"
         priority={true}
       />
       <Image
         layout="responsive"
         width={400}
         height={250}
-        src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg"
-        priority={true}
-      />
-      <Image
-        layout="responsive"
-        width={400}
-        height={250}
-        src="http://lorempixel.com/output/cats-q-c-640-480-3.jpg"
-        priority={true}
-      />
-      <Image
-        layout="responsive"
-        width={400}
-        height={250}
-        src="http://lorempixel.com/output/cats-q-c-640-480-4.jpg"
+        src="https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg"
         priority={true}
       />
     </Carousel>

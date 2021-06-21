@@ -18,12 +18,11 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import Calendar from "~/components/Calendar/Calendar";
-import { Booking } from '~/components/Calendar/BookingType';
+import { Booking } from '~/config/interface';
 import Page from "~/components/Page/Page";
 
 import axios, { AxiosRequestConfig } from "axios";
 import { StarIcon } from "@chakra-ui/icons";
-import { useAuth } from "~/firebase/auth";
 
 interface fetchType {
     id: number,
@@ -40,7 +39,6 @@ const ContentDetailView: NextPage = () => {
   const router = useRouter();
   let { id } = router.query;
 
-  const AuthContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [fetchFacilityResult, setFetchFacilityResult] = useState<fetchType[]>([]);
   const [fetchBookingResult, setFetchBookingResult] = useState<Booking[]>([
@@ -87,6 +85,7 @@ const ContentDetailView: NextPage = () => {
       .then((bookingResponse) => {
         setError(null);
         setFetchBookingResult(bookingResponse);
+        console.log(bookingResponse);
       })
       .catch((error) => {
         setError({
@@ -204,7 +203,6 @@ const ContentDetailView: NextPage = () => {
                       {"Make your booking by modifying the slots in the calendar below!"}
                     </Text>
                     <Calendar
-                      authContext={AuthContext}
                       bookingsList={fetchBookingResult}
                       facilityId={id}
                       onChange={() => setBookingChange(true)}

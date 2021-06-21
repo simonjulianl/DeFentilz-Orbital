@@ -61,10 +61,10 @@ export default function authHandlers(
       hookVars.name,
       () => {
         settersObject.setSuccess({
-          code: 'signup-successful',
-          message: "Sign up is successful"
+          code: "signup-successful",
+          message: "Sign up is successful",
         });
-    },
+      },
       errorHandler
     );
   };
@@ -80,10 +80,10 @@ export default function authHandlers(
       hookVars.email,
       () => {
         settersObject.setSuccess({
-        code: 'password-change-successful',
-        message: 'Password Change is Successful. Please check your email'
-      });
-    },
+          code: "password-change-successful",
+          message: "Password Change is Successful. Please check your email",
+        });
+      },
       errorHandler
     );
   };

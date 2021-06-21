@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { VStack, Box, Flex } from "@chakra-ui/layout";
-import { IconButton, Text } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  IconButton,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import {
   faVolleyballBall,
   faHandshake,
@@ -25,32 +31,50 @@ const HomeView: NextPage = () => {
     <Page title="Home" description="Home">
       <Flex direction="column" justify="flex-start">
         <Box
-          padding={3}
-          paddingBottom={3}
+          padding={{ base: 3, md: 0 }}
           zIndex={1}
           position="absolute"
           background="white"
           width={screenWidth}
         >
-          <SearchBar
-            onSubmit={(content: string) =>
-              router.push({
-                pathname: "/explore",
-                query: {
-                  keyword: content,
-                },
-              })
-            }
-          />
+          {useBreakpointValue({
+            base: (
+              <SearchBar
+                name="home-search"
+                onSubmit={(content: string) =>
+                  router.push({
+                    pathname: "/explore",
+                    query: {
+                      keyword: content,
+                    },
+                  })
+                }
+              />
+            ),
+            md: <></>,
+          })}
         </Box>
-        <Flex
-          direction="column"
-          justify="center"
-          paddingBottom={5}
-          marginTop={16}
-        >
-          <BonusCarousel />
-        </Flex>
+        {useBreakpointValue({
+          base: (
+            <Box
+              paddingBottom={5}
+              marginTop={16}
+              height={{ md: "50vh" }}
+              width={{ md: "50vw" }}
+            >
+              <BonusCarousel />
+            </Box>
+          ),
+          md: (
+            <Grid templateColumns="repeat(5, 1fr)" gap={6} marginBottom={5}>
+              <GridItem colSpan={1} bg="papayawhip" />
+              <GridItem colSpan={3} bg="papayawhip">
+                <BonusCarousel />
+              </GridItem>
+              <GridItem colSpan={1} bg="tomato" />
+            </Grid>
+          ),
+        })}
         <Flex direction="row" justify="space-around" align="center" wrap="wrap">
           <VStack>
             <IconButton

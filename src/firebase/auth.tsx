@@ -1,5 +1,8 @@
+import axios from "axios";
 import { Context, createContext, useContext, useEffect, useState } from "react";
 import { errorObj } from "./authHandlersInterface";
+import APIUrl from "~/config/backendUrl";
+import { User } from "~/config/interface";
 import firebase from "./firebase";
 
 interface Auth {
@@ -9,6 +12,7 @@ interface Auth {
   photoUrl: string | null;
   token: string | null;
   emailVerified: boolean;
+  user: User | null;
 }
 
 export interface AuthContext {
@@ -49,20 +53,34 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   signOut: async () => {},
 });
 
-const formatAuthState = (user: firebase.User): Auth => ({
-  uid: user.uid,
-  email: user.email,
-  name: user.displayName,
-  photoUrl: user.photoURL,
-  token: null,
-  emailVerified: user.emailVerified
-});
+const formatAuthState = (user: firebase.User): Auth => {
+  return {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    photoUrl: user.photoURL,
+    token: null,
+    emailVerified: user.emailVerified,
+    user: null,
+  };
+};
 
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const basicEmailChecker = (email: string | null) => email.split("@")[1] !== "u.nus.edu";
+  const basicEmailChecker = (email: string | null) =>
+    email.split("@")[1] !== "u.nus.edu";
+
+  async function getUser(userEmail: string) {
+    return axios
+      .get<User>(APIUrl.getSingleUserByEmail + `/${userEmail}`)
+      .then((response) => response.data)
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+  }
 
   const handleAuthChange = async (user: firebase.User | null) => {
     if (!user) {
@@ -72,6 +90,7 @@ function useProvideAuth() {
 
     const formattedAuth = formatAuthState(user);
     formattedAuth.token = await user.getIdToken();
+    formattedAuth.user = await getUser(user.email);
     setAuth(formattedAuth);
     setLoading(false);
   };
@@ -81,23 +100,22 @@ function useProvideAuth() {
     setLoading(true);
   };
 
-  const signedIn = async (
-    response: firebase.auth.UserCredential
-  ) => {
+  const signedIn = async (response: firebase.auth.UserCredential) => {
     if (!response.user) {
       throw {
         code: "no-user",
-        message: "No User"
-      }
+        message: "No User",
+      };
     } else if (!response.user.emailVerified) {
       throw {
         code: "unverified-email",
-        message: "Unverified Email"
+        message: "Unverified Email",
       };
     }
 
-    console.log(response.user.displayName);
     const authUser = formatAuthState(response.user);
+    authUser.user = await getUser(response.user.email);
+    console.log(authUser);
     setAuth(authUser);
   };
 
@@ -108,12 +126,12 @@ function useProvideAuth() {
     if (!response.user) {
       throw {
         code: "no-user",
-        message: "No User"
-      }
+        message: "No User",
+      };
     }
 
     await response.user.updateProfile({
-      displayName: displayName
+      displayName: displayName,
     });
 
     setAuth(null);
@@ -157,9 +175,14 @@ function useProvideAuth() {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(response => signedUp(response, displayName))
-      .then(response => response.user.sendEmailVerification())
-      .then(() => firebase.auth().signOut().then(() => clear()))
+      .then((response) => signedUp(response, displayName))
+      .then((response) => response.user.sendEmailVerification())
+      .then(() =>
+        firebase
+          .auth()
+          .signOut()
+          .then(() => clear())
+      )
       .then(() => resolveHandler())
       .catch((error) => errorHandler(error));
   };
@@ -183,11 +206,15 @@ function useProvideAuth() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => signedIn(response))
-      .catch((unverifiedError) => 
-        firebase.auth()
-        .signOut()
-        .then(clear)
-        .then(() => { throw unverifiedError }))
+      .catch((unverifiedError) =>
+        firebase
+          .auth()
+          .signOut()
+          .then(clear)
+          .then(() => {
+            throw unverifiedError;
+          })
+      )
       .then(() => resolveHandler())
       .catch((error) => {
         console.log(error);
