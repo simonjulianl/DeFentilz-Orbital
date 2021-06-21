@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   VStack,
-  Flex,
   Text,
   Spinner,
   Image,
@@ -19,10 +18,12 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import Calendar from "~/components/Calendar/Calendar";
+import { Booking } from '~/components/Calendar/BookingType';
 import Page from "~/components/Page/Page";
 
 import axios, { AxiosRequestConfig } from "axios";
 import { StarIcon } from "@chakra-ui/icons";
+import { useAuth } from "~/firebase/auth";
 
 interface fetchType {
     id: number,
@@ -35,26 +36,24 @@ interface fetchType {
     image: string
 }
 
-interface fetchBookingType {
-  id: number,
-  name: string
-  location: string
-  type: string,
-  description: string, 
-  rating: number | null, 
-  rate: number, 
-  image: string
-}
-
 const ContentDetailView: NextPage = () => {
   const router = useRouter();
   let { id } = router.query;
 
+  const AuthContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [fetchResult, setFetchResult] = useState<[fetchType] | []>([]); // Invalid data type for actual API ...
-  const [fetchBookingResult, setFetchBookingResult] = useState<[fetchBookingType] | []>([]);
+  const [fetchFacilityResult, setFetchFacilityResult] = useState<fetchType[]>([]);
+  const [fetchBookingResult, setFetchBookingResult] = useState<Booking[]>([
+    {
+      id: null,
+      startingTime: null,
+      endingTime: null,
+      facilityId: null,
+      userEmail: null
+    }
+  ]);
+  const [bookingChange, setBookingChange] = useState<boolean>(false);
   const [error, setError] = useState(null);
-
   const [screenWidth, setScreenWidth] = useState(0);
 
   useEffect(() => {
@@ -67,28 +66,41 @@ const ContentDetailView: NextPage = () => {
       timeout: 10000,
     };
 
-    setLoading(true);
+  const bookingConfig: AxiosRequestConfig = {
+    method: "get",
+    url: encodeURI(
+      "https://60c6eb8f19aa1e001769feaf.mockapi.io/bookings?facilityId=" + 
+      id
+    ),
+    timeout: 10000,
+  }
 
+    setLoading(true);
     axios(config)
       .then((response) => response.data)
       .then((response) => {
         setError(null);
-        setFetchResult(response);
+        setFetchFacilityResult(response);
+      })
+      .then(() => axios(bookingConfig))
+      .then((bookingResponse) => bookingResponse.data)
+      .then((bookingResponse) => {
+        setError(null);
+        setFetchBookingResult(bookingResponse);
       })
       .catch((error) => {
         setError({
           code: error.response.status,
           message: error.response.statusText,
         });
-        setFetchResult([]);
+        setFetchFacilityResult([]);
       })
       .finally(() => {
         setLoading(false);
+        setBookingChange(false);
         setScreenWidth(screen.width);
       });
-  }, [id, screenWidth]);
-
-  console.log(fetchResult);
+  }, [id, screenWidth, bookingChange]);
 
   return (
     <Page title="Explore" description="Explore">
@@ -99,12 +111,11 @@ const ContentDetailView: NextPage = () => {
               <Spinner ml="2" />
             </Box>
           ) : error === null ? (
-            fetchResult.length > 0 ? (
-              fetchResult.map(
+            fetchFacilityResult.length > 0 ? (
+              fetchFacilityResult.map(
                 ({
                   id,
                   name,
-                  type,
                   description,
                   location,
                   image,
@@ -193,14 +204,10 @@ const ContentDetailView: NextPage = () => {
                       {"Make your booking by modifying the slots in the calendar below!"}
                     </Text>
                     <Calendar
-                      bookingsList={[
-                        {
-                        title: "Testing",
-                        start: new Date(),
-                        end: new Date(),
-                        allDay: false,
-                        }
-                      ]}
+                      authContext={AuthContext}
+                      bookingsList={fetchBookingResult}
+                      facilityId={id}
+                      onChange={() => setBookingChange(true)}
                     />
                   </Box>
                 )
