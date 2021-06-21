@@ -28,7 +28,6 @@ import { useEffect } from "react";
 import { User } from "~/config/interface";
 import APIUrl from "~/config/backendUrl";
 import axios, { AxiosRequestConfig } from "axios";
-import { user1 } from "~/stub/mockUser";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
