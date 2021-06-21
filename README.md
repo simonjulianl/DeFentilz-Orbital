@@ -6,7 +6,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Development Setup
 
-[Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) the latest `npm` and `node` versions on your local machine
+[Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) the latest `npm` and `node` versions on your local machine.
 You should have the latest `npm` and `node` versions installed on your local machine before running.
 
 Install all dependencies using yarn for this project (ensure that package-lock.json which comes from npm package manager is not in the file) :
