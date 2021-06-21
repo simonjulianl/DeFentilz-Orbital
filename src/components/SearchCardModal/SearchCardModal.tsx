@@ -61,9 +61,9 @@ const SearchCardModal: React.FC<OwnProps> = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalCloseButton />
-        <ModalHeader marginX="-5" marginY="1.5">
+        <ModalHeader marginX="-5">
         <Box maxWidth={'100%'}>
+            <ModalCloseButton mt="3"/>
             <Image
               borderRadius="lg"
               objectFit="cover"
@@ -77,10 +77,10 @@ const SearchCardModal: React.FC<OwnProps> = ({
           </Box>
         </ModalHeader>
         <ModalBody>
-        <Center>
-          <Heading size="lg">
-              {name}
-          </Heading>
+          <Center>
+            <Heading size="lg">
+                {name}
+            </Heading>
           </Center>
           <HStack justifyContent="space-between">
             <Box>
