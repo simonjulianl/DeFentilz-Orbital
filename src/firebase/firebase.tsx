@@ -10,7 +10,6 @@ const firebaseConfig = {
 
 try {
   firebase.initializeApp(firebaseConfig);
-
   // sign out after initialization in production
   switch (process.env.ENVIRONMENT) {
     case "PRODUCTION":
