@@ -115,7 +115,6 @@ function useProvideAuth() {
 
     const authUser = formatAuthState(response.user);
     authUser.user = await getUser(response.user.email);
-    console.log(authUser);
     setAuth(authUser);
   };
 
@@ -162,13 +161,13 @@ function useProvideAuth() {
     if (displayName === "") {
       errorHandler({
         code: "no-name",
-        message: "Please input display name"
+        message: "Please input display name",
       });
       return;
     } else if (basicEmailChecker(email)) {
       errorHandler({
         code: "wrong-email-format",
-        message: "Incorrect Email"
+        message: "Incorrect Email",
       });
       return;
     }
@@ -197,7 +196,7 @@ function useProvideAuth() {
     if (basicEmailChecker(email)) {
       errorHandler({
         code: "wrong-email-format",
-        message: "Incorrect Email"
+        message: "Incorrect Email",
       });
       return;
     }
@@ -218,20 +217,20 @@ function useProvideAuth() {
       .then(() => resolveHandler())
       .catch((error) => {
         console.log(error);
-        errorHandler(error)
+        errorHandler(error);
       });
   };
 
   const changePassword = async (
     email: string,
     resolveHandler: () => void,
-    errorHandler: (error: errorObj) => void,
+    errorHandler: (error: errorObj) => void
   ) => {
     setLoading(true);
     if (basicEmailChecker(email)) {
       errorHandler({
         code: "wrong-email-format",
-        message: "Incorrect Email"
+        message: "Incorrect Email",
       });
       return;
     }

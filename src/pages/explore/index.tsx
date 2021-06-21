@@ -35,9 +35,7 @@ const ExploreView: NextPage = () => {
 
     const config: AxiosRequestConfig = {
       method: "get",
-      url: encodeURI(
-        "https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities"
-      ),
+      url: encodeURI("https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities"),
       timeout: 10000,
     };
 

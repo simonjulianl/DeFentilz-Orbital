@@ -14,7 +14,7 @@ const AdminHome: NextPage = () => {
 
   return (
     <AdminPage title="AdminHome" description="AdminHome">
-      test
+      Under construction, please press Facilities button on the left
     </AdminPage>
   );
 };

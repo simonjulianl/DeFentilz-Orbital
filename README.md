@@ -74,3 +74,6 @@ To learn more about the resources used, the following documentation might be hel
 - [Firebase](https://firebase.google.com/docs/auth)
 
 For backend documentation, please visit this [link](https://documenter.getpostman.com/view/7505668/TzeRqAGf)
+
+**Note**
+The service worker is currently slightly problematic with the yarn dev, because once the page is reloaded, the new sw would be registered and hence would result in multiple sw registration within 1 web. The current workaround is to go to the dev > application > unregister the sw manually.

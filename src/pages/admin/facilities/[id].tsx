@@ -28,6 +28,7 @@ import APIUrl from "~/config/backendUrl";
 import axios, { AxiosRequestConfig } from "axios";
 import { Facility } from "~/config/interface";
 import DeleteConfirmationModal from "~/components/DeleteConfirmationModal";
+import BonusAlert from "~/components/BonusAlert/BonusAlert";
 
 const defaultPictureUrl =
   "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg";
@@ -246,7 +247,7 @@ const FacilityEdit: NextPage = () => {
           </Box>
         </VStack>
         <VStack spacing={8} marginLeft={"5vh"} marginTop={"10vh"}>
-          {error ? <Box textColor="red">{"Error : " + error}</Box> : null}
+          {error ? <BonusAlert status="error" code={error} /> : null}
           <FormControl id="name" isRequired>
             <FormLabel>Name</FormLabel>
             <Input
