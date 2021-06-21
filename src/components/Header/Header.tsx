@@ -1,14 +1,11 @@
 import {
   Button,
-  Icon,
   IconButton,
   Image,
   Link,
   Stack,
   useBreakpointValue,
-  useColorModeValue,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import { Flex, Box, Spacer } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
@@ -27,7 +24,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import { useEffect } from "react";
 import { User } from "~/config/interface";
 import APIUrl from "~/config/backendUrl";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const Header: React.FC<{}> = () => {
   const router = useRouter();
