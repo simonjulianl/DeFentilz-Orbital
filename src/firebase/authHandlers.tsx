@@ -3,7 +3,8 @@ import { AuthContext } from "~/firebase/auth";
 import {
   hookVars,
   settersObject,
-  modalCallbacks
+  modalCallbacks,
+  errorObj
 } from "./authHandlersInterface";
 
 export default function authHandlers(
@@ -21,13 +22,11 @@ export default function authHandlers(
   };
 
   const errorHandler = (
-    errorCode: string,
-    errorMessage: string
+    error: errorObj,
   ) => {
-    console.error("Error Code: " + errorCode + "; Error Message: " + errorMessage);
     settersObject.setError({
-      code: errorCode,
-      message: errorMessage,
+      code: error.code,
+      message: error.message,
     });
   };
 
@@ -61,7 +60,6 @@ export default function authHandlers(
       hookVars.password,
       hookVars.name,
       () => {
-        console.log("Success Code: signup-successful. Message: Sign up is successful");
         settersObject.setSuccess({
           code: 'signup-successful',
           message: "Sign up is successful"
@@ -81,7 +79,6 @@ export default function authHandlers(
     authContext.changePassword(
       hookVars.email,
       () => {
-        console.log("Success Code: password-change-successful. Message: Password Change is Successful. Please check your email");
         settersObject.setSuccess({
         code: 'password-change-successful',
         message: 'Password Change is Successful. Please check your email'
