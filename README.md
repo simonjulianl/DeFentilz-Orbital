@@ -16,6 +16,10 @@ npm install yarn
 yarn install
 ```
 
+## Environment Variables
+
+to get the key to the AWS RDS, firebase, AWS S3, and other environment variables configuration for this project. Please contact either Amadeus or Simon
+
 ## Scripts
 
 To build the app for production:
