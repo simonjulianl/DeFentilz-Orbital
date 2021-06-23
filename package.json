@@ -6,9 +6,23 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next build && next start",
+    "test": "jest",
     "dev:backend": "nodemon backend/index.js",
     "start:backend": "node backend/index.js",
     "prod:build": "NODE_ENV=production yarn run build:css && yarn run build"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.13.0",
@@ -58,10 +72,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@testing-library/dom": "^8.0.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
     "@types/react": "^17.0.5",
+    "babel-jest": "^27.0.5",
     "babel-loader": "^8.2.2",
     "babel-plugin-root-import": "^6.6.0",
     "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
+    "jest": "^27.0.5",
     "nodemon": "^2.0.7",
     "prettier": "2.3.0",
     "ts-node": "^10.0.0",
