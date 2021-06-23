@@ -6,12 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next build && next start",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "dev:backend": "nodemon backend/index.js",
     "start:backend": "node backend/index.js",
     "prod:build": "NODE_ENV=production yarn run build:css && yarn run build"
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
       "<rootDir>/.next/",
       "<rootDir>/node_modules/"
@@ -22,7 +23,7 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
-    }
+    } 
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.13.0",
@@ -54,6 +55,7 @@
     "framer-motion": "^4",
     "logrocket": "^1.2.2",
     "moment": "^2.29.1",
+    "msw": "^0.29.0",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
