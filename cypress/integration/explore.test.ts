@@ -66,8 +66,8 @@ describe('Mobile Explore Page Rendering', () => {
     })
 
     it('Should have search card (before sign in)', () => {
-        cy.get('[data-cy =search-card]')
-        .first() // Try only on the first one
+        cy.get('[data-cy=search-card]')
+        .first()
         .click()
         .get('[data-cy=search-card-modal]')
         .get('[data-cy=sign-in]')
@@ -80,7 +80,7 @@ describe('Mobile Explore Page Rendering', () => {
         cy.get('[type=password]').type('testing123');
         cy.get('[data-cy=login-button]').click();
 
-        cy.get('[data-cy =search-card]')
+        cy.get('[data-cy=search-card]')
         .first() // Try only on the first one
         .click()
         .get('[data-cy=search-card-modal]')
