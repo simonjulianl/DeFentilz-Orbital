@@ -140,6 +140,7 @@ const Header: React.FC<{}> = () => {
             textDecoration: "none",
             color: "black",
           }}
+          data-cy={navItem.label.split(' ').join('').toLowerCase()}
         >
           {navItem.label} {navItem.icon}
         </Link>
@@ -178,6 +179,7 @@ const Header: React.FC<{}> = () => {
             src="/bonus_header.png"
             fit="contain"
             alt="BoNUS Logo"
+            data-cy="logo"
           />
         </Button>
         {useBreakpointValue({
@@ -194,6 +196,7 @@ const Header: React.FC<{}> = () => {
               <Spacer />
               <Box paddingRight={[3, 5]}>
                 <IconButton
+                  data-cy="nav-drawer-button"
                   icon={<FontAwesomeIcon icon={faBars} />}
                   aria-label="Navigation Drawer"
                   onClick={() => {

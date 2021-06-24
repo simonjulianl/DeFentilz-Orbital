@@ -44,6 +44,7 @@ const NavDrawer: React.FC<OwnProps> = ({
       onClose={onCloseDrawer}
       isOpen={isOpenDrawer}
       size="xs"
+      data-cy='nav-drawer'
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -52,6 +53,7 @@ const NavDrawer: React.FC<OwnProps> = ({
           {auth ? (
             <VStack alignItems="flex-start" marginTop={15}>
               <Button
+                aria-label="log-out"
                 label="log-out"
                 leftIcon={<FontAwesomeIcon icon={faSignOutAlt} />}
                 color="black"
@@ -64,6 +66,7 @@ const NavDrawer: React.FC<OwnProps> = ({
           ) : (
             <VStack alignItems="flex-start" marginTop={15}>
               <Button
+                aria-label="sign-up"
                 label="sign-up"
                 leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
                 color="black"
@@ -73,6 +76,7 @@ const NavDrawer: React.FC<OwnProps> = ({
                 Sign up
               </Button>
               <Button
+                aria-label="sign-in"
                 label="sign-in"
                 leftIcon={<FontAwesomeIcon icon={faSignInAlt} />}
                 color="black"
