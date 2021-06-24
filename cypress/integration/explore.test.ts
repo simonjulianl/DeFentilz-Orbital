@@ -21,7 +21,7 @@ describe('Mobile Explore Page Rendering', () => {
     })
 
     it('Should have search card (before sign in)', () => {
-        cy.get('[data-cy =search-card]')
+        cy.get('[data-cy=search-card]')
         .first() // Try only on the first one
         .click()
         .get('[data-cy=search-card-modal]')
@@ -66,6 +66,8 @@ describe('Mobile Explore Page Rendering', () => {
     })
 
     it('Should have search card (before sign in)', () => {
+        cy.wait(6000);
+        
         cy.get('[data-cy=search-card]')
         .first()
         .click()
@@ -79,6 +81,8 @@ describe('Mobile Explore Page Rendering', () => {
         cy.get('[type=email]').type('amadeus.winarto@u.nus.edu');
         cy.get('[type=password]').type('testing123');
         cy.get('[data-cy=login-button]').click();
+
+        cy.wait(6000);
 
         cy.get('[data-cy=search-card]')
         .first() // Try only on the first one
