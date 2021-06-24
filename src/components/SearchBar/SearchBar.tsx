@@ -34,6 +34,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
     <form onSubmit={onSubmitEnterHandler}>
       <InputGroup>
         <Input
+          data-cy="search-input"
           type="text"
           id={name}
           placeholder="Search NUS Facilities..."
@@ -46,6 +47,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
         <InputRightAddon
           children={
             <IconButton
+              data-cy="search-button"
               icon={<FontAwesomeIcon icon={faSearch} color="gray.100" />}
               aria-label="search"
               onClick={iconSubmitHandler}

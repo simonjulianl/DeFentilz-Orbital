@@ -75,15 +75,16 @@ const SignInModal: React.FC<OwnProps> = ({
             />
           </FormControl>
           <Flex justifyContent="space-between">
-            <Link pb="3" color="blue.600" onClick={() => toReqPwdHandler()}>
+            <Link aria-label='forgot' pb="3" color="blue.600" onClick={() => toReqPwdHandler()}>
               Forgot Password?
             </Link>
-            <Link color="blue.600" onClick={() => toSignUpHandler()}>
+            <Link aria-label='create' color="blue.600" onClick={() => toSignUpHandler()}>
               Create an account
             </Link>
           </Flex>
           <Stack w="100%" justifyContent="center">
             <Button
+              data-cy='login-button'
               leftIcon={<EmailIcon />}
               colorScheme="blue"
               onClick={(event) => emailSignInHandler(event)}
@@ -91,6 +92,7 @@ const SignInModal: React.FC<OwnProps> = ({
               Log In
             </Button>
             <Button
+              data-cy='gmail-button'
               leftIcon={<FaGoogle />}
               colorScheme="red"
               onClick={(event) => googleSignInHandler(event)}

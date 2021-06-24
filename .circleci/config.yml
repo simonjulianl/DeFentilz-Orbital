@@ -1,23 +1,13 @@
 version: 2.1
-jobs:
+orbs:
+  cypress: cypress-io/cypress@1
+workflows:
   build:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/node:16.3.0
-    steps:
-      - checkout
-      - run:
-          name: yarn update
-          command: "sudo npm install -g --force yarn"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: yarn run tests
-          command: yarn run test --passWithNoTests
+    jobs:
+      - cypress/run:
+          yarn: true
+          install-command: 'yarn add firebase-tools --dev'
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          post-steps:
+            - run: 'CI=false yarn build'

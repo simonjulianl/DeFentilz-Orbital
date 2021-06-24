@@ -37,7 +37,7 @@ const ReqPwdModal: React.FC<OwnProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xs" isCentered={true}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent aria-label="request_pwd_modal">
         <ModalHeader>Request Password Change</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
