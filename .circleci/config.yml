@@ -6,5 +6,9 @@ workflows:
     jobs:
       - cypress/run:
           yarn: true
+          install-command: 'yarn add firebase-tools --dev'
           start: yarn start
           wait-on: 'http://localhost:3000'
+          post-steps:
+            - run: 'CI=false yarn build'
+            - run: './node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN'
