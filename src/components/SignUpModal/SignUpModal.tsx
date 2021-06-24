@@ -53,7 +53,7 @@ const SignUpModal: React.FC<OwnProps> = ({
       isCentered={true}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent aria-label="sign-up-modal">
         <ModalHeader>Sign Up</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

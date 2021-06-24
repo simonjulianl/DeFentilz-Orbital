@@ -45,7 +45,7 @@ const BonusAlert: React.FC<OwnProps> = ({ status, code }) => {
   return (
     <Alert status={status}>
       <AlertIcon />
-      <AlertTitle>{handleCode(code)}</AlertTitle>
+      <AlertTitle data-cy={status}>{handleCode(code)}</AlertTitle>
     </Alert>
   );
 };

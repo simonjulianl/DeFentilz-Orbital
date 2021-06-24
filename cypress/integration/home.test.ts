@@ -1,30 +1,4 @@
-
-const test_shortcut = (label: string) => {
-  cy.get(`[aria-label=${label}]`)
-  .should('exist')
-  .should('be.visible')
-  .click();
-  cy.url().should('include', `/explore?keyword=${label}`);
-}
-
-const test_logo = () => {
-  cy.get('[data-cy=logo]')
-  .should('be.visible');
-}
-
-const test_search_bar = () => {
-  cy.get('[data-cy=search-input]')
-  .invoke('attr', 'placeholder')
-  .should('contain', 'Search NUS Facilities...');
-
-  cy.get('[data-cy=search-button]')        
-    .should('exist');
-}
-
-const test_carousel = () => {
-  cy.get('[aria-label=carousel]')
-    .should('exist');
-}
+import { test_carousel, test_logo, test_search_bar, test_shortcut } from 'cypress/integration/commonTests';
 
 describe('Mobile Home Page Rendering', () => {
   beforeEach(() => {
