@@ -19,6 +19,7 @@ const APIStarter = {
 
 // TODO : Populate this
 const APIUrl = {
+  createUser: url + APIStarter.users,
   getSingleUserByEmail: url + APIStarter.users,
   getUsersByName: url + APIStarter.users + "/name",
   getSingleFacility: url + APIStarter.facilities,
