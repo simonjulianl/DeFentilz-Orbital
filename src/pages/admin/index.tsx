@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import {} from "@chakra-ui/react";
-
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-
 import AdminPage from "~/components/Page/AdminPage";
 
-const AdminHome: NextPage = () => {
+const AdminView: NextPage = () => {
   const router = useRouter();
-  const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => {}, [isLoading]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    router.push("admin/facilities");
+  }, []);
 
   return (
-    <AdminPage title="AdminHome" description="AdminHome">
-      Under construction, please press Facilities button on the left
+    <AdminPage title="facilitiesAdmin" description="facilitiesAdmin">
+      None
     </AdminPage>
   );
 };
 
-export default AdminHome;
+export default AdminView;

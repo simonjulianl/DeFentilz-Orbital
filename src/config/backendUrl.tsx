@@ -27,6 +27,8 @@ const APIUrl = {
   updateFacility: url + APIStarter.facilities,
   postFacilityImage: url + APIStarter.facilities + "/images",
   createFacility: url + APIStarter.facilities,
+  getBookingForAWeek: url + APIStarter.bookings + "/week",
+  getBookingForAMonth: url + APIStarter.bookings + "/month",
 };
 
 export default APIUrl;

@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-import { Box, useDisclosure } from "@chakra-ui/react";
-
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Calendar as BigCalendar, Views, momentLocalizer} from 'react-big-calendar';
-
-import Toolbar from '~/components/Calendar/CalendarToolbar';
+import { Box, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import {
+  Calendar as BigCalendar,
+  Views,
+  momentLocalizer,
+} from "react-big-calendar";
+import Toolbar from "~/components/Calendar/CalendarToolbar";
 import ThreeDayView from "~/components/Calendar/ThreeDayView";
 import BookingModal from "~/components/Calendar/BookingModal";
-import { ModalState } from '~/components/Calendar/BookingType';
-
-import { Booking } from '~/config/interface';
-
-import moment from 'moment';
+import { ModalState } from "~/components/Calendar/BookingType";
+import { Booking } from "~/config/interface";
+import moment from "moment";
 import { AuthContext, useAuth } from "~/firebase/auth";
 
 interface OwnProps {
-    bookingsList : Booking[],
-    facilityId: number,
-    onChange: () => void
+  bookingsList: Booking[];
+  facilityId: number;
+  onChange: () => void;
 }
 
 interface MyBooking extends Booking {
-  title? : string
+  title?: string;
 }
 
 const localizer = momentLocalizer(moment);
-const Calendar : React.FC<OwnProps> = ({ bookingsList, facilityId, onChange}) => {
+const Calendar: React.FC<OwnProps> = ({
+  bookingsList,
+  facilityId,
+  onChange,
+}) => {
   const authContext = useAuth();
 
   const [myBooking, setMyBooking] = useState<MyBooking>({
@@ -34,93 +38,109 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, facilityId, onChange}) =>
     startingTime: null,
     endingTime: null,
     facilityId: null,
-    userEmail: null
+    userEmail: null,
   });
   const [state, setState] = useState<ModalState>(ModalState.None);
-  const {
-    isOpen: isOpen,
-    onOpen: onOpen,
-    onClose: onClose,
-  } = useDisclosure();
+  const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
 
-  const handleSelectSlot = ({start, end}) => {
-    const newBooking : MyBooking = {
+  const handleSelectSlot = ({ start, end }) => {
+    const newBooking: MyBooking = {
       title: "My Booking",
       id: null,
-      startingTime: start, 
+      startingTime: start,
       endingTime: end,
       userEmail: authContext.auth.email,
-      facilityId: facilityId
-    }
+      facilityId: facilityId,
+    };
     setMyBooking(newBooking);
     setState(ModalState.Submit);
     onOpen();
-  }
+  };
 
   const handleSelectBooking = (booking: Booking) => {
-    if (booking.userEmail === authContext.auth.email ) {
+    if (
+      booking.userEmail === authContext.auth.email ||
+      authContext.auth.user.isAdmin
+    ) {
       setMyBooking(booking);
       setState(ModalState.Delete);
       onOpen();
     }
-  }
+  };
 
-  const eventStyleGetter = ({userEmail}: Booking) => {
+  const eventStyleGetter = ({ userEmail }: Booking) => {
     let style = {
-        backgroundColor: userEmail === authContext.auth.email ? 'teal' : 'lightgray',
-        color: userEmail === authContext.auth.email ? 'white' : 'black',
-        display: 'block'
+      backgroundColor:
+        userEmail === authContext.auth.email ? "teal" : "lightgray",
+      color: userEmail === authContext.auth.email ? "white" : "black",
+      display: "block",
     };
     return {
-      style: style
-    }
-  }
+      style: style,
+    };
+  };
+
+  const mode = useBreakpointValue({
+    base: "mobile",
+    md: "desktop",
+  });
 
   return (
     <Box>
       <BigCalendar
         selectable
         localizer={localizer}
-        events={bookingsList.map(booking => {
+        events={bookingsList.map((booking) => {
           return {
             startingTime: new Date(booking.startingTime),
             endingTime: new Date(booking.endingTime),
-            title: booking.userEmail === authContext.auth.email
-                        ? 'My Booking'
-                        : 'Someone\'s Booking',
+            title:
+              booking.userEmail === authContext.auth.email
+                ? "My Booking"
+                : authContext.auth.user.isAdmin
+                ? "Booking"
+                : "Someone's Booking",
             userEmail: booking.userEmail,
             facilityId: booking.facilityId,
-            id: booking.id
-          }
+            id: booking.id,
+          };
         })}
-        startAccessor={(booking: Booking) => (booking.startingTime)}
-        endAccessor={(booking: Booking) => (booking.endingTime)}
-        defaultView={Views.DAY}
+        startAccessor={(booking: Booking) => booking.startingTime}
+        endAccessor={(booking: Booking) => booking.endingTime}
+        defaultView={mode === "mobile" ? Views.DAY : Views.WEEK}
         longPressThreshold={200}
-        eventPropGetter={(eventStyleGetter)}
-        style={{ height: 500, padding: 3}}
-        views={{
-            day: true, 
-            month: true,
-            threeDay: ThreeDayView
-          }}
-        messages={{threeDay: "3-Day"}}
+        eventPropGetter={eventStyleGetter}
+        style={{ height: 500, padding: 3 }}
+        views={
+          mode === "mobile"
+            ? {
+                day: true,
+                month: true,
+                threeDay: ThreeDayView,
+              }
+            : {
+                day: true,
+                week: true,
+                month: true,
+                threeDay: ThreeDayView,
+              }
+        }
+        messages={{ threeDay: "3-Day" }}
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectBooking}
         components={{
-          toolbar: Toolbar
+          toolbar: Toolbar,
         }}
       />
       <BookingModal
-          isOpen={isOpen}
-          onClose={onClose}
-          booking={myBooking}
-          onChange={onChange}
-          state={state}
-        /> 
+        isOpen={isOpen}
+        onClose={onClose}
+        booking={myBooking}
+        onChange={onChange}
+        state={state}
+      />
     </Box>
 
-  
     // <BigCalendar
     //   selectable
     //   localizer={localizer}
@@ -139,7 +159,7 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, facilityId, onChange}) =>
     //   eventPropGetter={(eventStyleGetter)}
     //   style={{ height: 500, padding: 3}}
     //   views={{
-    //     day: true, 
+    //     day: true,
     //     month: true,
     //     threeDay: ThreeDayView
     //   }}
@@ -148,7 +168,7 @@ const Calendar : React.FC<OwnProps> = ({ bookingsList, facilityId, onChange}) =>
     //     toolbar: Toolbar
     //   }}
     // />
-  )
-}
+  );
+};
 
 export default Calendar;

@@ -19,14 +19,16 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   hookVars,
   emailSignInHandler,
   onChangeHandler,
   toLoginHandler,
+  errorObj,
 } from "~/firebase/authHandlersInterface";
 import Alert from "~/components/BonusAlert/BonusAlert";
+import { useAuth } from "~/firebase/auth";
 
 interface OwnProps {
   isOpen: boolean;
@@ -35,6 +37,7 @@ interface OwnProps {
   onChangeHandler: onChangeHandler;
   toLoginHandler: toLoginHandler;
   emailSignUpHandler: emailSignInHandler;
+  error: errorObj;
 }
 
 const SignUpModal: React.FC<OwnProps> = ({
@@ -44,7 +47,16 @@ const SignUpModal: React.FC<OwnProps> = ({
   onChangeHandler,
   toLoginHandler,
   emailSignUpHandler,
+  error,
 }) => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const authContext = useAuth();
+  useEffect(() => {
+    if (authContext.auth || error) {
+      setLoading(false);
+    }
+  }, [authContext.auth, error]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -55,7 +67,7 @@ const SignUpModal: React.FC<OwnProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign Up</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton isDisabled={isLoading} />
         <ModalBody>
           <FormControl pb="3" id="displayName" isRequired>
             <FormLabel>Display Name</FormLabel>
@@ -63,6 +75,7 @@ const SignUpModal: React.FC<OwnProps> = ({
               type="string"
               placeholder="E.g: Maruq"
               onChange={(event) => onChangeHandler(event)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <FormControl pb="3" id="userEmail" isRequired>
@@ -71,6 +84,7 @@ const SignUpModal: React.FC<OwnProps> = ({
               type="email"
               placeholder="E.g: Maruq123@u.nus.edu"
               onChange={(event) => onChangeHandler(event)}
+              isDisabled={isLoading}
             />
             <FormHelperText>
               {'Please use your email address ending with "u.nus.edu"'}
@@ -81,6 +95,7 @@ const SignUpModal: React.FC<OwnProps> = ({
             <Input
               type="password"
               onChange={(event) => onChangeHandler(event)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <Flex justifyContent="space-between">
@@ -92,7 +107,11 @@ const SignUpModal: React.FC<OwnProps> = ({
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => emailSignUpHandler(event)}
+              onClick={(event) => {
+                setLoading(true);
+                emailSignUpHandler(event);
+              }}
+              isDisabled={isLoading}
             >
               Sign Up
             </Button>

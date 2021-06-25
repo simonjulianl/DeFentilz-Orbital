@@ -17,14 +17,16 @@ import { FaGoogle } from "react-icons/fa";
 import { EmailIcon } from "@chakra-ui/icons";
 import {
   emailSignInHandler,
+  errorObj,
   googleSignInHandler,
   hookVars,
   onChangeHandler,
   toReqPwdHandler,
   toSignUpHandler,
 } from "~/firebase/authHandlersInterface";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Alert from "~/components/BonusAlert/BonusAlert";
+import { useAuth } from "~/firebase/auth";
 
 interface OwnProps {
   isOpen: boolean;
@@ -35,6 +37,7 @@ interface OwnProps {
   toSignUpHandler: toSignUpHandler;
   emailSignInHandler: emailSignInHandler;
   googleSignInHandler: googleSignInHandler;
+  error: errorObj;
 }
 
 const SignInModal: React.FC<OwnProps> = ({
@@ -46,7 +49,16 @@ const SignInModal: React.FC<OwnProps> = ({
   toSignUpHandler,
   emailSignInHandler,
   googleSignInHandler,
+  error,
 }) => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const authContext = useAuth();
+  useEffect(() => {
+    if (authContext.auth || error) {
+      setLoading(false);
+    }
+  }, [authContext.auth, error]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -57,7 +69,7 @@ const SignInModal: React.FC<OwnProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Sign In</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton isDisabled={isLoading} />
         <ModalBody>
           <FormControl pb="3" id="userEmail" isRequired>
             <FormLabel>NUS Email address</FormLabel>
@@ -65,6 +77,7 @@ const SignInModal: React.FC<OwnProps> = ({
               type="email"
               placeholder="E.g: Maruq123@u.nus.edu"
               onChange={(event) => onChangeHandler(event)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <FormControl pb="3" id="userPassword" isRequired>
@@ -72,13 +85,25 @@ const SignInModal: React.FC<OwnProps> = ({
             <Input
               type="password"
               onChange={(event) => onChangeHandler(event)}
+              isDisabled={isLoading}
             />
           </FormControl>
           <Flex justifyContent="space-between">
-            <Link pb="3" color="blue.600" onClick={() => toReqPwdHandler()}>
+            <Link
+              pb="3"
+              color="blue.600"
+              onClick={() => {
+                toReqPwdHandler();
+              }}
+            >
               Forgot Password?
             </Link>
-            <Link color="blue.600" onClick={() => toSignUpHandler()}>
+            <Link
+              color="blue.600"
+              onClick={() => {
+                toSignUpHandler();
+              }}
+            >
               Create an account
             </Link>
           </Flex>
@@ -86,14 +111,22 @@ const SignInModal: React.FC<OwnProps> = ({
             <Button
               leftIcon={<EmailIcon />}
               colorScheme="blue"
-              onClick={(event) => emailSignInHandler(event)}
+              onClick={(event) => {
+                setLoading(true);
+                emailSignInHandler(event);
+              }}
+              isDisabled={isLoading}
             >
               Log In
             </Button>
             <Button
               leftIcon={<FaGoogle />}
               colorScheme="red"
-              onClick={(event) => googleSignInHandler(event)}
+              onClick={(event) => {
+                setLoading(true);
+                googleSignInHandler(event);
+              }}
+              isDisabled={isLoading}
             >
               Log In With Google
             </Button>

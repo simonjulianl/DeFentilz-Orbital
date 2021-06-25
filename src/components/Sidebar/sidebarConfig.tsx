@@ -28,13 +28,4 @@ export const sidebarData: HeaderData[] = [
     showBeforeLogged: false,
     showAfterLogged: true,
   },
-  {
-    label: "Booking",
-    path: "/admin/booking",
-    icon: null,
-    variant: "link",
-    color: "white",
-    showBeforeLogged: false,
-    showAfterLogged: true,
-  },
 ];

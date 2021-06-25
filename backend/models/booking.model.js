@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
         get() {
           return moment(this.getDataValue("startingTime"))
             .local()
-            .format("YYYY-MM-DD hh:mm:ss");
+            .format("YYYY-MM-DD HH:mm:ss");
         },
       },
       endingTime: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
         get() {
           return moment(this.getDataValue("endingTime"))
             .local()
-            .format("YYYY-MM-DD hh:mm:ss");
+            .format("YYYY-MM-DD HH:mm:ss");
         },
       },
     },

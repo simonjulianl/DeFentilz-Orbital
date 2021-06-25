@@ -50,6 +50,7 @@ const FacilityEdit: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const editMode = useRef<boolean>(false);
+  const { id } = router.query;
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -170,8 +171,6 @@ const FacilityEdit: NextPage = () => {
         setLoading(false);
       });
   };
-
-  const { id } = router.query;
 
   useEffect(() => {
     if (id !== "0") {

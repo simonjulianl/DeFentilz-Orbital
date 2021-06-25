@@ -61,6 +61,37 @@ function checkBody(req, res) {
   }
 }
 
+function getBetweenDate(startingDate, endDate, res, facilityId) {
+  Booking.findAll({
+    where: {
+      [Op.and]: [
+        {
+          startingTime: {
+            [Op.gte]: startingDate,
+          },
+        },
+        {
+          endingTime: {
+            [Op.lte]: endDate,
+          },
+        },
+        {
+          facilityId: facilityId,
+        },
+      ],
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving the bookings",
+      });
+    });
+}
+
 exports.create = (req, res) => {
   checkBody(req, res);
   const booking = {
@@ -150,6 +181,58 @@ exports.findOne = (req, res) => {
         message: "Error retrieving Booking with id=" + id,
       });
     });
+};
+
+exports.findByDate = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  getBetweenDate(
+    date.setHours(0, 0, 0, 0),
+    new Date(date.setDate(date.getDate() + 1)).setHours(0, 0, 0, 0),
+    res,
+    facilityId
+  );
+};
+
+exports.findByWeek = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  const getMonday = (date) => {
+    // since sunday is 0 not 7
+    var day = date.getDay(),
+      monDate = date.getDate() - day + (day == 0 ? -6 : 1);
+    return new Date(date.setDate(monDate)).setHours(0, 0, 0, 0);
+  };
+
+  const getNextMonday = (date) => {
+    var day = date.getDay(),
+      sunDate = date.getDate() + (day == 0 ? 0 : 7 - date.getDay());
+    return new Date(date.setDate(sunDate + 1)).setHours(0, 0, 0, 0);
+  };
+
+  const weekMonday = getMonday(date);
+  const weekNextMonday = getNextMonday(date);
+
+  getBetweenDate(weekMonday, weekNextMonday, res, facilityId);
+};
+
+exports.findByMonth = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  const getBeginningMonthDate = (dt) =>
+    new Date(dt.setDate(1)).setHours(0, 0, 0, 0);
+  const getEndMonthDate = (dt) =>
+    new Date(dt.getFullYear(), dt.getMonth() + 1, 1).setHours(0, 0, 0, 0);
+
+  getBetweenDate(
+    getBeginningMonthDate(date),
+    getEndMonthDate(date),
+    res,
+    facilityId
+  );
 };
 
 exports.update = (req, res) => {

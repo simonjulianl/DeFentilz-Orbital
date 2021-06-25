@@ -4,7 +4,7 @@ import {
   hookVars,
   settersObject,
   modalCallbacks,
-  errorObj
+  errorObj,
 } from "./authHandlersInterface";
 
 export default function authHandlers(
@@ -21,9 +21,7 @@ export default function authHandlers(
     modalCallbacks.onClosePwd();
   };
 
-  const errorHandler = (
-    error: errorObj,
-  ) => {
+  const errorHandler = (error: errorObj) => {
     settersObject.setError({
       code: error.code,
       message: error.message,

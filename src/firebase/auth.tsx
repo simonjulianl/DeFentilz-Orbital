@@ -115,6 +115,7 @@ function useProvideAuth() {
     } else {
       formattedAuth.user = fetchedUser;
     }
+
     setAuth(formattedAuth);
     setLoading(false);
   };

@@ -17,7 +17,12 @@ interface OwnProps {
   onClose: () => void;
 }
 
-const NavBar: React.FC<OwnProps> = ({ message, onDelete, isOpen, onClose }) => {
+const DeleteConfirmationModal: React.FC<OwnProps> = ({
+  message,
+  onDelete,
+  isOpen,
+  onClose,
+}) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
@@ -37,4 +42,4 @@ const NavBar: React.FC<OwnProps> = ({ message, onDelete, isOpen, onClose }) => {
   );
 };
 
-export default NavBar;
+export default DeleteConfirmationModal;

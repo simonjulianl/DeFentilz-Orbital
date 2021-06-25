@@ -239,6 +239,7 @@ const Header: React.FC<{}> = () => {
         toSignUpHandler={handlerObject.toSignupHandler}
         emailSignInHandler={handlerObject.emailSignInHandler}
         googleSignInHandler={handlerObject.googleSignInHandler}
+        error={error}
       />
       <SignUpModal
         isOpen={isOpenSignup}
@@ -247,6 +248,7 @@ const Header: React.FC<{}> = () => {
         hookVars={hookVars}
         toLoginHandler={handlerObject.toLoginHandler}
         emailSignUpHandler={handlerObject.emailSignUpHandler}
+        error={error}
       />
       <ReqPwdModal
         isOpen={isOpenPwd}
@@ -254,6 +256,7 @@ const Header: React.FC<{}> = () => {
         hookVars={hookVars}
         onChangeHandler={handlerObject.onChangeHandler}
         changePasswordHandler={handlerObject.changePasswordHandler}
+        error={error}
       />
     </>
   );
