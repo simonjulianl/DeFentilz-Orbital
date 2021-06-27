@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Flex, Spacer, Spinner } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spacer,
+  Spinner,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import axios, { AxiosRequestConfig } from "axios";
 import AdminPage from "~/components/Page/AdminPage";
 import { Facility, Error } from "~/config/interface";
-import { useAuth } from "~/firebase/auth";
 import APIUrl from "~/config/backendUrl";
 import SearchCard from "~/components/SearchCard/SearchCard";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import { generateRegex } from "~/util/searchBar";
 
-const FacilityAdminView: NextPage = () => {
+const AdminView: NextPage = () => {
   const router = useRouter();
-  const authContext = useAuth();
 
   const [isLoading, setLoading] = useState<boolean>(true);
   const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -33,6 +34,14 @@ const FacilityAdminView: NextPage = () => {
     []
   );
   const [error, setError] = useState<Error | null>(null);
+  const selectedFacility = useRef<Facility>(null);
+
+  // action modal state
+  const {
+    isOpen,
+    onOpen: onOpenActionModal,
+    onClose: onCloseActionModal,
+  } = useDisclosure();
 
   useEffect(() => {
     if (facilities.length === 0) {
@@ -78,6 +87,48 @@ const FacilityAdminView: NextPage = () => {
       type: "OTHER",
     },
   ];
+
+  const ActionModal = () => {
+    return (
+      <>
+        <Modal isOpen={isOpen} onClose={onCloseActionModal} isCentered={true}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Please Select The Action</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Click check booking to manage the booking for the selected
+              facility, Click Edit Facility to change the field of the facility
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="teal"
+                mr={3}
+                onClick={() =>
+                  router.push(
+                    `/admin/facilities/bookings/${selectedFacility.current.id}`
+                  )
+                }
+              >
+                Check Booking
+              </Button>
+              <Button
+                colorScheme="teal"
+                mr={3}
+                onClick={() =>
+                  router.push(
+                    `/admin/facilities/${selectedFacility.current.id}`
+                  )
+                }
+              >
+                Edit Facility
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
 
   const generateView = () => (
     <Flex direction="column" justify="start" maxW={"80vw"}>
@@ -132,7 +183,10 @@ const FacilityAdminView: NextPage = () => {
             key={facility.id}
             marginLeft={5}
             my={5}
-            onClick={() => router.push(`/admin/facilities/${facility.id}`)}
+            onClick={() => {
+              onOpenActionModal();
+              selectedFacility.current = facility;
+            }}
           >
             <SearchCard
               id={facility.id}
@@ -147,6 +201,7 @@ const FacilityAdminView: NextPage = () => {
           </Box>
         ))}
       </Flex>
+      {ActionModal()}
     </Flex>
   );
 
@@ -163,4 +218,4 @@ const FacilityAdminView: NextPage = () => {
   );
 };
 
-export default FacilityAdminView;
+export default AdminView;

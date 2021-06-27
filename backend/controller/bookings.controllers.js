@@ -2,7 +2,7 @@ const db = require("../models");
 const Booking = db.bookings;
 const Op = db.Sequelize.Op;
 
-function isBookingConflicting(start, end, facilId, update = false) {
+function isBookingConflicting(start, end, facilId) {
   // data is stored in GMT+0 in mysql statement
   const condition = {
     [Op.and]: [
@@ -21,11 +21,7 @@ function isBookingConflicting(start, end, facilId, update = false) {
   };
 
   return Booking.count({ where: condition }).then((count) => {
-    if (update) {
-      return count === 1 ? false : true;
-    } else {
-      return count === 0 ? false : true;
-    }
+    return count === 0 ? false : true;
   });
 }
 
@@ -59,6 +55,37 @@ function checkBody(req, res) {
       message: "startingTime and endingTime cannot be the same",
     });
   }
+}
+
+function getBetweenDate(startingDate, endDate, res, facilityId) {
+  Booking.findAll({
+    where: {
+      [Op.and]: [
+        {
+          startingTime: {
+            [Op.gte]: startingDate,
+          },
+        },
+        {
+          endingTime: {
+            [Op.lte]: endDate,
+          },
+        },
+        {
+          facilityId: facilityId,
+        },
+      ],
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving the bookings",
+      });
+    });
 }
 
 exports.create = (req, res) => {
@@ -152,14 +179,65 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.findByDate = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  getBetweenDate(
+    date.setHours(0, 0, 0, 0),
+    new Date(date.setDate(date.getDate() + 1)).setHours(0, 0, 0, 0),
+    res,
+    facilityId
+  );
+};
+
+exports.findByWeek = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  const getMonday = (date) => {
+    // since sunday is 0 not 7
+    var day = date.getDay(),
+      monDate = date.getDate() - day + (day == 0 ? -6 : 1);
+    return new Date(date.setDate(monDate)).setHours(0, 0, 0, 0);
+  };
+
+  const getNextMonday = (date) => {
+    var day = date.getDay(),
+      sunDate = date.getDate() + (day == 0 ? 0 : 7 - date.getDay());
+    return new Date(date.setDate(sunDate + 1)).setHours(0, 0, 0, 0);
+  };
+
+  const weekMonday = getMonday(date);
+  const weekNextMonday = getNextMonday(date);
+
+  getBetweenDate(weekMonday, weekNextMonday, res, facilityId);
+};
+
+exports.findByMonth = (req, res) => {
+  const date = new Date(req.params.date);
+  const facilityId = req.params.facilityId;
+
+  const getBeginningMonthDate = (dt) =>
+    new Date(dt.setDate(1)).setHours(0, 0, 0, 0);
+  const getEndMonthDate = (dt) =>
+    new Date(dt.getFullYear(), dt.getMonth() + 1, 1).setHours(0, 0, 0, 0);
+
+  getBetweenDate(
+    getBeginningMonthDate(date),
+    getEndMonthDate(date),
+    res,
+    facilityId
+  );
+};
+
 exports.update = (req, res) => {
   const id = req.params.id;
 
   isBookingConflicting(
     req.body.startingTime,
     req.body.endingTime,
-    req.body.facilityId,
-    true
+    req.body.facilityId
   ).then((isConflicting) => {
     if (isConflicting) {
       res.status(500).send({

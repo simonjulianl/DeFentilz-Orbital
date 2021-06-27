@@ -82,6 +82,22 @@ function useProvideAuth() {
       });
   }
 
+  async function createUser(userEmail: string, name: string): Promise<User> {
+    return axios({
+      method: "POST",
+      url: APIUrl.createUser,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email: userEmail,
+        name: name,
+      },
+    })
+      .then((response) => response.data)
+      .catch((err) => console.log(err));
+  }
+
   const handleAuthChange = async (user: firebase.User | null) => {
     if (!user) {
       setLoading(false);
@@ -90,7 +106,16 @@ function useProvideAuth() {
 
     const formattedAuth = formatAuthState(user);
     formattedAuth.token = await user.getIdToken();
-    formattedAuth.user = await getUser(user.email);
+    const fetchedUser = await getUser(user.email);
+
+    if (user.emailVerified && fetchedUser === "") {
+      // user is verified but not in database yet, first time logging in
+      const newUser = await createUser(user.email, user.displayName);
+      formattedAuth.user = newUser;
+    } else {
+      formattedAuth.user = fetchedUser;
+    }
+
     setAuth(formattedAuth);
     setLoading(false);
   };

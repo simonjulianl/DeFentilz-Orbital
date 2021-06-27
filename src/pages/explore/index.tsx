@@ -19,12 +19,14 @@ import SearchBar from "~/components/SearchBar/SearchBar";
 import SearchCard from "~/components/SearchCard/SearchCard";
 
 import axios, { AxiosRequestConfig } from "axios";
+import APIUrl from "~/config/backendUrl";
+import { Facility } from "~/config/interface";
 
 const ExploreView: NextPage = () => {
   const router = useRouter();
   let { keyword } = router.query;
 
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState<Facility[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -34,27 +36,26 @@ const ExploreView: NextPage = () => {
     setScreenWidth(screen.width);
 
     const config: AxiosRequestConfig = {
-      method: "get",
-      url: encodeURI("https://60c6eb8f19aa1e001769feaf.mockapi.io/facilities"),
-      timeout: 10000,
+      method: "GET",
+      url:
+        keyword === undefined || keyword === ""
+          ? APIUrl.getAllFacilities
+          : APIUrl.getFacilitiesByName + `/${keyword}`,
+      timeout: 5000,
     };
 
     setLoading(true);
-
     axios(config)
       .then((response) => response.data)
-      .then((response) => {
-        setLoading(false);
+      .then((facilities) => {
         setError(null);
-        setSearchResult(response);
+        setSearchResult(facilities);
       })
       .catch((error) => {
+        setError(error.response.statusText);
+      })
+      .finally(() => {
         setLoading(false);
-        setError(error);
-        setError({
-          code: error.response.status,
-          message: error.response.statusText,
-        });
       });
   }, [keyword, screenWidth]);
 
@@ -89,14 +90,22 @@ const ExploreView: NextPage = () => {
           ) : error === null ? (
             searchResult.length > 0 ? (
               searchResult.map(
-                ({ id, name, type, description, location, image, rating }) => (
+                ({
+                  id,
+                  name,
+                  type,
+                  description,
+                  location,
+                  imageUrl,
+                  rating,
+                }) => (
                   <SearchCard
                     key={id}
                     id={id}
                     name={name}
                     type={type}
                     description={description}
-                    image={image}
+                    image={imageUrl}
                     location={location}
                     rating={rating}
                   />

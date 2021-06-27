@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import { AuthProvider, useAuth } from "~/firebase/auth";
+import { AuthProvider } from "~/firebase/auth";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";

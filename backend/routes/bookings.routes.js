@@ -18,6 +18,15 @@ module.exports = (app) => {
   // find bookings with facilityId
   router.get("/facility/:facilityId", bookings.findByFacilityId);
 
+  // find bookings within the specified date
+  router.get("/facility/day/:date/:facilityId", bookings.findByDate);
+
+  // find bookings within week of the specified date (starting from Monday to Sunday)
+  router.get("/facility/week/:date/:facilityId", bookings.findByWeek);
+
+  // find bookings within month of the specified date
+  router.get("/facility/month/:date/:facilityId", bookings.findByMonth);
+
   // update a single booking with id
   router.put("/:id", bookings.update);
 

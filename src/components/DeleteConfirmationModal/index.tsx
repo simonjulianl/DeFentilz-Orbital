@@ -1,4 +1,4 @@
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { Button, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import {
   Modal,
@@ -17,13 +17,23 @@ interface OwnProps {
   onClose: () => void;
 }
 
-const NavBar: React.FC<OwnProps> = ({ message, onDelete, isOpen, onClose }) => {
+const DeleteConfirmationModal: React.FC<OwnProps> = ({
+  message,
+  onDelete,
+  isOpen,
+  onClose,
+}) => {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered={true}
+        size={useBreakpointValue({ base: "xs", md: "md", xl: "xl" })}
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete Confirmation</ModalHeader>
+          <ModalHeader>Confirmation</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{message}</ModalBody>
           <ModalFooter>
@@ -37,4 +47,4 @@ const NavBar: React.FC<OwnProps> = ({ message, onDelete, isOpen, onClose }) => {
   );
 };
 
-export default NavBar;
+export default DeleteConfirmationModal;
