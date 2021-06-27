@@ -59,7 +59,7 @@ const SearchCardModal: React.FC<OwnProps> = ({
       scrollBehavior={"inside"}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent data-cy="search-card-modal">
         <ModalHeader marginX="-5">
           <Box maxWidth={"100%"}>
             <ModalCloseButton mt="3" />

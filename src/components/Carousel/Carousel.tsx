@@ -13,6 +13,7 @@ const BonusCarousel: React.FC<{}> = () => {
       showArrows={false}
     >
       <Image
+        aria-label="carousel"
         layout="responsive"
         width={400}
         height={250}
@@ -20,6 +21,7 @@ const BonusCarousel: React.FC<{}> = () => {
         priority={true}
       />
       <Image
+        aria-label="carousel"
         layout="responsive"
         width={400}
         height={250}
