@@ -90,6 +90,7 @@ const SignInModal: React.FC<OwnProps> = ({
           </FormControl>
           <Flex justifyContent="space-between">
             <Link
+              aria-label="forgot"
               pb="3"
               color="blue.600"
               onClick={() => {
@@ -99,6 +100,7 @@ const SignInModal: React.FC<OwnProps> = ({
               Forgot Password?
             </Link>
             <Link
+              aria-label="create"
               color="blue.600"
               onClick={() => {
                 toSignUpHandler();
@@ -109,6 +111,7 @@ const SignInModal: React.FC<OwnProps> = ({
           </Flex>
           <Stack w="100%" justifyContent="center">
             <Button
+              data-cy="login-button"
               leftIcon={<EmailIcon />}
               colorScheme="blue"
               onClick={(event) => {
@@ -120,6 +123,7 @@ const SignInModal: React.FC<OwnProps> = ({
               Log In
             </Button>
             <Button
+              data-cy="gmail-button"
               leftIcon={<FaGoogle />}
               colorScheme="red"
               onClick={(event) => {

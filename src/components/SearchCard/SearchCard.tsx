@@ -42,6 +42,7 @@ const SearchCard: React.FC<OwnProps> = ({
       overflow="hidden"
       onClick={() => showModal && onOpen()}
       shadow="lg"
+      data-cy="search-card"
     >
       <Flex direction="row">
         <Box

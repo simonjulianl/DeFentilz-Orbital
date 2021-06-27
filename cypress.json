@@ -1,0 +1,6 @@
+{
+  "testFiles": "**/*.test.{js,ts,jsx,tsx}",
+  "componentFolder": "src",
+  "baseUrl": "http://localhost:3000",
+  "defaultCommandTimeout": 10000
+}

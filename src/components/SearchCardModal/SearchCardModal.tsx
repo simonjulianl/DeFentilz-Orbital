@@ -59,7 +59,7 @@ const SearchCardModal: React.FC<OwnProps> = ({
       scrollBehavior={"inside"}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent data-cy="search-card-modal">
         <ModalHeader marginX="-5">
           <Box maxWidth={"100%"}>
             <ModalCloseButton mt="3" />
@@ -119,6 +119,7 @@ const SearchCardModal: React.FC<OwnProps> = ({
         <ModalFooter>
           {authContext.auth ? (
             <Button
+              data-cy="sign-in"
               colorScheme="teal"
               onClick={() =>
                 router.push({
@@ -129,7 +130,9 @@ const SearchCardModal: React.FC<OwnProps> = ({
               Book Now!
             </Button>
           ) : (
-            <Button isDisabled>Sign In to Book</Button>
+            <Button isDisabled data-cy="sign-in">
+              Sign In to Book
+            </Button>
           )}
         </ModalFooter>
       </ModalContent>
