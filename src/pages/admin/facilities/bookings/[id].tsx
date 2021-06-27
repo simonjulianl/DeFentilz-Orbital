@@ -1,54 +1,111 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Spinner,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Error, Booking } from "~/config/interface";
-import { useAuth } from "~/firebase/auth";
+import { Booking, Facility } from "~/config/interface";
 import APIUrl from "~/config/backendUrl";
 import AdminPage from "~/components/Page/AdminPage";
 import axios, { AxiosRequestConfig } from "axios";
 import Calendar from "~/components/Calendar/Calendar";
+import SearchCard from "~/components/SearchCard/SearchCard";
 
 const BookingAdminView: NextPage = () => {
   const router = useRouter();
-  const authContext = useAuth();
+  const { id } = router.query;
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [error, setError] = useState<string | null>(null);
-
-  const { id } = router.query;
+  const [bookingChange, setBookingChange] = useState<boolean>(false);
+  const [facility, setFacility] = useState<Facility>({
+    id: 0,
+    name: "nothing",
+    imageUrl: "nothing",
+    location: "nothing",
+    type: "OTHER",
+    description: "nothing",
+    rating: 0,
+    rate: 0,
+  });
 
   useEffect(() => {
-    const todayDate = new Date().toISOString().slice(0, 10);
-    const config: AxiosRequestConfig = {
+    const configFacility: AxiosRequestConfig = {
       method: "GET",
-      url: APIUrl.getBookingForAMonth + `/${todayDate}/${id}`,
+      url: APIUrl.getSingleFacility + `/${id}`,
+      timeout: 5000,
+    };
+
+    const configBooking: AxiosRequestConfig = {
+      method: "GET",
+      url: APIUrl.getEntireBookings + `/${id}`,
       timeout: 5000,
     };
 
     setLoading(true);
-    axios(config)
-      .then((response) => response.data)
-      .then((bookings: Booking[]) => {
-        setLoading(false);
-        console.log(bookings);
-        setBookings(bookings);
+
+    axios
+      .all([
+        axios(configFacility).then((response) => response.data),
+        axios(configBooking).then((response) => response.data),
+      ])
+      .then(
+        axios.spread((facility, bookings) => {
+          setBookings(bookings);
+          setFacility(facility);
+          setError("");
+        })
+      )
+      .catch((error) => {
+        setError(error.response.statusText);
       })
-      .catch((err) => {
+      .finally(() => {
+        setBookingChange(false);
         setLoading(false);
-        setError(err.response.data.message);
       });
-  }, []);
+  }, [bookingChange]);
 
   const generateView = () => (
-    <Flex direction="column" justify="start">
-      <Calendar
-        bookingsList={bookings}
-        facilityId={parseInt(id as string)}
-        onChange={() => {}}
-      />
-    </Flex>
+    <HStack spacing={"5vw"} marginLeft={"5vw"}>
+      <Box>
+        <SearchCard
+          id={facility.id}
+          name={facility.name}
+          type={facility.type}
+          description={facility.description}
+          image={facility.imageUrl}
+          location={facility.location}
+          rating={facility.rating}
+          showModal={false}
+        />
+        {error ? (
+          <Alert status="error" flexDirection="column">
+            <AlertIcon />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : (
+          <></>
+        )}
+      </Box>
+      <Flex direction="column" w={"40vw"} minH={"20vh"} marginLeft={"2vw"}>
+        <Calendar
+          bookingsList={bookings}
+          facilityId={facility.id}
+          onChange={() => {
+            setBookingChange(true);
+          }}
+        />
+      </Flex>
+    </HStack>
   );
 
   return (

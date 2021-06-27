@@ -10,6 +10,7 @@ import {
 import { RadioCard } from "~/components/Calendar/RadioCard";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import moment from "moment";
+import { useEffect, useState } from "react";
 
 interface ToolbarProps {
   view: any;
@@ -29,11 +30,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
   // There are currently three views hard-coded in here: day, month, and threeDay.
   // Prob better to do this as a config file? But the rendered calendar view differs q significantly
   // so it's not like we will change the views...
-
-  const mode = useBreakpointValue({
-    base: "mobile",
-    md: "desktop",
-  });
 
   // Navigation Buttons
   const goToBack = () => {
@@ -81,20 +77,23 @@ const Toolbar: React.FC<ToolbarProps> = ({
     );
   };
 
-  const options = {
-    Day: "day",
-    "3 Day": "threeDay",
-    Week: "week",
-    Month: "month",
-  };
-
-  if (mode === "mobile") {
-    delete options["Week"];
-  }
+  const options = useBreakpointValue({
+    base: {
+      Day: "day",
+      "3 Day": "threeDay",
+      Month: "month",
+    },
+    md: {
+      Day: "day",
+      "3 Day": "threeDay",
+      Week: "week",
+      Month: "month",
+    },
+  });
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "calendarView",
-    defaultValue: mode === "mobile" ? "day" : "week",
+    defaultValue: "day",
     onChange: (value) => {
       onView(value);
     },
@@ -102,14 +101,25 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   const group = getRootProps();
 
+  const generateRadioCard = () => {
+    if (!options) return;
+    return Object.entries(options).map(([key, value], _) => (
+      <RadioCard key={key} {...getRadioProps({ value })}>
+        {key}
+      </RadioCard>
+    ));
+  };
+
   return (
     <VStack paddingBottom={3}>
-      <HStack {...group}>
-        {Object.entries(options).map(([key, value], _) => (
-          <RadioCard key={key} {...getRadioProps({ value })}>
-            {key}
-          </RadioCard>
-        ))}
+      <HStack
+        {...group}
+        spacing={{
+          base: 3,
+          md: 10,
+        }}
+      >
+        {generateRadioCard()}
       </HStack>
       <HStack justifyContent={"space-around"}>
         <IconButton

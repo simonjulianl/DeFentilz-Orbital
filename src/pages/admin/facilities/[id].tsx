@@ -160,7 +160,7 @@ const FacilityEdit: NextPage = () => {
 
     axios({
       method: "DELETE",
-      url: APIUrl.createFacility + `/${id}`,
+      url: APIUrl.deleteSingleFacility + `/${id}`,
     })
       .then((_) => {
         setLoading(false);

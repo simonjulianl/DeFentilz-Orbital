@@ -12,16 +12,15 @@ import BookingModal from "~/components/Calendar/BookingModal";
 import { ModalState } from "~/components/Calendar/BookingType";
 import { Booking } from "~/config/interface";
 import moment from "moment";
-import { AuthContext, useAuth } from "~/firebase/auth";
+import { useAuth } from "~/firebase/auth";
+import APIUrl from "~/config/backendUrl";
+import axios from "axios";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
 
 interface OwnProps {
   bookingsList: Booking[];
   facilityId: number;
   onChange: () => void;
-}
-
-interface MyBooking extends Booking {
-  title?: string;
 }
 
 const localizer = momentLocalizer(moment);
@@ -32,20 +31,18 @@ const Calendar: React.FC<OwnProps> = ({
 }) => {
   const authContext = useAuth();
 
-  const [myBooking, setMyBooking] = useState<MyBooking>({
-    title: null,
-    id: null,
-    startingTime: null,
-    endingTime: null,
-    facilityId: null,
-    userEmail: null,
-  });
+  const [myBooking, setMyBooking] = useState<Booking>(null);
+  const [error, setError] = useState<string>(null);
   const [state, setState] = useState<ModalState>(ModalState.None);
   const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
+  const {
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onClose: onCloseError,
+  } = useDisclosure();
 
   const handleSelectSlot = ({ start, end }) => {
-    const newBooking: MyBooking = {
-      title: "My Booking",
+    const newBooking: Booking = {
       id: null,
       startingTime: start,
       endingTime: end,
@@ -68,11 +65,54 @@ const Calendar: React.FC<OwnProps> = ({
     }
   };
 
+  const handleSubmit = (booking: Booking) => {
+    axios({
+      method: "POST",
+      url: APIUrl.createBooking,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(booking),
+    })
+      .then((response) => {
+        setError(
+          `Booking Created from ${response.data.startingTime} to ${response.data.endingTime} `
+        );
+        onOpenError();
+      })
+      .catch((err) => {
+        setError(err.response.data.message);
+        onOpenError();
+      });
+  };
+
+  const handleDelete = (booking: Booking) => {
+    axios({
+      method: "DELETE",
+      url: APIUrl.deleteSingleBooking + `/${booking.id}`,
+    })
+      .then((_) => {
+        setError(
+          `Booking from ${booking.startingTime} to ${booking.endingTime} deleted`
+        );
+        onOpenError();
+      })
+      .catch((err) => {
+        setError(err.response.data.message);
+        onOpenError();
+      });
+  };
+
   const eventStyleGetter = ({ userEmail }: Booking) => {
     let style = {
       backgroundColor:
-        userEmail === authContext.auth.email ? "teal" : "lightgray",
-      color: userEmail === authContext.auth.email ? "white" : "black",
+        authContext.auth && userEmail === authContext.auth.email
+          ? "teal"
+          : "lightgray",
+      color:
+        authContext.auth && userEmail === authContext.auth.email
+          ? "white"
+          : "black",
       display: "block",
     };
     return {
@@ -95,10 +135,10 @@ const Calendar: React.FC<OwnProps> = ({
             startingTime: new Date(booking.startingTime),
             endingTime: new Date(booking.endingTime),
             title:
-              booking.userEmail === authContext.auth.email
-                ? "My Booking"
-                : authContext.auth.user.isAdmin
+              !authContext.auth || authContext.auth.user.isAdmin
                 ? "Booking"
+                : booking.userEmail === authContext.auth.email
+                ? "My Booking"
                 : "Someone's Booking",
             userEmail: booking.userEmail,
             facilityId: booking.facilityId,
@@ -107,10 +147,10 @@ const Calendar: React.FC<OwnProps> = ({
         })}
         startAccessor={(booking: Booking) => booking.startingTime}
         endAccessor={(booking: Booking) => booking.endingTime}
-        defaultView={mode === "mobile" ? Views.DAY : Views.WEEK}
+        defaultView={mode === "mobile" ? Views.DAY : Views.DAY}
         longPressThreshold={200}
         eventPropGetter={eventStyleGetter}
-        style={{ height: 500, padding: 3 }}
+        style={{ height: "80vh", padding: 3 }}
         views={
           mode === "mobile"
             ? {
@@ -136,38 +176,23 @@ const Calendar: React.FC<OwnProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         booking={myBooking}
-        onChange={onChange}
+        onSubmit={handleSubmit}
+        onDelete={handleDelete}
         state={state}
       />
+      <DeleteConfirmationModal
+        message={error}
+        onDelete={() => {
+          onCloseError();
+          onChange();
+        }}
+        isOpen={isOpenError}
+        onClose={() => {
+          onCloseError();
+          onChange();
+        }}
+      />
     </Box>
-
-    // <BigCalendar
-    //   selectable
-    //   localizer={localizer}
-    //   events={bookingsList.map(x =>{
-    //     return {
-    //       end: new Date('June 21, 2021 20:00:00'),
-    //       start: new Date('June 21, 2021 21:00:00'),
-    //       title: "Testing"
-    //     }
-    //   })}
-    //   titleAccessor={"title"}
-    //   startAccessor={"start"}
-    //   endAccessor={"end"}
-    //   defaultView={Views.DAY}
-    //   longPressThreshold={200}
-    //   eventPropGetter={(eventStyleGetter)}
-    //   style={{ height: 500, padding: 3}}
-    //   views={{
-    //     day: true,
-    //     month: true,
-    //     threeDay: ThreeDayView
-    //   }}
-    //   messages={{threeDay: "3-Day"}}
-    //   components={{
-    //     toolbar: Toolbar
-    //   }}
-    // />
   );
 };
 

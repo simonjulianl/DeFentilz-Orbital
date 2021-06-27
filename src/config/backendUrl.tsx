@@ -23,12 +23,19 @@ const APIUrl = {
   getSingleUserByEmail: url + APIStarter.users,
   getUsersByName: url + APIStarter.users + "/name",
   getSingleFacility: url + APIStarter.facilities,
+
   getAllFacilities: url + APIStarter.facilities,
+  getFacilitiesByName: url + APIStarter.facilities + "/name",
   updateFacility: url + APIStarter.facilities,
   postFacilityImage: url + APIStarter.facilities + "/images",
   createFacility: url + APIStarter.facilities,
-  getBookingForAWeek: url + APIStarter.bookings + "/week",
-  getBookingForAMonth: url + APIStarter.bookings + "/month",
+  deleteSingleFacility: url + APIStarter.facilities,
+
+  createBooking: url + APIStarter.bookings,
+  getEntireBookings: url + APIStarter.bookings + "/facility",
+  getBookingForAWeek: url + APIStarter.bookings + "/facility/week",
+  getBookingForAMonth: url + APIStarter.bookings + "/facility/month",
+  deleteSingleBooking: url + APIStarter.bookings,
 };
 
 export default APIUrl;

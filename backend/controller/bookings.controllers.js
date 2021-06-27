@@ -2,7 +2,7 @@ const db = require("../models");
 const Booking = db.bookings;
 const Op = db.Sequelize.Op;
 
-function isBookingConflicting(start, end, facilId, update = false) {
+function isBookingConflicting(start, end, facilId) {
   // data is stored in GMT+0 in mysql statement
   const condition = {
     [Op.and]: [
@@ -21,11 +21,7 @@ function isBookingConflicting(start, end, facilId, update = false) {
   };
 
   return Booking.count({ where: condition }).then((count) => {
-    if (update) {
-      return count === 1 ? false : true;
-    } else {
-      return count === 0 ? false : true;
-    }
+    return count === 0 ? false : true;
   });
 }
 
@@ -241,8 +237,7 @@ exports.update = (req, res) => {
   isBookingConflicting(
     req.body.startingTime,
     req.body.endingTime,
-    req.body.facilityId,
-    true
+    req.body.facilityId
   ).then((isConflicting) => {
     if (isConflicting) {
       res.status(500).send({
