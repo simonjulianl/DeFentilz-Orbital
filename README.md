@@ -54,6 +54,12 @@ yarn run start:backend
 
 note : use -p PORT_NUMBER to change the default port, default port is 3000
 
+To test frontend prior to committing code
+
+```bash
+yarn cypress run
+```
+
 ## Learn More
 
 To learn more about the resources used, the following documentation might be helpful :
