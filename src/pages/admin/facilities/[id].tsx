@@ -110,7 +110,7 @@ const FacilityEdit: NextPage = () => {
     }
 
     // type cannot be empty since it has default value
-    if (editMode) {
+    if (editMode.current) {
       // create mode
       payload["description"] = desc;
 
