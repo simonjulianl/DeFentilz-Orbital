@@ -16,18 +16,18 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
         get() {
-          return moment(this.getDataValue("startingTime")).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
+          return moment(this.getDataValue("startingTime"))
+            .locale("en-SG")
+            .format("YYYY-MM-DD HH:mm:ss");
         },
       },
       endingTime: {
         type: DataTypes.DATE,
         allowNull: false,
         get() {
-          return moment(this.getDataValue("endingTime")).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
+          return moment(this.getDataValue("endingTime"))
+            .locale("en-SG")
+            .format("YYYY-MM-DD HH:mm:ss");
         },
       },
     },
