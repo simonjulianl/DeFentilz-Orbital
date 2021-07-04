@@ -32,6 +32,8 @@ const ExploreView: NextPage = () => {
 
   const [screenWidth, setScreenWidth] = useState(0);
 
+  const specialKeyword = ["SPORTS", "MEETING", "STUDY", "OTHERS"];
+
   useEffect(() => {
     setScreenWidth(screen.width);
 
@@ -40,6 +42,9 @@ const ExploreView: NextPage = () => {
       url:
         keyword === undefined || keyword === ""
           ? APIUrl.getAllFacilities
+          : typeof keyword === "string" &&
+            specialKeyword.includes(keyword.toUpperCase())
+          ? APIUrl.getFacilitiesByType + `/${keyword.toUpperCase()}`
           : APIUrl.getFacilitiesByName + `/${keyword}`,
       timeout: 5000,
     };

@@ -26,6 +26,7 @@ const APIUrl = {
 
   getAllFacilities: url + APIStarter.facilities,
   getFacilitiesByName: url + APIStarter.facilities + "/name",
+  getFacilitiesByType: url + APIStarter.facilities + "/type",
   updateFacility: url + APIStarter.facilities,
   postFacilityImage: url + APIStarter.facilities + "/images",
   createFacility: url + APIStarter.facilities,
