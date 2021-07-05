@@ -39,9 +39,9 @@ const ProfileView: NextPage = () => {
       <Box>
         {isLoading
         ? (
-            <Center pt="25%">
-              <Spinner size="xl" />
-            </Center>
+          <Center paddingTop={[2, 3, 5, 10]}>
+            <Spinner size="xl"/>
+          </Center>
         )
         : authContext.auth
         ? ( 

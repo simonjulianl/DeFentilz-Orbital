@@ -18,7 +18,7 @@ const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl, wal
       <Grid>
         <GridItem colStart={8}>
           <IconButton
-            aria-label="edit button"
+            aria-label="Edit Button"
             icon={<FontAwesomeIcon icon={faPencilAlt} />}
             variant="ghost"
             onClick={() => console.log("Trigger Modal to change details, or a new page")}
@@ -29,10 +29,10 @@ const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl, wal
         <ProfileAvatar photoUrl={photoUrl} />
           <HStack>
             <Text fontSize="xl">Welcome back,</Text>
-            <Text fontSize="xl" fontWeight="extrabold"> {displayName}! </Text>
+            <Text aria-label="Display Name" fontSize="xl" fontWeight="extrabold"> {displayName}! </Text>
           </HStack>
           <Text fontSize="md">{email}</Text>
-          <Text fontSize="4xl"> SG${walletValue} </Text>
+          <Text aria-label="Wallet Value" fontSize="4xl"> SG${walletValue} </Text>
       </VStack>
     </Box>
   )

@@ -138,7 +138,7 @@ const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
         <Box
           height={{ base: "90vh", xl: "100vh" }}
           bgColor="transparent"
-          overflowY={{ base: "scroll", xl: "hidden" }}
+          overflowY={{ base: "scroll", xl: "scroll" }}
         >
           {children}
         </Box>

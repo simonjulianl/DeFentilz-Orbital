@@ -88,9 +88,8 @@ const ExploreView: NextPage = () => {
         </VStack>
         <VStack pt={["25%", "25%", "15%", "5%"]}>
           {isLoading ? (
-            <Box>
-              LOADING
-              <Spinner ml="2" />
+            <Box paddingTop={[2, 3, 5, 10]}>
+              <Spinner size="xl"/>
             </Box>
           ) : error === null ? (
             searchResult.length > 0 ? (

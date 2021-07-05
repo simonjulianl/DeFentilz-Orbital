@@ -126,7 +126,7 @@ const Calendar: React.FC<OwnProps> = ({
   });
 
   return (
-    <Box>
+    <Box aria-label="Booking Calendar">
       <BigCalendar
         selectable
         localizer={localizer}

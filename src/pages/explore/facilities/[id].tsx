@@ -88,18 +88,18 @@ const ContentDetailView: NextPage = () => {
     <Page title="ContentListing" description="ContentListing">
       <VStack>
         {isLoading ? (
-          <Box>
-            LOADING
-            <Spinner ml="2" />
+          <Box paddingTop={[2, 3, 5, 10]}>
+            <Spinner size="xl"/>
           </Box>
         ) : error === null ? (
-          <Box paddingX={3}>
+          <Box paddingX={3} aria-label="Scrollable">
             <Center paddingTop={3}>
-              <Heading size="lg">{facility.name}</Heading>
+              <Heading size="lg" aria-label="Facility Name">{facility.name}</Heading>
             </Center>
             <Box width={"100%"}>
               <Image
-                width={"100vh"}
+                aria-label="Facility Image"
+                width={["100vh", "100vh", "50vh"]}
                 borderRadius="lg"
                 objectFit="fill"
                 src={error ? "/notAvail2.png" : facility.imageUrl}
@@ -110,19 +110,19 @@ const ContentDetailView: NextPage = () => {
             </Box>
             <HStack justifyContent="space-between">
               <Box>
-                <Text mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Price" mt="3" fontWeight="semibold" as="h4">
                   Price
                 </Text>
                 <Text>{"SGD " + facility.rate}</Text>
               </Box>
               <Box>
-                <Text mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Location" mt="3" fontWeight="semibold" as="h4">
                   Location
                 </Text>
                 <Text>{facility.location}</Text>
               </Box>
               <Box>
-                <Text mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Rating" mt="3" fontWeight="semibold" as="h4">
                   Rating
                 </Text>
                 <Box justifyContent="left">
