@@ -3,7 +3,7 @@ import { useAuth } from "~/firebase/auth";
 
 import { Avatar, VStack, Text, Box } from "@chakra-ui/react";
 
-import WalletCard from "~/components/Profile/Wallet";
+import BookingCard from "~/components/Profile/ProfileBooking";
 import Page from "~/components/Page/Page";
 import ProfileHeader from "~/components/Profile/ProfileHeader";
 
@@ -39,7 +39,7 @@ const ProfileView: NextPage = () => {
                 photoUrl={authContext.auth.photoUrl}
                 email={authContext.auth.email}
               />
-              <WalletCard
+              <BookingCard
                 displayName={authContext.auth.name}
                 photoUrl={authContext.auth.photoUrl}
                 email={authContext.auth.email}

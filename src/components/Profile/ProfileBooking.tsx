@@ -12,7 +12,7 @@ interface OwnProps { // To be fetched from the page
   email: string, 
 }
 
-const WalletCard : React.FC<OwnProps> = ( { displayName, email, photoUrl} ) => {
+const BookingCard : React.FC<OwnProps> = ( { displayName, email, photoUrl} ) => {
   return (
     <HStack paddingX={[5]} justifyContent="space-between">
       <Box>
@@ -21,4 +21,4 @@ const WalletCard : React.FC<OwnProps> = ( { displayName, email, photoUrl} ) => {
   )
 }
 
-export default WalletCard;
+export default BookingCard;
