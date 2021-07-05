@@ -8,10 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface OwnProps { // To be fetched from the page
   displayName: string,
   photoUrl: string,  
-  email: string, 
+  email: string,
+  walletValue: number
 }
 
-const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl} ) => {
+const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl, walletValue} ) => {
   return (
     <Box>
       <Grid>
@@ -31,7 +32,7 @@ const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl} ) =
             <Text fontSize="xl" fontWeight="extrabold"> {displayName}! </Text>
           </HStack>
           <Text fontSize="md">{email}</Text>
-          <Text fontSize="4xl"> SG$100.0 </Text>
+          <Text fontSize="4xl"> SG${walletValue} </Text>
       </VStack>
     </Box>
   )
