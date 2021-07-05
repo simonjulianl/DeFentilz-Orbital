@@ -86,7 +86,7 @@ const HomeView: NextPage = () => {
                 router.push({
                   pathname: "/explore",
                   query: {
-                    keyword: "sports",
+                    keyword: "sport",
                   },
                 });
               }}
