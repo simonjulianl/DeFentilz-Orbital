@@ -1,33 +1,60 @@
 import React from "react";
 import { useAuth } from "~/firebase/auth";
-import { Avatar, VStack, Text } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/layout";
+
+import { Avatar, VStack, Text, Box } from "@chakra-ui/react";
+
+import WalletCard from "~/components/Profile/Wallet";
 import Page from "~/components/Page/Page";
+import ProfileHeader from "~/components/Profile/ProfileHeader";
+
 import { NextPage } from "next";
+import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
 
   return (
     <Page title="Profile" description="Profile">
-      <VStack>
-        <Box>
-          <VStack paddingTop={[10, 50]}>
-            <Avatar size="lg" aria-label="Profile Picture" />
-            {authContext.auth ? (
-              <>
-                <Text>{"Display Name: " + authContext.auth.name}</Text>
-                <Text>{"Email Address: " + authContext.auth.email}</Text>
-                <Text>{"Bookings: Currently No Bookings Yet"}</Text>
-              </>
-            ) : (
+      <Box>
+        {/* <VStack paddingTop={[10, 50]}>
+          <Avatar size="lg" aria-label="Profile Picture" />
+          {authContext.auth ? (
+            <>
+              <Text>{"Display Name: " + authContext.auth.name}</Text>
+              <Text>{"Email Address: " + authContext.auth.email}</Text>
+              <Text>{"Bookings: Currently No Bookings Yet"}</Text>
+            </>
+          ) : (
+            <Text align="center">
+              {"You are not logged in. Please login to see your profile."}
+            </Text>
+          )}
+        </VStack> */}
+
+        { authContext.auth
+        ? ( 
+            <>
+              <ProfileHeader
+                displayName={authContext.auth.name}
+                photoUrl={authContext.auth.photoUrl}
+                email={authContext.auth.email}
+              />
+              <WalletCard
+                displayName={authContext.auth.name}
+                photoUrl={authContext.auth.photoUrl}
+                email={authContext.auth.email}
+              />
+            </>
+          ) : (
+            <VStack paddingTop={[10, 50]}>
+              <ProfileAvatar photoUrl={null} />
               <Text align="center">
                 {"You are not logged in. Please login to see your profile."}
               </Text>
-            )}
-          </VStack>
-        </Box>
-      </VStack>
+            </VStack>
+          )
+        }
+      </Box>
     </Page>
   );
 };
