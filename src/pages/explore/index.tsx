@@ -32,7 +32,7 @@ const ExploreView: NextPage = () => {
 
   const [screenWidth, setScreenWidth] = useState(0);
 
-  const specialKeyword = ["SPORTS", "MEETING", "STUDY", "OTHERS"];
+  const specialKeyword = ["SPORT", "MEETING", "STUDY", "OTHERS"];
 
   useEffect(() => {
     setScreenWidth(screen.width);
@@ -57,7 +57,7 @@ const ExploreView: NextPage = () => {
         setSearchResult(facilities);
       })
       .catch((error) => {
-        setError(error.response.statusText);
+        setError(error);
       })
       .finally(() => {
         setLoading(false);
