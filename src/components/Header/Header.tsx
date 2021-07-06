@@ -118,6 +118,7 @@ const Header: React.FC<{}> = () => {
       <Box key={navItem.label}>
         <Link
           p={8}
+          aria-label={navItem.label}
           onClick={() => {
             switch (navItem.label) {
               case "Sign In":
