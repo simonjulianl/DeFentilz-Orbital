@@ -3,6 +3,7 @@ import { AuthProvider } from "~/firebase/auth";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
+import { useEffect, useState } from "react";
 
 const breakpoints = createBreakpoints({
   sm: "23em", // Small Phones

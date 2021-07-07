@@ -31,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // home page api
 app.get("/", (req, res) => res.json({ message: "Welcome to BoNUS Server" }));
 
+require("./routes/notif.routes")(app);
 require("./routes/facilities.routes")(app);
 require("./routes/users.routes")(app);
 require("./routes/bookings.routes")(app);
