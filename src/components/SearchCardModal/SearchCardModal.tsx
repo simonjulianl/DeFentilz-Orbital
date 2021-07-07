@@ -61,7 +61,7 @@ const SearchCardModal: React.FC<OwnProps> = ({
       <ModalOverlay />
       <ModalContent data-cy="search-card-modal">
         <ModalHeader marginX="-5">
-          <Box maxWidth={"100%"}>
+          <Center width={"100%"}>
             <ModalCloseButton mt="3" />
             <Image
               borderRadius="lg"
@@ -71,7 +71,7 @@ const SearchCardModal: React.FC<OwnProps> = ({
               fallback={<Spinner />}
               onError={() => setError(true)}
             />
-          </Box>
+          </Center>
         </ModalHeader>
         <ModalBody>
           <Center>

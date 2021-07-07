@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Center,
   Box,
   VStack,
   Flex,
@@ -84,9 +85,9 @@ const ExploreView: NextPage = () => {
             ),
             md: <></>,
           })}
-          <Text>Searching for: {keyword}</Text>
         </VStack>
-        <VStack pt={["25%", "25%", "15%", "5%"]}>
+        <VStack pt={["25%", "15%", "2"]}>
+          <Text fontSize={["md", "md", "xl"]}>Searching for: {keyword}</Text>
           {isLoading ? (
             <Box paddingTop={[2, 3, 5, 10]}>
               <Spinner size="xl"/>

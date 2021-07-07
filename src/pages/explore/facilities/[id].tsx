@@ -94,12 +94,14 @@ const ContentDetailView: NextPage = () => {
         ) : error === null ? (
           <Box paddingX={3} aria-label="Scrollable">
             <Center paddingTop={3}>
-              <Heading size="lg" aria-label="Facility Name">{facility.name}</Heading>
+              <Heading size="lg" aria-label="Facility Name">
+                {facility.name}
+              </Heading>
             </Center>
-            <Box width={"100%"}>
+            <Center width={"100%"}>
               <Image
                 aria-label="Facility Image"
-                width={["100vh", "100vh", "50vh"]}
+                width={["100%", "100%", "80vh"]}
                 borderRadius="lg"
                 objectFit="fill"
                 src={error ? "/notAvail2.png" : facility.imageUrl}
@@ -107,27 +109,27 @@ const ContentDetailView: NextPage = () => {
                 fallback={<Spinner />}
                 onError={() => setError(true)}
               />
-            </Box>
-            <HStack justifyContent="space-between">
+            </Center>
+            <HStack justifyContent="space-between" width={["100%", "100%", "50vw"]}>
               <Box>
-                <Text aria-label="Price" mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Price" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
                   Price
                 </Text>
-                <Text>{"SGD " + facility.rate}</Text>
+                <Text fontSize={["md", "md", "lg"]}>{"SGD " + facility.rate}</Text>
               </Box>
               <Box>
-                <Text aria-label="Location" mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Location" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
                   Location
                 </Text>
-                <Text>{facility.location}</Text>
+                <Text fontSize={["md", "md", "lg"]}>{facility.location}</Text>
               </Box>
               <Box>
-                <Text aria-label="Rating" mt="3" fontWeight="semibold" as="h4">
+                <Text aria-label="Rating" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
                   Rating
                 </Text>
                 <Box justifyContent="left">
                   {facility.rating === null ? (
-                    <Text>{"No Rating"}</Text>
+                    <Text fontSize={["md", "md", "lg"]}>{"No Rating"}</Text>
                   ) : (
                     Array(5)
                       .fill("")
@@ -144,15 +146,15 @@ const ContentDetailView: NextPage = () => {
                 </Box>
               </Box>
             </HStack>
-            <Text mt="3" fontWeight="semibold" as="h4">
+            <Text mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
               About this place
             </Text>
-            <Text>{facility.description}</Text>
-            <Text mt="3" fontWeight="semibold" as="h4">
+            <Text fontSize={["md", "md", "lg"]}>{facility.description}</Text>
+            <Text mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
               Calendar
             </Text>
-            <Text>
-              "Make your booking by modifying the slots in the calendar below!"
+            <Text fontSize={["md", "md", "lg"]}>
+              Make your booking by modifying the slots in the calendar below!
             </Text>
             <Calendar
               bookingsList={bookings}
