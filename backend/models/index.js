@@ -47,6 +47,7 @@ db.facilities = require("./facility.model")(sequelize, Sequelize);
 db.bookings = require("./booking.model")(sequelize, Sequelize);
 db.rewards = require("./reward.model")(sequelize, Sequelize);
 db.users = require("./user.model")(sequelize, Sequelize);
+db.walletRequests = require("./walletRequest.model")(sequelize, Sequelize);
 
 // set up the association
 db.users.hasMany(db.bookings);
@@ -63,5 +64,6 @@ db.rewards.belongsTo(db.users, {
     allowNull: true,
   },
 });
+db.users.hasMany(db.walletRequests);
 
 module.exports = db;

@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const moment = require("moment");
 
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define(
@@ -28,6 +29,15 @@ module.exports = (sequelize, Sequelize) => {
       isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      lastTopUpRequest: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        get() {
+          return moment(this.getDataValue("startingTime"))
+            .locale("en-SG")
+            .format("YYYY-MM-DD HH:mm:ss");
+        },
       },
     },
     {

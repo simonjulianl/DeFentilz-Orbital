@@ -1,4 +1,4 @@
-const { DataTypes, AsyncQueueError } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const moment = require("moment");
 
 module.exports = (sequelize, Sequelize) => {
