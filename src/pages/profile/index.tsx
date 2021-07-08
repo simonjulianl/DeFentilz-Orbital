@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 
-import { Avatar, VStack, Text, Box, Spinner, Center } from "@chakra-ui/react";
+import { VStack, Text, Box, Spinner, Center, Grid, GridItem, IconButton } from "@chakra-ui/react";
 
 import BookingCard from "~/components/Profile/BookingCard";
 import Page from "~/components/Page/Page";
@@ -12,9 +12,13 @@ import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 import axios, { AxiosRequestConfig } from "axios";
 import APIUrl from "~/config/backendUrl";
 import { Booking } from "~/config/interface";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
+  const router = useRouter();
   const [isLoading, setLoading ] = useState<boolean>(false);
   const [walletValue, setWalletValue ] = useState<number>(0);
   const [myBookings, setMyBookings ] = useState<Booking[]>([]);
@@ -57,15 +61,27 @@ const ProfileView: NextPage = () => {
         : authContext.auth
         ? ( 
             <>
+              <Grid>
+                <GridItem colStart={8}>
+                  <IconButton
+                    aria-label="Edit Button"
+                    icon={<FontAwesomeIcon icon={faCog} />}
+                    variant="ghost"
+                    onClick={() => router.push('/profile/settings')}
+                  />
+                </GridItem>
+              </Grid>
               <ProfileHeader
                 displayName={authContext.auth.name}
                 photoUrl={authContext.auth.photoUrl}
                 email={authContext.auth.email}
                 walletValue={walletValue}
+                showTopUp={true}
+                onTopUp={() => console.log("Topped up")}
               />
               <VStack>
               <Box>
-                <Text fontWeight="semibold" fontSize="lg"> My Bookings </Text>
+                <Text fontWeight="bold" fontSize="xl"> My Bookings </Text>
               </Box>
                 {
                   myBookings.map((booking, id) => {
