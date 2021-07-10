@@ -37,7 +37,7 @@ const Sidebar: React.FC<{}> = () => {
         left={0}
         p={5}
         w="200px"
-        top={"7vh"}
+        top={"6vh"}
         h="100%"
         bg="#dfdfdf"
       >

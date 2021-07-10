@@ -25,7 +25,7 @@ import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import { generateRegex } from "~/util/searchBar";
 
-const AdminView: NextPage = () => {
+const AdminFacilityPage: NextPage = () => {
   const router = useRouter();
 
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -218,4 +218,4 @@ const AdminView: NextPage = () => {
   );
 };
 
-export default AdminView;
+export default AdminFacilityPage;

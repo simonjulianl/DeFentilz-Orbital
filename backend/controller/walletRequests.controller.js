@@ -98,7 +98,7 @@ exports.delete = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Walelt top up request was deleted successfully",
+          message: "Wallet top up request was deleted successfully",
         });
       } else {
         res.send({

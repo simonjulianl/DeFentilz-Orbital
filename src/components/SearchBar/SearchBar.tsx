@@ -37,7 +37,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
           data-cy="search-input"
           type="text"
           id={name}
-          placeholder="Search NUS Facilities..."
+          placeholder="Search..."
           name="search"
           variant="outline"
           _focus={{

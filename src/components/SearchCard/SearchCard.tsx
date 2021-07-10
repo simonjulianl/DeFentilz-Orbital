@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import SearchCardModal from "~/components/SearchCardModal/SearchCardModal";
 
-interface OwnProps {
+export interface OwnProps {
   id: number;
   name: string;
   type: string;
@@ -46,6 +46,7 @@ const SearchCard: React.FC<OwnProps> = ({
     >
       <Flex direction="row">
         <Box
+          marginLeft={0}
           width={{ base: "100%", md: "15vw" }}
           height={{ base: "100%", md: "25vh" }}
         >

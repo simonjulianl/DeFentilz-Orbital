@@ -22,6 +22,16 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue:
           "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_profile_picture.jpeg",
       },
+      lastTopUpRequest: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+        allowNull: true,
+        get() {
+          return moment(this.getDataValue("startingTime"))
+            .locale("en-SG")
+            .format("YYYY-MM-DD HH:mm:ss");
+        },
+      },
       walletValue: {
         type: DataTypes.FLOAT,
         defaultValue: 0,
@@ -29,15 +39,6 @@ module.exports = (sequelize, Sequelize) => {
       isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-      },
-      lastTopUpRequest: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        get() {
-          return moment(this.getDataValue("startingTime"))
-            .locale("en-SG")
-            .format("YYYY-MM-DD HH:mm:ss");
-        },
       },
     },
     {
