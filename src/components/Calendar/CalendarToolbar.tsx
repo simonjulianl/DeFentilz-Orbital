@@ -104,7 +104,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   const generateRadioCard = () => {
     if (!options) return;
     return Object.entries(options).map(([key, value], _) => (
-      <RadioCard key={key} {...getRadioProps({ value })}>
+      <RadioCard data-cy={key} key={key} {...getRadioProps({ value })}>
         {key}
       </RadioCard>
     ));
@@ -128,7 +128,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
           icon={<FaArrowLeft />}
           onClick={goToBack}
         />
-        <Button onClick={goToCurrent}> Today </Button>
+        <Button aria-label="Today" onClick={goToCurrent}> Today </Button>
         <IconButton
           colorScheme="teal"
           aria-label="Next"

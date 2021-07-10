@@ -94,7 +94,7 @@ const HomeView: NextPage = () => {
               isRound
               size={"lg"}
               icon={<FontAwesomeIcon icon={faVolleyballBall} />}
-              aria-label="sports"
+              aria-label="sport"
               onClick={() => {
                 router.push({
                   pathname: "/explore",

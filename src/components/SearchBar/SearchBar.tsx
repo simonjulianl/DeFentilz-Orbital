@@ -32,7 +32,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
 
   return (
     <form onSubmit={onSubmitEnterHandler}>
-      <InputGroup>
+      <InputGroup bgColor="white" borderRadius="lg">
         <Input
           data-cy="search-input"
           type="text"
@@ -40,9 +40,6 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
           placeholder="Search..."
           name="search"
           variant="outline"
-          _focus={{
-            backgroundColor: "white",
-          }}
         />
         <InputRightAddon
           children={

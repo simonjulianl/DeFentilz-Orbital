@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex } from "@chakra-ui/react";
-import { Router, useRouter, withRouter } from "next/router";
+import { Router, withRouter } from "next/router";
 import Page from "~/components/Page/Page";
 
 import Sidebar from "~/components/Sidebar/sidebar";

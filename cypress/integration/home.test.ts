@@ -31,8 +31,8 @@ describe('Mobile Home Page Rendering', () => {
       .get('[aria-label=sign-in]')
   })
 
-  it('Should have sports shortcut', () => {
-    test_shortcut('sports');
+  it('Should have sport shortcut', () => {
+    test_shortcut('sport');
   })
 
   it('Should have meeting shortcut', () => {
@@ -73,8 +73,8 @@ describe('Desktop Home Page Rendering', () => {
     cy.get('[data-cy=nav-drawer-button]').should('not.exist');
   })
 
-  it('Should have sports shortcut', () => {
-    test_shortcut('sports')
+  it('Should have sport shortcut', () => {
+    test_shortcut('sport')
   })
 
   it('Should have meeting shortcut', () => {

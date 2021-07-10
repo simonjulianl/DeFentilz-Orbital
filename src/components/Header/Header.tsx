@@ -117,12 +117,17 @@ const Header: React.FC<{}> = () => {
     return (
       <Box key={navItem.label}>
         <Link
+<<<<<<< HEAD
           p={{
             sm: 0,
             md: 2,
             lg: 4,
             xl: 6,
           }}
+=======
+          p={8}
+          aria-label={navItem.label}
+>>>>>>> main
           onClick={() => {
             switch (navItem.label) {
               case "Sign In":

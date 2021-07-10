@@ -35,8 +35,8 @@ const SearchCard: React.FC<OwnProps> = ({
 
   return (
     <Box
-      minHeight={{ md: "35vh" }}
-      width={["2xs"]}
+      minHeight={{ base: "35vh", md: "50vh" }}
+      width={["2xs", "2xs", "xs", "md", "xl"]}
       borderWidth={"1px"}
       borderRadius="xl"
       overflow="hidden"
@@ -46,7 +46,6 @@ const SearchCard: React.FC<OwnProps> = ({
     >
       <Flex direction="row">
         <Box
-          marginLeft={0}
           width={{ base: "100%", md: "15vw" }}
           height={{ base: "100%", md: "25vh" }}
         >
@@ -70,7 +69,9 @@ const SearchCard: React.FC<OwnProps> = ({
                   d="flex"
                   alignItems="baseline"
                 >
-                  <Text noOfLines={2}>{name}</Text>
+                  <Text noOfLines={2} fontSize={["sm", "md", "xl"]}>
+                    {name}
+                  </Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">

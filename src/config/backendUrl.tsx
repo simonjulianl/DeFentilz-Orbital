@@ -41,6 +41,7 @@ const APIUrl = {
   // booking endpoints
   createBooking: url + APIStarter.bookings,
   getEntireBookings: url + APIStarter.bookings + "/facility",
+  getBookingByEmail: url + APIStarter.bookings + "/user",
   getBookingForAWeek: url + APIStarter.bookings + "/facility/week",
   getBookingForAMonth: url + APIStarter.bookings + "/facility/month",
   deleteSingleBooking: url + APIStarter.bookings,

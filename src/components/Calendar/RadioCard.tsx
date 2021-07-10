@@ -11,6 +11,7 @@ export const RadioCard = (props) => {
       <input {...input} />
       <Box
         {...checkbox}
+        aria-label={props.key}
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
