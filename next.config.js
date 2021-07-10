@@ -3,7 +3,7 @@ const withPWA = require("next-pwa");
 module.exports = withPWA({
   pwa: {
     disable: process.env.NODE_ENV === "development",
-    register: false,
+    register: true,
     sw: "sw.js",
     scope: "/",
     dest: "public",
@@ -15,7 +15,7 @@ module.exports = withPWA({
     ],
   },
   env: {
-    ENVIRONMENT: "TEST",
+    ENVIRONMENT: "PRODUCTION",
   },
   async redirects() {
     return [
