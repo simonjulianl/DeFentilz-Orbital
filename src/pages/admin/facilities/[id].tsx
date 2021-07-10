@@ -296,7 +296,7 @@ const FacilityEdit: NextPage = () => {
               value={rate}
               disabled={isLoading}
               onChange={(e) => {
-                setRate(parseInt(e));
+                setRate(parseFloat(e));
               }}
               defaultValue={0}
               precision={2}

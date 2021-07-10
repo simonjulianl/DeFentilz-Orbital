@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import SearchCardModal from "~/components/SearchCardModal/SearchCardModal";
 
-interface OwnProps {
+export interface OwnProps {
   id: number;
   name: string;
   type: string;
@@ -46,8 +46,8 @@ const SearchCard: React.FC<OwnProps> = ({
     >
       <Flex direction="row">
         <Box
-          width={{ base: "100%", md: "100%" }}
-          height={{ base: "100%", md: "35%" }}
+          width={{ base: "100%", md: "15vw" }}
+          height={{ base: "100%", md: "25vh" }}
         >
           <Image
             width={"100%"}
@@ -69,7 +69,9 @@ const SearchCard: React.FC<OwnProps> = ({
                   d="flex"
                   alignItems="baseline"
                 >
-                  <Text noOfLines={2} fontSize={["sm", "md", "xl"]}>{name}</Text>
+                  <Text noOfLines={2} fontSize={["sm", "md", "xl"]}>
+                    {name}
+                  </Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">

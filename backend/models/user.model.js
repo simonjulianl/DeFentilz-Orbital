@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const moment = require("moment");
 
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define(
@@ -20,6 +21,16 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
         defaultValue:
           "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_profile_picture.jpeg",
+      },
+      lastTopUpRequest: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+        allowNull: true,
+        get() {
+          return moment(this.getDataValue("startingTime"))
+            .locale("en-SG")
+            .format("YYYY-MM-DD HH:mm:ss");
+        },
       },
       walletValue: {
         type: DataTypes.FLOAT,

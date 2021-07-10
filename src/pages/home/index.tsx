@@ -67,11 +67,24 @@ const HomeView: NextPage = () => {
           ),
           md: (
             <Grid templateColumns="repeat(5, 1fr)" gap={6} marginBottom={5}>
-              <GridItem colSpan={1} bg="papayawhip" />
+              <GridItem colSpan={1} bg="papayawhip">
+                <Text fontSize="4xl">
+                  Please open the app using your phone if you are not an admin,
+                  <br />
+                  <br />
+                  our app is designed using mobile-first principle and the web
+                  app is purely designated for admin
+                </Text>
+              </GridItem>
               <GridItem colSpan={3} bg="papayawhip">
                 <BonusCarousel />
               </GridItem>
-              <GridItem colSpan={1} bg="tomato" />
+              <GridItem colSpan={1} bg="tomato">
+                <Text fontSize="4xl">
+                  Please install the app by adding to homescreen on the phone if
+                  you are prompted too
+                </Text>
+              </GridItem>
             </Grid>
           ),
         })}
