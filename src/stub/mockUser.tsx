@@ -5,6 +5,7 @@ export const user1: User = {
   name: "mr user 1",
   isAdmin: true,
   walletValue: 100000,
+  lastTopUpRequest: new Date().toISOString(),
   profilePictureUrl:
     "https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_profile_picture.jpeg",
 };

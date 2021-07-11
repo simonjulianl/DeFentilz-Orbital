@@ -20,6 +20,9 @@ module.exports = (app) => {
   // update a single user with email
   router.put("/:email", users.update);
 
+  // update a single user with email
+  router.put("/topUp/:email", users.topUpWallet);
+
   // delete a single user with email
   router.delete("/:email", users.delete);
 

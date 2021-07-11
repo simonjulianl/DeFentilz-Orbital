@@ -117,8 +117,12 @@ const Header: React.FC<{}> = () => {
     return (
       <Box key={navItem.label}>
         <Link
-          p={8}
-          aria-label={navItem.label}
+          p={{
+            sm: 0,
+            md: 2,
+            lg: 4,
+            xl: 6,
+          }}
           onClick={() => {
             switch (navItem.label) {
               case "Sign In":
@@ -141,7 +145,7 @@ const Header: React.FC<{}> = () => {
             textDecoration: "none",
             color: "black",
           }}
-          data-cy={navItem.label.split(' ').join('').toLowerCase()}
+          data-cy={navItem.label.split(" ").join("").toLowerCase()}
         >
           {navItem.label} {navItem.icon}
         </Link>
@@ -168,7 +172,7 @@ const Header: React.FC<{}> = () => {
         justify="space-between"
         align="center"
         bgColor="red.800"
-        height={"8vh"}
+        height={"65px"}
       >
         <Button
           paddingLeft={[2, 5, 10]}
@@ -211,7 +215,7 @@ const Header: React.FC<{}> = () => {
             </>
           ),
           // for web version, header is used as the navbar
-          md: (
+          lg: (
             <>
               <Box marginLeft="5vh" width={"23vw"}>
                 <SearchBar
