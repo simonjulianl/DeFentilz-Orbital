@@ -6,6 +6,7 @@ import {
   faSignOutAlt,
   faUserShield,
   faSearch,
+  faHotel,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface HeaderData {
@@ -35,6 +36,15 @@ export const HeaderConfig: HeaderData[] = [
     variant: "link",
     color: "white",
     showBeforeLogged: true,
+    showAfterLogged: true,
+  },
+  {
+    label: "My Booking",
+    path: "/booking",
+    icon: <FontAwesomeIcon icon={faHotel} />,
+    variant: "link",
+    color: "white",
+    showBeforeLogged: false,
     showAfterLogged: true,
   },
   {

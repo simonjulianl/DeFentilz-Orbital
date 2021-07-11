@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Center,
   Box,
   VStack,
   Flex,
@@ -11,6 +10,7 @@ import {
   AlertTitle,
   AlertDescription,
   useBreakpointValue,
+  Stack,
 } from "@chakra-ui/react";
 
 import { NextPage } from "next";
@@ -25,7 +25,7 @@ import { Facility } from "~/config/interface";
 
 const ExploreView: NextPage = () => {
   const router = useRouter();
-  let { keyword } = router.query;
+  const { keyword } = router.query;
 
   const [searchResult, setSearchResult] = useState<Facility[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -90,35 +90,39 @@ const ExploreView: NextPage = () => {
           <Text fontSize={["md", "md", "xl"]}>Searching for: {keyword}</Text>
           {isLoading ? (
             <Box paddingTop={[2, 3, 5, 10]}>
-              <Spinner size="xl"/>
+              <Spinner size="xl" />
             </Box>
           ) : error === null ? (
-            searchResult.length > 0 ? (
-              searchResult.map(
-                ({
-                  id,
-                  name,
-                  type,
-                  description,
-                  location,
-                  imageUrl,
-                  rating,
-                }) => (
-                  <SearchCard
-                    key={id}
-                    id={id}
-                    name={name}
-                    type={type}
-                    description={description}
-                    image={imageUrl}
-                    location={location}
-                    rating={rating}
-                  />
-                )
-              )
-            ) : (
-              <Text>No Results Found</Text>
-            )
+            <Box px={{ base: "0", md: "5" }}>
+              <Stack direction={{ base: "column", md: "row" }}>
+                {searchResult.length > 0 ? (
+                  searchResult.map(
+                    ({
+                      id,
+                      name,
+                      type,
+                      description,
+                      location,
+                      imageUrl,
+                      rating,
+                    }) => (
+                      <SearchCard
+                        key={id}
+                        id={id}
+                        name={name}
+                        type={type}
+                        description={description}
+                        image={imageUrl}
+                        location={location}
+                        rating={rating}
+                      />
+                    )
+                  )
+                ) : (
+                  <Text>No Results Found</Text>
+                )}
+              </Stack>
+            </Box>
           ) : (
             <Alert status="error" flexDirection="column">
               <AlertIcon />

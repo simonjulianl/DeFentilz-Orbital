@@ -29,7 +29,9 @@ const SearchCard: React.FC<OwnProps> = ({
 }) => {
   const [error, setError] = useState(false);
 
-  useEffect(() => {}, [error]);
+  useEffect(() => {
+    // empty arrow function
+  }, [error]);
 
   const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
 
@@ -41,7 +43,7 @@ const SearchCard: React.FC<OwnProps> = ({
       borderRadius="xl"
       overflow="hidden"
       onClick={() => showModal && onOpen()}
-      shadow="lg"
+      shadow="xl"
       data-cy="search-card"
     >
       <Flex direction="row">
@@ -49,7 +51,7 @@ const SearchCard: React.FC<OwnProps> = ({
           <Image
             width={"100%"}
             height={"100%"}
-            fill="responsive"
+            objectFit="fill"
             src={error ? "/notAvail.png" : image}
             alt={name}
             fallback={<Spinner />}
