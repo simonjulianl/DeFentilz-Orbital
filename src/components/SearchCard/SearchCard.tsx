@@ -35,8 +35,8 @@ const SearchCard: React.FC<OwnProps> = ({
 
   return (
     <Box
-      minHeight={{ base: "35vh", md: "50vh" }}
-      width={["2xs", "2xs", "xs", "md", "xl"]}
+      minHeight={"35vh"}
+      width={["2xs", "2xs", "sm"]}
       borderWidth={"1px"}
       borderRadius="xl"
       overflow="hidden"
@@ -45,10 +45,7 @@ const SearchCard: React.FC<OwnProps> = ({
       data-cy="search-card"
     >
       <Flex direction="row">
-        <Box
-          width={{ base: "100%", md: "15vw" }}
-          height={{ base: "100%", md: "25vh" }}
-        >
+        <Box width={"100%"} height={"100%"}>
           <Image
             width={"100%"}
             height={"100%"}
