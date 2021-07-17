@@ -9,6 +9,7 @@ import {
   Center,
   Button,
   Stack,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import Page from "~/components/Page/Page";
@@ -18,14 +19,15 @@ import { NextPage } from "next";
 import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 import axios, { AxiosRequestConfig } from "axios";
 import APIUrl from "~/config/backendUrl";
-import { Booking } from "~/config/interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faKey } from "@fortawesome/free-solid-svg-icons";
+import TopUpModal from "~/components/TopUpModal/TopUpModal";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [walletValue, setWalletValue] = useState<number>(0);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     if (authContext.auth) {
@@ -44,6 +46,19 @@ const ProfileView: NextPage = () => {
     }
   }, []);
 
+  const getTopUpConfig = (topUpValue: number) => {
+    const postConfig: AxiosRequestConfig = {
+      method: "PUT",
+      url: APIUrl.topUpWalletValue + "/" + authContext.auth.email,
+      data: {
+        email: authContext.auth.email,
+        value: topUpValue,
+      },
+      timeout: 5000,
+    };
+    return postConfig;
+  };
+
   return (
     <Page title="Profile" description="Profile">
       <Box paddingTop={[2, 3, 5, 10]}>
@@ -60,7 +75,7 @@ const ProfileView: NextPage = () => {
               walletValue={walletValue}
               showWallet={true}
               showTopUp={true}
-              onTopUp={() => console.log("Topped up")}
+              onTopUp={onOpen} // Do a post request
             />
             <Center>
               <Text fontWeight="bold" fontSize="xl">
@@ -95,6 +110,11 @@ const ProfileView: NextPage = () => {
           </VStack>
         )}
       </Box>
+      <TopUpModal
+        isOpen={isOpen}
+        onClose={onClose}
+        getTopUpConfig={getTopUpConfig}
+      />
     </Page>
   );
 };
