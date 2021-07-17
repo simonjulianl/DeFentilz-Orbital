@@ -108,7 +108,7 @@ const ExploreView: NextPage = () => {
                       image={facility.imageUrl}
                       location={facility.location}
                       rating={facility.rating}
-                      showModal={false}
+                      showModal={true}
                     />
                   </Box>
                 ))
