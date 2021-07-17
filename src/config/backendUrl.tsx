@@ -1,12 +1,13 @@
+let url: string;
 switch (process.env.ENVIRONMENT) {
   case "TEST":
-    var url = "http://localhost:5000";
+    url = "http://localhost:5000";
     break;
   case "PRODUCTION":
-    var url = "https://bonus-server.herokuapp.com";
+    url = "https://bonus-server.herokuapp.com";
     break;
   default:
-    var url = "http://localhost:5000";
+    url = "http://localhost:5000";
     break;
 }
 

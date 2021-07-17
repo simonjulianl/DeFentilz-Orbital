@@ -89,7 +89,7 @@ const ContentDetailView: NextPage = () => {
       <VStack>
         {isLoading ? (
           <Box paddingTop={[2, 3, 5, 10]}>
-            <Spinner size="xl"/>
+            <Spinner size="xl" />
           </Box>
         ) : error === null ? (
           <Box paddingX={3} aria-label="Scrollable">
@@ -110,21 +110,41 @@ const ContentDetailView: NextPage = () => {
                 onError={() => setError(true)}
               />
             </Center>
-            <HStack justifyContent="space-between" width={["100%", "100%", "50vw"]}>
+            <HStack
+              justifyContent="space-between"
+              width={["100%", "100%", "50vw"]}
+            >
               <Box>
-                <Text aria-label="Price" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
+                <Text
+                  aria-label="Price"
+                  mt="3"
+                  fontWeight="semibold"
+                  fontSize={["md", "md", "xl"]}
+                >
                   Price
                 </Text>
-                <Text fontSize={["md", "md", "lg"]}>{"SGD " + facility.rate}</Text>
+                <Text fontSize={["md", "md", "lg"]}>
+                  {"SGD " + facility.rate}
+                </Text>
               </Box>
               <Box>
-                <Text aria-label="Location" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
+                <Text
+                  aria-label="Location"
+                  mt="3"
+                  fontWeight="semibold"
+                  fontSize={["md", "md", "xl"]}
+                >
                   Location
                 </Text>
                 <Text fontSize={["md", "md", "lg"]}>{facility.location}</Text>
               </Box>
               <Box>
-                <Text aria-label="Rating" mt="3" fontWeight="semibold" fontSize={["md", "md", "xl"]}>
+                <Text
+                  aria-label="Rating"
+                  mt="3"
+                  fontWeight="semibold"
+                  fontSize={["md", "md", "xl"]}
+                >
                   Rating
                 </Text>
                 <Box justifyContent="left">

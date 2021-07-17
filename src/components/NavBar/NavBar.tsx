@@ -3,7 +3,7 @@ import { Box, Flex, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { NavBarButtonsConfig } from "./NavBarConfig";
 
-const NavBar: React.FC<{}> = () => {
+const NavBar: React.FC<Record<string, unknown>> = () => {
   const router = useRouter();
 
   const iconButtons = NavBarButtonsConfig.map(({ label, path, icon }, idx) => {

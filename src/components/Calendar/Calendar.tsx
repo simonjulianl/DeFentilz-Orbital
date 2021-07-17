@@ -104,7 +104,7 @@ const Calendar: React.FC<OwnProps> = ({
   };
 
   const eventStyleGetter = ({ userEmail }: Booking) => {
-    let style = {
+    const style = {
       backgroundColor:
         authContext.auth && userEmail === authContext.auth.email
           ? "teal"

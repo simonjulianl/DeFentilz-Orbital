@@ -24,7 +24,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import { useEffect } from "react";
 import { User } from "~/config/interface";
 
-const Header: React.FC<{}> = () => {
+const Header: React.FC<Record<string, unknown>> = () => {
   const router = useRouter();
   const authContext = useAuth();
 

@@ -1,5 +1,5 @@
 export enum ModalState {
-    None,
-    Submit,
-    Delete
+  None,
+  Submit,
+  Delete,
 }
