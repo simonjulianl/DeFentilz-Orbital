@@ -37,7 +37,7 @@ const SearchCard: React.FC<OwnProps> = ({
 
   return (
     <Box
-      minHeight={"35vh"}
+      minHeight={"25vh"}
       width={["2xs", "2xs", "sm"]}
       borderWidth={"1px"}
       borderRadius="xl"

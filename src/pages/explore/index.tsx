@@ -10,7 +10,6 @@ import {
   AlertTitle,
   AlertDescription,
   useBreakpointValue,
-  Stack,
 } from "@chakra-ui/react";
 
 import { NextPage } from "next";
@@ -93,36 +92,30 @@ const ExploreView: NextPage = () => {
               <Spinner size="xl" />
             </Box>
           ) : error === null ? (
-            <Box px={{ base: "0", md: "5" }}>
-              <Stack direction={{ base: "column", md: "row" }}>
-                {searchResult.length > 0 ? (
-                  searchResult.map(
-                    ({
-                      id,
-                      name,
-                      type,
-                      description,
-                      location,
-                      imageUrl,
-                      rating,
-                    }) => (
-                      <SearchCard
-                        key={id}
-                        id={id}
-                        name={name}
-                        type={type}
-                        description={description}
-                        image={imageUrl}
-                        location={location}
-                        rating={rating}
-                      />
-                    )
-                  )
-                ) : (
-                  <Text>No Results Found</Text>
-                )}
-              </Stack>
-            </Box>
+            <Flex
+              direction={["column", "column", "row"]}
+              maxW={"90vw"}
+              wrap="wrap"
+            >
+              {searchResult.length > 0 ? (
+                searchResult.map((facility) => (
+                  <Box key={facility.id} ml={[0, 0, 3]} mb={[0, 3, 5]}>
+                    <SearchCard
+                      id={facility.id}
+                      name={facility.name}
+                      type={facility.type}
+                      description={facility.description}
+                      image={facility.imageUrl}
+                      location={facility.location}
+                      rating={facility.rating}
+                      showModal={false}
+                    />
+                  </Box>
+                ))
+              ) : (
+                <Text>No Results Found</Text>
+              )}
+            </Flex>
           ) : (
             <Alert status="error" flexDirection="column">
               <AlertIcon />
