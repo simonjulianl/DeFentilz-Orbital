@@ -84,9 +84,9 @@ const ExploreView: NextPage = () => {
             ),
             md: <></>,
           })}
-        </VStack>
-        <VStack pt={["25%", "15%", "2"]}>
           <Text fontSize={["md", "md", "xl"]}>Searching for: {keyword}</Text>
+        </VStack>
+        <VStack pt={["25%", "25%", "2"]}>
           {isLoading ? (
             <Box paddingTop={[2, 3, 5, 10]}>
               <Spinner size="xl" />

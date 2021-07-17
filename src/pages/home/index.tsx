@@ -30,13 +30,7 @@ const HomeView: NextPage = () => {
   return (
     <Page title="Home" description="Home">
       <Flex direction="column" justify="flex-start">
-        <Box
-          padding={{ base: 3, md: 0 }}
-          zIndex={1}
-          position="absolute"
-          background="white"
-          width={screenWidth}
-        >
+        <VStack pt={3} pos="fixed" background="white" width={screenWidth}>
           {useBreakpointValue({
             base: (
               <SearchBar
@@ -53,7 +47,7 @@ const HomeView: NextPage = () => {
             ),
             md: <></>,
           })}
-        </Box>
+        </VStack>
         {useBreakpointValue({
           base: (
             <Box
