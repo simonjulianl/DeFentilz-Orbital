@@ -44,7 +44,7 @@ const ProfileView: NextPage = () => {
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
     }
-  }, [isOpen]);
+  }, [isOpen, authContext.auth]);
 
   const getTopUpConfig = (topUpValue: number) => {
     const postConfig: AxiosRequestConfig = {
