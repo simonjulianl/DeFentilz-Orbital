@@ -1,5 +1,8 @@
 const db = require("../models");
 const Booking = db.bookings;
+const Facility = db.facilities;
+const User = db.users;
+
 const Op = db.Sequelize.Op;
 
 function isBookingConflicting(start, end, facilId) {
@@ -23,6 +26,47 @@ function isBookingConflicting(start, end, facilId) {
   return Booking.count({ where: condition }).then((count) => {
     return count === 0 ? false : true;
   });
+}
+
+function isInsufficientMoney(facilId, userEmail) {
+  return Facility.findOne({
+    where: {
+      id: facilId,
+    },
+  })
+    .then((facil) => {
+      return {
+        [Op.and]: [
+          {
+            email: userEmail,
+            walletValue: {
+              [Op.lte]: facil.rate,
+            },
+          },
+        ],
+      };
+    })
+    .then((condition) => User.count({ where: condition }))
+    .then((count) => count > 0);
+}
+
+async function deductWallet(facilId, userEmail) {
+  const values_1 = await Promise.all([
+    Facility.findOne({
+      where: {
+        id: facilId,
+      },
+    }).then((facil) => facil.rate),
+    User.findOne({
+      where: {
+        email: userEmail,
+      },
+    }),
+  ]);
+  const rate = values_1[0];
+  const user = values_1[1];
+  user.walletValue = user.walletValue - rate;
+  user.save();
 }
 
 function checkBody(req, res) {
@@ -97,18 +141,27 @@ exports.create = (req, res) => {
     facilityId: req.body.facilityId,
   };
 
-  // check if the facility is booked during that timing
-  isBookingConflicting(
-    booking.startingTime,
-    booking.endingTime,
-    booking.facilityId
-  ).then((isConflicting) => {
-    if (isConflicting) {
+  // check if the facility is booked during that timing and if enough money is present
+  Promise.all([
+    isBookingConflicting(
+      booking.startingTime,
+      booking.endingTime,
+      booking.facilityId
+    ),
+    isInsufficientMoney(booking.facilityId, booking.userEmail),
+  ]).then((values) => {
+    if (values[0]) {
       return res.status(500).send({
         message: "Conflicting Booking",
       });
+    } else if (values[1]) {
+      return res.status(500).send({
+        message: "Insufficient Fund in Wallet",
+      });
     } else {
-      Booking.create(booking)
+      // Deduct money from wallet
+      deductWallet(booking.facilityId, booking.userEmail)
+        .then(() => Booking.create(booking))
         .then((data) => {
           res.send(data);
         })
