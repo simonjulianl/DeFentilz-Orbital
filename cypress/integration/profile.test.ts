@@ -60,7 +60,6 @@ describe("Desktop Profile Page Testing", () => {
     cy.get('[aria-label="Profile Picture"]');
     cy.get('[aria-label="Display Name"]');
     cy.get('[aria-label="Wallet Value"]');
-    // cy.get('[aria-label="Edit Button"]').click();
   });
 
   it("Should have no info after logout", () => {
