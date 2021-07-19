@@ -145,7 +145,7 @@ const Header: React.FC<Record<string, unknown>> = () => {
             textDecoration: "none",
             color: "black",
           }}
-          data-cy={navItem.label.split(" ").join("").toLowerCase()}
+          aria-label={navItem.label.split(" ").join("-").toLowerCase()}
         >
           {navItem.label} {navItem.icon}
         </Link>
