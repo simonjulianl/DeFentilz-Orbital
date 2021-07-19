@@ -69,6 +69,25 @@ async function deductWallet(facilId, userEmail) {
   user.save();
 }
 
+async function refundWallet(booking) {
+  const values_1 = await Promise.all([
+    Facility.findOne({
+      where: {
+        id: booking.facilityId,
+      },
+    }).then((facil) => facil.rate),
+    User.findOne({
+      where: {
+        email: booking.userEmail,
+      },
+    }),
+  ]);
+  const rate = values_1[0];
+  const user = values_1[1];
+  user.walletValue = user.walletValue + rate;
+  user.save();
+}
+
 function checkBody(req, res) {
   if (!req.body.facilityId) {
     res.status(400).send({
@@ -285,16 +304,31 @@ exports.findByMonth = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const id = req.params.id;
+  checkBody(req, res);
 
-  isBookingConflicting(
-    req.body.startingTime,
-    req.body.endingTime,
-    req.body.facilityId
-  ).then((isConflicting) => {
-    if (isConflicting) {
+  const id = req.params.id;
+  const booking = {
+    startingTime: req.body.startingTime,
+    endingTime: req.body.endingTime,
+    userEmail: req.body.userEmail,
+    facilityId: req.body.facilityId,
+  };
+
+  Promise.all([
+    isBookingConflicting(
+      booking.startingTime,
+      booking.endingTime,
+      booking.facilityId
+    ),
+    isInsufficientMoney(booking.facilityId, booking.userEmail),
+  ]).then((values) => {
+    if (values[0]) {
       res.status(500).send({
         message: "Conflicting booking",
+      });
+    } else if (values[1]) {
+      res.status(500).send({
+        message: "Insufficent funds in wallet",
       });
     } else {
       Booking.update(req.body, {
@@ -323,9 +357,13 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Booking.destroy({
-    where: { id: id },
-  })
+  Booking.findOne({ where: { id: id } })
+    .then((booking) => refundWallet(booking))
+    .then(() =>
+      Booking.destroy({
+        where: { id: id },
+      })
+    )
     .then((num) => {
       if (num == 1) {
         res.send({
