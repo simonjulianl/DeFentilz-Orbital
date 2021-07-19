@@ -96,17 +96,13 @@ const TopUpModal: React.FC<OwnProps> = ({
                   .then((response) => response.data)
                   .then((response) => {
                     console.log(response.message);
-                    if (
-                      // TO BE CHANGED
-                      response.message ===
-                      "Cannot update user with email=amadeus.winarto@u.nus.edu. "
-                    ) {
+                    if (response.message.includes("Cannot update user")) {
                       setError({
                         code: "500",
                         message: response.message,
                       });
                     } else if (
-                      response.message === "User was updated successfully !"
+                      response.message.includes("updated successfully")
                     ) {
                       setError({
                         code: "200",
