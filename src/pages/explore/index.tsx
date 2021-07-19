@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Center,
   Box,
   VStack,
   Flex,
@@ -25,7 +24,7 @@ import { Facility } from "~/config/interface";
 
 const ExploreView: NextPage = () => {
   const router = useRouter();
-  let { keyword } = router.query;
+  const { keyword } = router.query;
 
   const [searchResult, setSearchResult] = useState<Facility[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -85,40 +84,38 @@ const ExploreView: NextPage = () => {
             ),
             md: <></>,
           })}
-        </VStack>
-        <VStack pt={["25%", "15%", "2"]}>
           <Text fontSize={["md", "md", "xl"]}>Searching for: {keyword}</Text>
+        </VStack>
+        <VStack pt={["25%", "25%", "3%"]}>
           {isLoading ? (
             <Box paddingTop={[2, 3, 5, 10]}>
-              <Spinner size="xl"/>
+              <Spinner size="xl" />
             </Box>
           ) : error === null ? (
-            searchResult.length > 0 ? (
-              searchResult.map(
-                ({
-                  id,
-                  name,
-                  type,
-                  description,
-                  location,
-                  imageUrl,
-                  rating,
-                }) => (
-                  <SearchCard
-                    key={id}
-                    id={id}
-                    name={name}
-                    type={type}
-                    description={description}
-                    image={imageUrl}
-                    location={location}
-                    rating={rating}
-                  />
-                )
-              )
-            ) : (
-              <Text>No Results Found</Text>
-            )
+            <Flex
+              direction={["column", "column", "row"]}
+              maxW={"90vw"}
+              wrap="wrap"
+            >
+              {searchResult.length > 0 ? (
+                searchResult.map((facility) => (
+                  <Box key={facility.id} ml={[0, 0, 3]} mb={[0, 3, 5]}>
+                    <SearchCard
+                      id={facility.id}
+                      name={facility.name}
+                      type={facility.type}
+                      description={facility.description}
+                      image={facility.imageUrl}
+                      location={facility.location}
+                      rating={facility.rating}
+                      showModal={true}
+                    />
+                  </Box>
+                ))
+              ) : (
+                <Text>No Results Found</Text>
+              )}
+            </Flex>
           ) : (
             <Alert status="error" flexDirection="column">
               <AlertIcon />

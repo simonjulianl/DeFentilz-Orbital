@@ -2,7 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faUser,
-  faSearch
+  faSearch,
+  faHotel,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const NavBarButtonsConfig = [
@@ -15,6 +16,11 @@ export const NavBarButtonsConfig = [
     label: "Explore",
     path: "/explore",
     icon: <FontAwesomeIcon icon={faSearch} />,
+  },
+  {
+    label: "My Booking",
+    path: "/booking",
+    icon: <FontAwesomeIcon icon={faHotel} />,
   },
   {
     label: "Profile",

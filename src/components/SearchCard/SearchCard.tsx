@@ -29,30 +29,29 @@ const SearchCard: React.FC<OwnProps> = ({
 }) => {
   const [error, setError] = useState(false);
 
-  useEffect(() => {}, [error]);
+  useEffect(() => {
+    // empty arrow function
+  }, [error]);
 
   const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
 
   return (
     <Box
-      minHeight={{ base: "35vh", md: "50vh" }}
-      width={["2xs", "2xs", "xs", "md", "xl"]}
+      minHeight={"25vh"}
+      width={["2xs", "2xs", "sm"]}
       borderWidth={"1px"}
       borderRadius="xl"
       overflow="hidden"
       onClick={() => showModal && onOpen()}
-      shadow="lg"
+      shadow="xl"
       data-cy="search-card"
     >
       <Flex direction="row">
-        <Box
-          width={{ base: "100%", md: "15vw" }}
-          height={{ base: "100%", md: "25vh" }}
-        >
+        <Box width={"100%"} height={"100%"}>
           <Image
             width={"100%"}
             height={"100%"}
-            fill="responsive"
+            objectFit="fill"
             src={error ? "/notAvail.png" : image}
             alt={name}
             fallback={<Spinner />}

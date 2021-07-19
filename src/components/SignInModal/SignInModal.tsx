@@ -9,7 +9,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Box,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel, Link, Input } from "@chakra-ui/react";
@@ -57,7 +56,7 @@ const SignInModal: React.FC<OwnProps> = ({
     if (authContext.auth || error) {
       setLoading(false);
     }
-  }, [authContext.auth, error]);
+  }, [authContext.auth, error, isLoading]);
 
   return (
     <Modal
@@ -118,7 +117,8 @@ const SignInModal: React.FC<OwnProps> = ({
                 setLoading(true);
                 emailSignInHandler(event);
               }}
-              isDisabled={isLoading}
+              isLoading={isLoading}
+              // isDisabled={isLoading}
             >
               Log In
             </Button>
@@ -130,7 +130,8 @@ const SignInModal: React.FC<OwnProps> = ({
                 setLoading(true);
                 googleSignInHandler(event);
               }}
-              isDisabled={isLoading}
+              isLoading={isLoading}
+              // isDisabled={isLoading}
             >
               Log In With Google
             </Button>

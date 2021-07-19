@@ -1,4 +1,4 @@
-import { Button, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
+import { Button, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   Modal,

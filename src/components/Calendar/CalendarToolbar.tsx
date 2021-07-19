@@ -128,7 +128,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
           icon={<FaArrowLeft />}
           onClick={goToBack}
         />
-        <Button aria-label="Today" onClick={goToCurrent}> Today </Button>
+        <Button aria-label="Today" onClick={goToCurrent}>
+          {" "}
+          Today{" "}
+        </Button>
         <IconButton
           colorScheme="teal"
           aria-label="Next"

@@ -17,7 +17,6 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import axios, { AxiosRequestConfig } from "axios";
 import AdminPage from "~/components/Page/AdminPage";
 import { Error, User, WalletRequest } from "~/config/interface";
@@ -31,8 +30,6 @@ import { userToSearchCardAdapter } from "~/util/userAdapter";
 import DeleteConfirmationModal from "~/components/DeleteConfirmationModal";
 
 const AdminUserPage: NextPage = () => {
-  const router = useRouter();
-
   const [isLoading, setLoading] = useState<boolean>(false);
   const [walletRequests, setWalletRequests] = useState<WalletRequest[]>([]);
   const [displayedUsers, setDisplayedUsers] = useState<User[]>([]);
