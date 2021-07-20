@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 
 import {
@@ -26,12 +26,12 @@ import {
   faBell,
   faCog,
   faKey,
-  faPersonBooth,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import TopUpModal from "~/components/TopUpModal/TopUpModal";
 import { useRouter } from "next/router";
 import { User } from "~/config/interface";
+import moment from "moment";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
@@ -41,6 +41,8 @@ const ProfileView: NextPage = () => {
   const [photoUrl, setPhotoUrl] = useState<string>(undefined);
   const [walletValue, setWalletValue] = useState<number>(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const canTopUp = useRef<boolean>();
 
   // For Push Notif
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -177,6 +179,8 @@ const ProfileView: NextPage = () => {
       axios(getUserconfig)
         .then((response) => response.data)
         .then((user: User) => {
+          canTopUp.current =
+          moment().diff(moment(user.lastTopUpRequest), "days") > 0;
           setDisplayName(user.name);
           setPhotoUrl(user.profilePictureUrl);
           setWalletValue(user.walletValue);
@@ -208,13 +212,15 @@ const ProfileView: NextPage = () => {
 
   const getTopUpConfig = (topUpValue: number) => {
     const postConfig: AxiosRequestConfig = {
-      method: "PUT",
-      url: APIUrl.topUpWalletValue + "/" + authContext.auth.email,
-      data: {
-        email: authContext.auth.email,
-        value: topUpValue,
+      method: "POST",
+      url: APIUrl.createWalletRequest,
+      headers: {
+        "Content-Type": "application/json",
       },
-      timeout: 5000,
+      data: JSON.stringify({
+        userEmail: authContext.auth.email,
+        value: topUpValue,
+      }),
     };
     return postConfig;
   };
@@ -236,7 +242,7 @@ const ProfileView: NextPage = () => {
               email={authContext.auth.email}
               walletValue={walletValue}
               showWallet={true}
-              showTopUp={true}
+              disableTopUp={canTopUp.current}
               onTopUp={onOpen} // Do a post request
             />
             <Center>

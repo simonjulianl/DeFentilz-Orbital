@@ -160,6 +160,12 @@ exports.create = (req, res) => {
     facilityId: req.body.facilityId,
   };
 
+  if (moment(req.body.startingTime).diff(moment()) < 0) {
+    return res.status(500).send({
+      message: "Booking in the past",
+    });
+  }
+
   // check if the facility is booked during that timing and if enough money is present
   Promise.all([
     isBookingConflicting(
