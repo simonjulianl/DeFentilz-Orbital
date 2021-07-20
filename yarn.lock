@@ -13060,6 +13060,11 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
+web-app@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/web-app/-/web-app-0.1.0.tgz#00c36d8cc19473b60b3b2173a911efa59e21c866"
+  integrity sha1-AMNtjMGUc7YLOyFzqRHvpZ4hyGY=
+
 web-push@^3.4.5:
   version "3.4.5"
   resolved "https://registry.yarnpkg.com/web-push/-/web-push-3.4.5.tgz#f94074ff150538872c7183e4d8881c8305920cf1"

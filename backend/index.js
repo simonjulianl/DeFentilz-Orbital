@@ -31,13 +31,13 @@ app.use(express.urlencoded({ extended: true }));
 // home page api
 app.get("/", (req, res) => res.json({ message: "Welcome to BoNUS Server" }));
 
-const webPush = require('web-push');
-const webPushConfig = require('./config/webpush.config');
+const webPush = require("web-push");
+const webPushConfig = require("./config/webpush.config");
 webPush.setVapidDetails(
   webPushConfig.WEB_PUSH_EMAIL,
   webPushConfig.WEB_PUSH_PUBLIC_KEY,
-  webPushConfig.WEB_PUSH_PRIVATE_KEY,
-)
+  webPushConfig.WEB_PUSH_PRIVATE_KEY
+);
 
 // require("./routes/notif.routes")(app);
 require("./routes/facilities.routes")(app);
