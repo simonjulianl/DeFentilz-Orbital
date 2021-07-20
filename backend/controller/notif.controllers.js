@@ -1,12 +1,10 @@
 const webPush = require('web-push')
 
-// Move this to env
-// There must be better way of doing this locally
-webPush.setVapidDetails(
-  process.env.WEB_PUSH_EMAIL || "mailto:amadeus.winarto@u.nus.edu",
-  process.env.WEB_PUSH_PUBLIC_KEY || "BIrwgIfEWi6V7zSo7wPbobsEykXR5LMsCVNmmSeGHR4ctltUa49jOke3px4JbagLR9xVNcm30zzpRCuL-zOr1fw",
-  process.env.WEB_PUSH_PRIVATE_KEY || "5CUhVGHSP73z3nP8pmqz7TCnLR2IJHNVZpoiGSNIy-0",
-)
+// webPush.setVapidDetails(
+//   process.env.WEB_PUSH_EMAIL, 
+//   process.env.WEB_PUSH_PUBLIC_KEY,
+//   process.env.WEB_PUSH_PRIVATE_KEY,
+// )
 
 exports.create = (req, res) => {
   if (req.method == 'POST') {

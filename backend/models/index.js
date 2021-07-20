@@ -48,9 +48,11 @@ db.facilities = require("./facility.model")(sequelize, Sequelize);
 db.bookings = require("./booking.model")(sequelize, Sequelize);
 db.rewards = require("./reward.model")(sequelize, Sequelize);
 db.walletRequests = require("./walletRequest.model")(sequelize, Sequelize);
+db.subscriptions = require("./subscription.model")(sequelize, Sequelize);
 
 // set up the association
 db.users.hasMany(db.bookings);
+db.users.hasMany(db.subscriptions);
 db.facilities.hasMany(db.bookings);
 db.rewards.hasOne(db.bookings, {
   foreignKey: {

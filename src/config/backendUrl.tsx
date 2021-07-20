@@ -17,6 +17,7 @@ const APIStarter = {
   rewards: "/api/rewards",
   bookings: "/api/bookings",
   walletRequests: "/api/walletRequests",
+  subscriptions: "/api/subscriptions"
 };
 
 // TODO : Populate this
@@ -53,6 +54,10 @@ const APIUrl = {
   createWalletRequest: url + APIStarter.walletRequests,
   getAllWalletRequests: url + APIStarter.walletRequests,
   deleteWalletRequestById: url + APIStarter.walletRequests,
+
+  // subscription endpoints
+  createSubscription: url + APIStarter.subscriptions,
+  getNotifByEmail: url + APIStarter.subscriptions + "/notifs",
 };
 
 export default APIUrl;

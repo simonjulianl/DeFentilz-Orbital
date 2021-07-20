@@ -85,15 +85,46 @@ const ProfileView: NextPage = () => {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    const sub = await registration.pushManager.subscribe({
+    const sub : PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
       ),
     });
     // TODO: you should call your API to save subscription data on server in order to send web push notification from server
+    // each sub object contains an endpoint field and an expirationTime field
+    // each sub object if and only if one unique device
+
     setSubscription(sub);
-    setIsSubscribed(true);
+
+    const subscribeConfig: AxiosRequestConfig = {
+      method: "POST",
+      url: APIUrl.createSubscription,
+      headers: {
+        'Content-type': "application/json",
+      },
+      data: {
+        subscription: sub.toJSON(),
+        userEmail: authContext.auth.email
+      },
+      timeout: 5000,
+    };
+
+    axios(subscribeConfig)
+    .then(() => console.log("Subscribed!"))
+    .then(() => setIsSubscribed(true))
+    .catch(err => console.error(err));
+
+    // await fetch("http://localhost:5000/api/notif", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     subscription,
+    //   }),
+    // });
+
     console.log("web push subscribed!");
     console.log(sub);
   };
@@ -102,11 +133,12 @@ const ProfileView: NextPage = () => {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    await subscription.unsubscribe();
+    console.error("Unsubscribing not allowed!");
+    // await subscription.unsubscribe();
     // TODO: you should call your API to delete or invalidate subscription data on server
-    setSubscription(null);
-    setIsSubscribed(false);
-    console.log("web push unsubscribed!");
+    // setSubscription(null);
+    // setIsSubscribed(false);
+    // console.log("web push unsubscribed!");
   };
 
   const sendNotificationButtonOnClick = async (event: {
@@ -118,16 +150,19 @@ const ProfileView: NextPage = () => {
       return;
     }
 
-    // Hard-coded for now
-    await fetch("http://localhost:5000/api/notif", {
+    const subscribeConfig: AxiosRequestConfig = {
       method: "POST",
-      headers: {
-        "Content-type": "application/json",
+      url: APIUrl.getNotifByEmail,
+      data: {
+        userEmail: authContext.auth.email
       },
-      body: JSON.stringify({
-        subscription,
-      }),
-    });
+      timeout: 5000,
+    };
+
+    axios(subscribeConfig)
+    .then((response) => response.data)
+    .then((response) => console.log(response))
+    .catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -151,7 +186,6 @@ const ProfileView: NextPage = () => {
         .finally(() => setLoading(false));
     }
 
-    // Push Notif
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then((reg) => {
         reg.pushManager.getSubscription().then((sub) => {
@@ -241,9 +275,9 @@ const ProfileView: NextPage = () => {
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </Button>
-              {/* <Button onClick={sendNotificationButtonOnClick}>
+              <Button onClick={sendNotificationButtonOnClick}>
                 Send Notification
-              </Button> */}
+              </Button>
             </VStack>
           </Box>
         ) : (
