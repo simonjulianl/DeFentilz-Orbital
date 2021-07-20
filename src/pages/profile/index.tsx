@@ -87,7 +87,7 @@ const ProfileView: NextPage = () => {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    const sub : PushSubscription = await registration.pushManager.subscribe({
+    const sub: PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
@@ -103,19 +103,19 @@ const ProfileView: NextPage = () => {
       method: "POST",
       url: APIUrl.createSubscription,
       headers: {
-        'Content-type': "application/json",
+        "Content-type": "application/json",
       },
       data: {
         subscription: sub.toJSON(),
-        userEmail: authContext.auth.email
+        userEmail: authContext.auth.email,
       },
       timeout: 5000,
     };
 
     axios(subscribeConfig)
-    .then(() => console.log("Subscribed!"))
-    .then(() => setIsSubscribed(true))
-    .catch(err => console.error(err));
+      .then(() => console.log("Subscribed!"))
+      .then(() => setIsSubscribed(true))
+      .catch((err) => console.error(err));
 
     // await fetch("http://localhost:5000/api/notif", {
     //   method: "POST",
@@ -156,15 +156,15 @@ const ProfileView: NextPage = () => {
       method: "POST",
       url: APIUrl.getNotifByEmail,
       data: {
-        userEmail: authContext.auth.email
+        userEmail: authContext.auth.email,
       },
       timeout: 5000,
     };
 
     axios(subscribeConfig)
-    .then((response) => response.data)
-    .then((response) => console.log(response))
-    .catch((err) => console.error(err));
+      .then((response) => response.data)
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -180,11 +180,11 @@ const ProfileView: NextPage = () => {
         .then((response) => response.data)
         .then((user: User) => {
           canTopUp.current =
-          moment().diff(moment(user.lastTopUpRequest), "days") > 0;
+            moment().diff(moment(user.lastTopUpRequest), "days") > 0;
+
           setDisplayName(user.name);
           setPhotoUrl(user.profilePictureUrl);
           setWalletValue(user.walletValue);
-          console.log(photoUrl);
         })
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
@@ -243,7 +243,7 @@ const ProfileView: NextPage = () => {
               walletValue={walletValue}
               showWallet={true}
               showTopUp={true}
-              disableTopUp={canTopUp.current}
+              disableTopUp={!canTopUp.current}
               onTopUp={onOpen} // Do a post request
             />
             <Center>
@@ -256,29 +256,34 @@ const ProfileView: NextPage = () => {
               {/* To Change Display Name, Password, etc. */}
               <HStack p="3">
                 <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-                <Text ml="1" fontWeight="bold" fontSize="lg">Account</Text>
+                <Text ml="1" fontWeight="bold" fontSize="lg">
+                  Account
+                </Text>
               </HStack>
               <Button
                 aria-label="Account"
-                onClick={() => router.push('/profile/edit')}
+                onClick={() => router.push("/profile/edit")}
               >
                 Change Profile
               </Button>
-              <Button
-                aria-label="Account"
-                isDisabled
-              >
+              <Button aria-label="Account" isDisabled>
                 Change Password
               </Button>
               {/* Notification settings */}
               <HStack p="3">
                 <FontAwesomeIcon icon={faBell}></FontAwesomeIcon>
-                <Text ml="1" fontWeight="bold" fontSize="lg">Notification</Text>
+                <Text ml="1" fontWeight="bold" fontSize="lg">
+                  Notification
+                </Text>
               </HStack>
               <Button
                 colorScheme={isSubscribed ? "red" : "teal"}
                 aria-label="Subscribe"
-                onClick={isSubscribed ? unsubscribeButtonOnClick : subscribeButtonOnClick}
+                onClick={
+                  isSubscribed
+                    ? unsubscribeButtonOnClick
+                    : subscribeButtonOnClick
+                }
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </Button>

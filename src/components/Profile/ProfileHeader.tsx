@@ -47,21 +47,19 @@ const ProfileHeader: React.FC<OwnProps> = ({
           ) : (
             <></>
           )}
-          {
-            showTopUp ? (
-              <Button
+          {showTopUp ? (
+            <Button
               colorScheme="teal"
               aria-label={"topup"}
               onClick={onTopUp}
               leftIcon={<FontAwesomeIcon icon={faPlusCircle} />}
               isDisabled={disableTopUp}
             >
-              Top Up
+              {disableTopUp ? "Please Top Up again after 24 hours" : "Top Up"}
             </Button>
-            ) : (
-              <></>
-            )
-          }
+          ) : (
+            <></>
+          )}
         </VStack>
       </VStack>
     </Box>
