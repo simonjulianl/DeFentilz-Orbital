@@ -13,6 +13,7 @@ interface OwnProps {
   email: string;
   walletValue: number;
   showWallet: boolean;
+  showTopUp?: boolean;
   disableTopUp?: boolean;
   onTopUp?: () => void;
 }
@@ -22,6 +23,7 @@ const ProfileHeader: React.FC<OwnProps> = ({
   photoUrl,
   walletValue,
   showWallet,
+  showTopUp,
   disableTopUp,
   onTopUp,
 }) => {
@@ -45,15 +47,21 @@ const ProfileHeader: React.FC<OwnProps> = ({
           ) : (
             <></>
           )}
-          <Button
-            colorScheme="teal"
-            aria-label={"topup"}
-            onClick={onTopUp}
-            leftIcon={<FontAwesomeIcon icon={faPlusCircle} />}
-            isDisabled={disableTopUp}
-          >
-            Top Up
-          </Button>
+          {
+            showTopUp ? (
+              <Button
+              colorScheme="teal"
+              aria-label={"topup"}
+              onClick={onTopUp}
+              leftIcon={<FontAwesomeIcon icon={faPlusCircle} />}
+              isDisabled={disableTopUp}
+            >
+              Top Up
+            </Button>
+            ) : (
+              <></>
+            )
+          }
         </VStack>
       </VStack>
     </Box>

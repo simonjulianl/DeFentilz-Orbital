@@ -242,6 +242,7 @@ const ProfileView: NextPage = () => {
               email={authContext.auth.email}
               walletValue={walletValue}
               showWallet={true}
+              showTopUp={true}
               disableTopUp={canTopUp.current}
               onTopUp={onOpen} // Do a post request
             />
