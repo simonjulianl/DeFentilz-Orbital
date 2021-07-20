@@ -86,7 +86,62 @@ const ProfileView: NextPage = () => {
   const subscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
+
     event.preventDefault();
+    // if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+    //   navigator.serviceWorker.ready.then((reg) => {
+    //     reg.pushManager.getSubscription().then((sub) => {
+    //       if (
+    //         sub &&
+    //         !(
+    //           sub.expirationTime &&
+    //           Date.now() > sub.expirationTime - 5 * 60 * 1000
+    //         )
+    //       ) {
+    //         // set sub expiration time
+    //         setSubscription(sub);
+    //         setIsSubscribed(true);
+    //       }
+    //     });
+    //     setRegistration(reg);
+    //   });
+    // }
+
+    // if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+    //   navigator.serviceWorker.ready.then((registration) => 
+    //     registration.pushManager.subscribe({
+    //       userVisibleOnly: true,
+    //       applicationServerKey: base64ToUint8Array(
+    //         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
+    //       ),
+    //     })
+    //   )
+    //   .then(sub => {
+    //     setSubscription(sub);
+    //     const subscribeConfig: AxiosRequestConfig = {
+    //       method: "POST",
+    //       url: APIUrl.createSubscription,
+    //       headers: {
+    //         'Content-type': "application/json",
+    //       },
+    //       data: {
+    //         subscription: sub.toJSON(),
+    //         userEmail: authContext.auth.email
+    //       },
+    //       timeout: 5000,
+    //     };
+
+    //     return subscribeConfig;
+    //   })
+    //   .then(config => axios(config))
+    //   .then(() => console.log("Subscribed!"))
+    //   .then(() => setIsSubscribed(true))
+    //   .catch(err => console.error(err));  
+    // } else {
+    //   console.error("Something went wrong");
+    //   return;
+    // }
+
     const sub : PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
@@ -188,25 +243,19 @@ const ProfileView: NextPage = () => {
         })
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
-    }
 
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
-            // set sub expiration time
-            setSubscription(sub);
-            setIsSubscribed(true);
-          }
+      // Attempt to get a subscription, if any
+      if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.pushManager.getSubscription().then((sub) => {
+            if ( sub ) {
+              setSubscription(sub);
+              setIsSubscribed(true);
+            }
+          });
+          setRegistration(reg);
         });
-        setRegistration(reg);
-      });
+      }
     }
   }, [isOpen, authContext.auth]);
 
