@@ -35,7 +35,7 @@ const TopUpModal: React.FC<OwnProps> = ({
   getTopUpConfig,
 }) => {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [topUpValue, setTopUpValue] = useState<number>(0);
+  const [topUpValue, setTopUpValue] = useState<number>(10);
   const [error, setError] = useState<errorObj>(null);
 
   useEffect(() => {
@@ -86,31 +86,38 @@ const TopUpModal: React.FC<OwnProps> = ({
                 if (error && error.code === "200") {
                   setError({
                     code: "200",
-                    message: "Your top up was successful",
+                    message: "Request sent to top up",
                   });
                 }
                 const config = getTopUpConfig(topUpValue);
 
                 setLoading(true);
                 axios(config)
-                  .then((response) => response.data)
                   .then((response) => {
-                    console.log(response.message);
-                    if (response.message.includes("Cannot update user")) {
-                      setError({
-                        code: "500",
-                        message: response.message,
-                      });
-                    } else if (
-                      response.message.includes("updated successfully")
-                    ) {
+                    console.log(response);
+                    if (response.status < 300) {
                       setError({
                         code: "200",
-                        message: "Top Up Successful!",
+                        message: "Top Up Request Sent!",
+                      });
+                      setTimeout(() => {
+                        setError(null);
+                        onClose();
+                      }, 1000);
+                    } else if (response.status >= 400) {
+                      setError({
+                        code: response.statusText,
+                        message: response.data.message,
                       });
                     }
                   })
-                  .catch((error) => console.error(error))
+                  .catch((error) => {
+                    console.log(error);
+                    setError({
+                      code: "400",
+                      message: "error in sending top up",
+                    });
+                  })
                   .finally(() => setLoading(false));
               }}
               isLoading={isLoading}

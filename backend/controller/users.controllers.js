@@ -111,6 +111,7 @@ exports.topUpWallet = (req, res) => {
         {
           email: email,
           walletValue: newWalletValue,
+          lastTopUpRequest: new Date(),
         },
         {
           where: { email: email },

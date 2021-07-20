@@ -28,6 +28,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import { userToSearchCardAdapter } from "~/util/userAdapter";
 import DeleteConfirmationModal from "~/components/DeleteConfirmationModal";
+import Image from "next/image";
 
 const AdminUserPage: NextPage = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -298,7 +299,10 @@ const AdminUserPage: NextPage = () => {
                   handleSearchingOnSubmit(content);
                 }}
               />
-              <Flex direction="row" wrap="wrap">
+              <Flex direction="row" wrap="wrap" w="50vw">
+                {displayedUsers.length == 0 ? (
+                  <Text m="5">type the name of the search bar to continue</Text>
+                ) : null}
                 {displayedUsers &&
                   displayedUsers.map((user) => {
                     const searchCardProps = userToSearchCardAdapter(user);
