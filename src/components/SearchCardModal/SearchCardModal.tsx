@@ -47,8 +47,11 @@ const SearchCardModal: React.FC<OwnProps> = ({
   const router = useRouter();
   const authContext = useAuth();
 
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState(false);
-  useEffect(() => {}, [error]);
+  useEffect(() => {
+    // setLoading(true);
+  }, [error, isLoading]);
 
   return (
     <Modal
@@ -119,13 +122,15 @@ const SearchCardModal: React.FC<OwnProps> = ({
         <ModalFooter>
           {authContext.auth ? (
             <Button
+              isLoading={isLoading}
               data-cy="sign-in"
               colorScheme="teal"
-              onClick={() =>
+              onClick={() => {
+                setLoading(true);
                 router.push({
                   pathname: `/explore/facilities/${id}`,
-                })
-              }
+                });
+              }}
             >
               Book Now!
             </Button>

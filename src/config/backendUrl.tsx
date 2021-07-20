@@ -1,12 +1,13 @@
+let url: string;
 switch (process.env.ENVIRONMENT) {
   case "TEST":
-    var url = "http://localhost:5000";
+    url = "http://localhost:5000";
     break;
   case "PRODUCTION":
-    var url = "https://bonus-server.herokuapp.com";
+    url = "https://bonus-server.herokuapp.com";
     break;
   default:
-    var url = "http://localhost:5000";
+    url = "http://localhost:5000";
     break;
 }
 
@@ -15,16 +16,24 @@ const APIStarter = {
   users: "/api/users",
   rewards: "/api/rewards",
   bookings: "/api/bookings",
+  walletRequests: "/api/walletRequests",
 };
 
 // TODO : Populate this
 const APIUrl = {
+  // user endpoints
   createUser: url + APIStarter.users,
   getSingleUserByEmail: url + APIStarter.users,
   getUsersByName: url + APIStarter.users + "/name",
-  getSingleFacility: url + APIStarter.facilities,
+  getUsersByEmail: url + APIStarter.users,
+  topUpWalletValue: url + APIStarter.users + "/topUp",
+  deleteSingleUser: url + APIStarter.users,
+  postUserPhoto: url + APIStarter.users + "/images",
+  updateUser: url + APIStarter.users,
 
+  // facility endpoints
   getAllFacilities: url + APIStarter.facilities,
+  getSingleFacility: url + APIStarter.facilities,
   getFacilitiesByName: url + APIStarter.facilities + "/name",
   getFacilitiesByType: url + APIStarter.facilities + "/type",
   updateFacility: url + APIStarter.facilities,
@@ -32,12 +41,18 @@ const APIUrl = {
   createFacility: url + APIStarter.facilities,
   deleteSingleFacility: url + APIStarter.facilities,
 
+  // booking endpoints
   createBooking: url + APIStarter.bookings,
   getEntireBookings: url + APIStarter.bookings + "/facility",
   getBookingByEmail: url + APIStarter.bookings + "/user",
   getBookingForAWeek: url + APIStarter.bookings + "/facility/week",
   getBookingForAMonth: url + APIStarter.bookings + "/facility/month",
   deleteSingleBooking: url + APIStarter.bookings,
+
+  // wallet request endpoints
+  createWalletRequest: url + APIStarter.walletRequests,
+  getAllWalletRequests: url + APIStarter.walletRequests,
+  deleteWalletRequestById: url + APIStarter.walletRequests,
 };
 
 export default APIUrl;

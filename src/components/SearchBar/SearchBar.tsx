@@ -6,7 +6,7 @@ import React from "react";
 
 interface OwnProps {
   name: string;
-  onSubmit: (content: String) => void;
+  onSubmit: (content: string) => void;
 }
 
 const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
@@ -16,7 +16,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
     const searchBar = e.currentTarget.elements.namedItem(
       name
     ) as HTMLInputElement;
-    var result = searchBar.value;
+    const result = searchBar.value;
 
     // callback function to the lifted state searchTerm
     onSubmit(result);
@@ -37,7 +37,7 @@ const SearchBar: React.FC<OwnProps> = ({ name, onSubmit }) => {
           data-cy="search-input"
           type="text"
           id={name}
-          placeholder="Search NUS Facilities..."
+          placeholder="Search..."
           name="search"
           variant="outline"
         />

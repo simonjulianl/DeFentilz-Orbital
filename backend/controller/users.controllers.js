@@ -101,6 +101,39 @@ exports.update = (req, res) => {
     });
 };
 
+exports.topUpWallet = (req, res) => {
+  const email = req.params.email;
+
+  User.findByPk(email)
+    .then((user) => {
+      const newWalletValue = user.dataValues.walletValue + req.body.value;
+      User.update(
+        {
+          email: email,
+          walletValue: newWalletValue,
+        },
+        {
+          where: { email: email },
+        }
+      ).then((num) => {
+        if (num == 1) {
+          res.send({
+            message: "User was updated successfully !",
+          });
+        } else {
+          res.send({
+            message: `Cannot update user with email=${email}. `,
+          });
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating user with email=" + email,
+      });
+    });
+};
+
 exports.delete = (req, res) => {
   const email = req.params.email;
 

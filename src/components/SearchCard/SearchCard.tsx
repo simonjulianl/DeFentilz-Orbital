@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import SearchCardModal from "~/components/SearchCardModal/SearchCardModal";
 
-interface OwnProps {
+export interface OwnProps {
   id: number;
   name: string;
   type: string;
@@ -29,30 +29,29 @@ const SearchCard: React.FC<OwnProps> = ({
 }) => {
   const [error, setError] = useState(false);
 
-  useEffect(() => {}, [error]);
+  useEffect(() => {
+    // empty arrow function
+  }, [error]);
 
   const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
 
   return (
     <Box
-      minHeight={{ base: "35vh", md: "50vh" }}
-      width={["2xs", "2xs", "xs", "md", "xl"]}
+      minHeight={"25vh"}
+      width={["2xs", "2xs", "sm"]}
       borderWidth={"1px"}
       borderRadius="xl"
       overflow="hidden"
       onClick={() => showModal && onOpen()}
-      shadow="lg"
+      shadow="xl"
       data-cy="search-card"
     >
       <Flex direction="row">
-        <Box
-          width={{ base: "100%", md: "100%" }}
-          height={{ base: "100%", md: "35%" }}
-        >
+        <Box width={"100%"} height={"100%"}>
           <Image
             width={"100%"}
             height={"100%"}
-            fill="responsive"
+            objectFit="fill"
             src={error ? "/notAvail.png" : image}
             alt={name}
             fallback={<Spinner />}
@@ -69,7 +68,9 @@ const SearchCard: React.FC<OwnProps> = ({
                   d="flex"
                   alignItems="baseline"
                 >
-                  <Text noOfLines={2} fontSize={["sm", "md", "xl"]}>{name}</Text>
+                  <Text noOfLines={2} fontSize={["sm", "md", "xl"]}>
+                    {name}
+                  </Text>
                 </Box>
                 <HStack justify={"space-around"}>
                   <Box d="flex" alignSelf="baseline">

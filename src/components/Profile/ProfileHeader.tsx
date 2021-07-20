@@ -1,41 +1,66 @@
 import React from "react";
-import { HStack, Text, Box, VStack, IconButton, Button, Spacer, Grid, GridItem} from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/react";
+import { HStack, Text, Box, VStack, Button } from "@chakra-ui/react";
 
 import ProfileAvatar from "~/components/Profile/ProfileAvatar";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-interface OwnProps { // To be fetched from the page
-  displayName: string,
-  photoUrl: string,  
-  email: string,
-  walletValue: number
+interface OwnProps {
+  // To be fetched from the page
+  displayName: string;
+  photoUrl: string;
+  email: string;
+  walletValue: number;
+  showWallet: boolean;
+  showTopUp?: boolean;
+  onTopUp?: () => void;
 }
 
-const ProfileHeader : React.FC<OwnProps> = ( { displayName, email, photoUrl, walletValue} ) => {
+const ProfileHeader: React.FC<OwnProps> = ({
+  displayName,
+  photoUrl,
+  walletValue,
+  showWallet,
+  showTopUp,
+  onTopUp,
+}) => {
   return (
-    <Box>
-      <Grid>
-        <GridItem colStart={8}>
-          <IconButton
-            aria-label="Edit Button"
-            icon={<FontAwesomeIcon icon={faPencilAlt} />}
-            variant="ghost"
-            onClick={() => console.log("Trigger Modal to change details, or a new page")}
-          />
-        </GridItem>
-      </Grid>
+    <Box mb={5}>
       <VStack paddingX={[5]} justifyContent="space-between">
         <ProfileAvatar photoUrl={photoUrl} />
-          <HStack>
-            <Text fontSize="xl">Welcome back,</Text>
-            <Text aria-label="Display Name" fontSize="xl" fontWeight="extrabold"> {displayName}! </Text>
-          </HStack>
-          <Text fontSize="md">{email}</Text>
-          <Text aria-label="Wallet Value" fontSize="4xl"> SG${walletValue} </Text>
+        <HStack>
+          <Text fontSize="xl">Welcome back,</Text>
+          <Text aria-label="Display Name" fontSize="xl" fontWeight="extrabold">
+            {" "}
+            {displayName}!{" "}
+          </Text>
+        </HStack>
+        <VStack lineHeight="1">
+          {showWallet ? (
+            <Text aria-label="Wallet Value" fontSize="4xl">
+              {" "}
+              SG${walletValue}{" "}
+            </Text>
+          ) : (
+            <></>
+          )}
+          {showTopUp ? (
+            <Button
+              colorScheme="teal"
+              aria-label={"topup"}
+              onClick={onTopUp}
+              leftIcon={<FontAwesomeIcon icon={faPlusCircle} />}
+            >
+              Top Up
+            </Button>
+          ) : (
+            <></>
+          )}
+        </VStack>
       </VStack>
     </Box>
-  )
-}
+  );
+};
 
-export default ProfileHeader;
+export default chakra(ProfileHeader);

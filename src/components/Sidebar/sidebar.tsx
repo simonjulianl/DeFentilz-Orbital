@@ -1,13 +1,12 @@
-import { Box, Button, StackDivider, VStack } from "@chakra-ui/react";
+import { Box, Button, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
-import { useAuth } from "~/firebase/auth";
+import React from "react";
 import { sidebarData } from "./sidebarConfig";
 
 /**
  * side bar for the desktop version of the website
  */
-const Sidebar: React.FC<{}> = () => {
+const Sidebar: React.FC<Record<string, unknown>> = () => {
   const router = useRouter();
 
   const SidebarContent = () => (
@@ -37,7 +36,7 @@ const Sidebar: React.FC<{}> = () => {
         left={0}
         p={5}
         w="200px"
-        top={"7vh"}
+        top={"6vh"}
         h="100%"
         bg="#dfdfdf"
       >

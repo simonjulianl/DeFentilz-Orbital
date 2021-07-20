@@ -3,7 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import React from "react";
 import Image from "next/image";
 
-const BonusCarousel: React.FC<{}> = () => {
+const BonusCarousel: React.FC<Record<string, unknown>> = () => {
   return (
     <Carousel
       autoPlay

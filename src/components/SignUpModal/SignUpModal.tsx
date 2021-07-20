@@ -105,6 +105,7 @@ const SignUpModal: React.FC<OwnProps> = ({
           </Flex>
           <Stack w="100%" justifyContent="center">
             <Button
+              isLoading={isLoading}
               leftIcon={<EmailIcon />}
               colorScheme="blue"
               onClick={(event) => {

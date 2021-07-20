@@ -22,7 +22,7 @@ interface OwnProps {
   router: Router;
 }
 
-const Page: React.FC<OwnProps> = ({ title, description, children, router }) => {
+const Page: React.FC<OwnProps> = ({ children }) => {
   const [height, setHeight] = useState(0);
   const authContext = useAuth();
   useEffect(() => {

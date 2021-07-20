@@ -44,7 +44,7 @@ const NavDrawer: React.FC<OwnProps> = ({
       onClose={onCloseDrawer}
       isOpen={isOpenDrawer}
       size="xs"
-      data-cy='nav-drawer'
+      data-cy="nav-drawer"
     >
       <DrawerOverlay />
       <DrawerContent>

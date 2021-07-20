@@ -46,11 +46,21 @@ export interface AuthContext {
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
   loading: true,
-  signUpWithEmail: async () => {},
-  signInWithEmail: async () => {},
-  signInWithGoogle: async () => {},
-  changePassword: async () => {},
-  signOut: async () => {},
+  signUpWithEmail: async () => {
+    // Empty arrow function
+  },
+  signInWithEmail: async () => {
+    // Empty arrow function
+  },
+  signInWithGoogle: async () => {
+    // Empty arrow function
+  },
+  changePassword: async () => {
+    // Empty arrow function
+  },
+  signOut: async () => {
+    // Empty arrow function
+  },
 });
 
 const formatAuthState = (user: firebase.User): Auth => {

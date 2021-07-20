@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 
-import { VStack, Text, Box, Spinner, Center, Button } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  Box,
+  Spinner,
+  Center,
+  Button,
+  Stack,
+  useDisclosure,
+  Icon,
+  HStack,
+} from "@chakra-ui/react";
 
-import BookingCard from "~/components/Profile/BookingCard";
 import Page from "~/components/Page/Page";
 import ProfileHeader from "~/components/Profile/ProfileHeader";
 
@@ -11,186 +21,247 @@ import { NextPage } from "next";
 import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 import axios, { AxiosRequestConfig } from "axios";
 import APIUrl from "~/config/backendUrl";
-import { Booking } from "~/config/interface";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBell,
+  faCog,
+  faKey,
+  faPersonBooth,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import TopUpModal from "~/components/TopUpModal/TopUpModal";
+import { useRouter } from "next/router";
+import { User } from "~/config/interface";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
-  const [isLoading, setLoading ] = useState<boolean>(false);
-  const [walletValue, setWalletValue ] = useState<number>(0);
-  const [myBookings, setMyBookings ] = useState<Booking[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  const [displayName, setDisplayName] = useState<string>(undefined);
+  const [photoUrl, setPhotoUrl] = useState<string>(undefined);
+  const [walletValue, setWalletValue] = useState<number>(0);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // For Push Notif
-  const [isSubscribed, setIsSubscribed] = useState(false)
-  const [subscription, setSubscription] = useState(null)
-  const [registration, setRegistration] = useState(null)
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [registration, setRegistration] = useState(null);
 
   const randomNotification = () => {
     const notifTitle = "Hello World";
     const notifBody = `Created by your mama`;
     const options = {
-      body: notifBody
+      body: notifBody,
     };
 
     new Notification(notifTitle, options);
-  }
+  };
 
   const testNotif = () => {
-    Notification
-    .requestPermission()
-    .then(result => {
-      if (result === 'granted') {
+    Notification.requestPermission().then((result) => {
+      if (result === "granted") {
         console.log("Permission granted");
         randomNotification();
       } else {
         console.log("Nope");
       }
     });
-  }
+  };
 
-  const base64ToUint8Array = base64 => {
-    const padding = '='.repeat((4 - (base64.length % 4)) % 4)
-    const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/')
-  
-    const rawData = window.atob(b64)
-    const outputArray = new Uint8Array(rawData.length)
-  
+  const base64ToUint8Array = (base64) => {
+    const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+    const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+    const rawData = window.atob(b64);
+    const outputArray = new Uint8Array(rawData.length);
+
     for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i)
+      outputArray[i] = rawData.charCodeAt(i);
     }
-    return outputArray
-  }
-  
-  const subscribeButtonOnClick = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault()
+    return outputArray;
+  };
+
+  const subscribeButtonOnClick = async (event: {
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
-    })
+      applicationServerKey: base64ToUint8Array(
+        process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
+      ),
+    });
     // TODO: you should call your API to save subscription data on server in order to send web push notification from server
-    setSubscription(sub)
-    setIsSubscribed(true)
-    console.log('web push subscribed!')
-    console.log(sub)
-  }
+    setSubscription(sub);
+    setIsSubscribed(true);
+    console.log("web push subscribed!");
+    console.log(sub);
+  };
 
-  const unsubscribeButtonOnClick = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault()
-    await subscription.unsubscribe()
+  const unsubscribeButtonOnClick = async (event: {
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
+    await subscription.unsubscribe();
     // TODO: you should call your API to delete or invalidate subscription data on server
-    setSubscription(null)
-    setIsSubscribed(false)
-    console.log('web push unsubscribed!')
-  }
+    setSubscription(null);
+    setIsSubscribed(false);
+    console.log("web push unsubscribed!");
+  };
 
-  const sendNotificationButtonOnClick = async (event: { preventDefault: () => void; }) => {
-    event.preventDefault()
+  const sendNotificationButtonOnClick = async (event: {
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
     if (subscription == null) {
-      console.error('web push not subscribed')
-      return
+      console.error("web push not subscribed");
+      return;
     }
 
     // Hard-coded for now
-    await fetch('http://localhost:5000/api/notif', {
-      method: 'POST',
+    await fetch("http://localhost:5000/api/notif", {
+      method: "POST",
       headers: {
-        'Content-type': 'application/json'
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
-        subscription
-      })
-    })
-  }
+        subscription,
+      }),
+    });
+  };
 
   useEffect(() => {
     if (authContext.auth) {
       const getUserconfig: AxiosRequestConfig = {
         method: "GET",
-        url: APIUrl.getSingleUserByEmail + "/" + authContext.auth.email, 
+        url: APIUrl.getSingleUserByEmail + "/" + authContext.auth.email,
         timeout: 5000,
       };
 
-      const getBookingConfig: AxiosRequestConfig = {
-        method: "GET",
-        url: APIUrl.getBookingByEmail + "/" + authContext.auth.email,
-        timeout: 5000,
-      }
-
       setLoading(true);
       axios(getUserconfig)
-      .then(response => response.data)
-      .then(user => setWalletValue(user.walletValue))
-      .then(() => axios(getBookingConfig))
-      .then(response => response.data)
-      .then(bookings => setMyBookings(bookings))
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false))
+        .then((response) => response.data)
+        .then((user: User) => {
+          setDisplayName(user.name);
+          setPhotoUrl(user.profilePictureUrl);
+          setWalletValue(user.walletValue);
+          console.log(photoUrl);
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
     }
-  
+
     // Push Notif
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator ) {
-      navigator.serviceWorker.ready.then(reg => {
-        reg.pushManager
-        .getSubscription()
-        .then(sub => {
-          if (sub && !(sub.expirationTime && Date.now() > sub.expirationTime - 5 * 60 * 1000)) { // set sub expiration time
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.pushManager.getSubscription().then((sub) => {
+          if (
+            sub &&
+            !(
+              sub.expirationTime &&
+              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            )
+          ) {
+            // set sub expiration time
             setSubscription(sub);
             setIsSubscribed(true);
-        }
-      })
+          }
+        });
         setRegistration(reg);
-      })
+      });
     }
-  }, [])
-    
+  }, [isOpen, authContext.auth]);
+
+  const getTopUpConfig = (topUpValue: number) => {
+    const postConfig: AxiosRequestConfig = {
+      method: "PUT",
+      url: APIUrl.topUpWalletValue + "/" + authContext.auth.email,
+      data: {
+        email: authContext.auth.email,
+        value: topUpValue,
+      },
+      timeout: 5000,
+    };
+    return postConfig;
+  };
+
+  const router = useRouter();
+
   return (
     <Page title="Profile" description="Profile">
-      <Box>
-        {isLoading
-        ? (
-          <Center paddingTop={[2, 3, 5, 10]}>
-            <Spinner size="xl"/>
+      <Box paddingTop={[2, 3, 5, 10]}>
+        {isLoading ? (
+          <Center>
+            <Spinner size="xl" />
           </Center>
-        )
-        : authContext.auth
-        ? ( 
-            <>
-              <ProfileHeader
-                displayName={authContext.auth.name}
-                photoUrl={authContext.auth.photoUrl}
-                email={authContext.auth.email}
-                walletValue={walletValue}
-              />
-              <VStack>
-              <Box>
-                <Text fontWeight="semibold" fontSize="lg"> My Bookings </Text>
-              </Box>
-                {
-                  myBookings.map((booking, id) => {
-                    return <BookingCard key={id} booking={booking}/>; 
-                  }
-                  )
-                }
-              </VStack>
-            </>
-          ) : (
-            <VStack paddingTop={[10, 50]}>
-              <ProfileAvatar photoUrl={null} />
-              <Text align="center">
-                {"You are not logged in. Please login to see your profile."}
+        ) : authContext.auth ? (
+          <Box>
+            <ProfileHeader
+              displayName={displayName ? displayName : authContext.auth.name}
+              photoUrl={photoUrl ? photoUrl : authContext.auth.photoUrl}
+              email={authContext.auth.email}
+              walletValue={walletValue}
+              showWallet={true}
+              showTopUp={true}
+              onTopUp={onOpen} // Do a post request
+            />
+            <Center>
+              <FontAwesomeIcon icon={faCog}></FontAwesomeIcon>
+              <Text ml="1" fontWeight="bold" fontSize="xl">
+                {"Settings"}
               </Text>
+            </Center>
+            <VStack justify="left">
+              {/* To Change Display Name, Password, etc. */}
+              <HStack p="3">
+                <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                <Text ml="1" fontWeight="bold" fontSize="lg">Account</Text>
+              </HStack>
+              <Button
+                aria-label="Account"
+                onClick={() => router.push('/profile/edit')}
+              >
+                Change Profile
+              </Button>
+              <Button
+                aria-label="Account"
+                isDisabled
+              >
+                Change Password
+              </Button>
+              {/* Notification settings */}
+              <HStack p="3">
+                <FontAwesomeIcon icon={faBell}></FontAwesomeIcon>
+                <Text ml="1" fontWeight="bold" fontSize="lg">Notification</Text>
+              </HStack>
+              <Button
+                colorScheme={isSubscribed ? "red" : "teal"}
+                aria-label="Subscribe"
+                onClick={isSubscribed ? unsubscribeButtonOnClick : subscribeButtonOnClick}
+              >
+                {isSubscribed ? "Unsubscribe" : "Subscribe"}
+              </Button>
+              {/* <Button onClick={sendNotificationButtonOnClick}>
+                Send Notification
+              </Button> */}
             </VStack>
-          )
-        }
+          </Box>
+        ) : (
+          <VStack paddingTop={[10, 50]}>
+            <ProfileAvatar photoUrl={null} />
+            <Text align="center">
+              {"You are not logged in. Please login to see your profile."}
+            </Text>
+          </VStack>
+        )}
       </Box>
-      <VStack>
-        <Button onClick={testNotif}>Test</Button>
-        <Button onClick={subscribeButtonOnClick}>Subscribe</Button>
-        <Button onClick={unsubscribeButtonOnClick}>Unsubscribe</Button>
-        <Button onClick={sendNotificationButtonOnClick}>Send Notification</Button>
-      </VStack>
+      <TopUpModal
+        isOpen={isOpen}
+        onClose={onClose}
+        getTopUpConfig={getTopUpConfig}
+      />
     </Page>
   );
 };
 
 export default ProfileView;
-

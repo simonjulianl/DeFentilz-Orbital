@@ -18,7 +18,7 @@ module.exports = withPWA({
     ],
   },
   env: {
-    ENVIRONMENT: "TEST",
+    ENVIRONMENT: "PRODUCTION", // PRODUCTION OR TEST
   },
   async redirects() {
     return [

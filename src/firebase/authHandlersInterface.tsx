@@ -4,7 +4,7 @@ export interface errorObj {
 }
 
 export interface successObj {
-  code: string; 
+  code: string;
   message: string;
 }
 
@@ -20,8 +20,8 @@ export interface settersObject {
   setName: (arg0: string) => void;
   setEmail: (arg0: string) => void;
   setPassword: (arg0: string) => void;
-  setError: (arg0? : errorObj) => void;
-  setSuccess: (arg0? : successObj) => void;
+  setError: (arg0?: errorObj) => void;
+  setSuccess: (arg0?: successObj) => void;
 }
 
 export interface modalCallbacks {

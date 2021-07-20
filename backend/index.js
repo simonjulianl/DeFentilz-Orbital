@@ -36,6 +36,7 @@ require("./routes/facilities.routes")(app);
 require("./routes/users.routes")(app);
 require("./routes/bookings.routes")(app);
 require("./routes/rewards.routes")(app);
+require("./routes/walletRequests.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);

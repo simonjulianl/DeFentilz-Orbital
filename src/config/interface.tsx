@@ -2,6 +2,7 @@ export type User = {
   email: string;
   name: string;
   profilePictureUrl: string;
+  lastTopUpRequest: string;
   walletValue: number;
   isAdmin: boolean;
 };
@@ -33,6 +34,12 @@ export type Reward = {
   description: string;
   value: number;
   userEmail?: string;
+};
+
+export type WalletRequest = {
+  id: number;
+  userEmail: string;
+  value: number;
 };
 
 export type Error = {
