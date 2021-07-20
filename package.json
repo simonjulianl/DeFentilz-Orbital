@@ -9,7 +9,8 @@
     "test": "jest --passWithNoTests",
     "dev:backend": "nodemon backend/index.js",
     "start:backend": "node backend/index.js",
-    "prod:build": "NODE_ENV=production yarn run build:css && yarn run build"
+    "prod:build": "NODE_ENV=production yarn run build:css && yarn run build",
+    "vapid": "web-push generate-vapid-keys"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -92,7 +93,9 @@
     "nodemon": "^2.0.7",
     "prettier": "2.3.0",
     "ts-node": "^10.0.0",
-    "typescript": "4.2.4"
+    "typescript": "4.2.4",
+    "vapid": "^0.7.4",
+    "web-push": "^3.4.5"
   },
   "description": "BoNUS Orbital Website 2021 Summer",
   "repository": {

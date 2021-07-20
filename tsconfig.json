@@ -26,6 +26,6 @@
     "backend/index.js",
     "backend/index.mjs",
     "src/pages/explore/[...slug].tss"
-, "cypress/integration/home.test.ts"  ],
+, "cypress/integration/home.test.ts"],
   "exclude": ["node_modules"]
 }

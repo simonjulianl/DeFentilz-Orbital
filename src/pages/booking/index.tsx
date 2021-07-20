@@ -11,7 +11,7 @@ import { NextPage } from "next";
 import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 import axios, { AxiosRequestConfig } from "axios";
 import APIUrl from "~/config/backendUrl";
-import { Booking } from "~/config/interface";
+import { Booking, User } from "~/config/interface";
 
 interface BookingWithFacility extends Booking {
   facilityName: string;
@@ -20,6 +20,8 @@ interface BookingWithFacility extends Booking {
 const BookingView: NextPage = () => {
   const authContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [displayName, setDisplayName] = useState<string>(undefined);
+  const [photoUrl, setPhotoUrl] = useState<string>(undefined);
   const [walletValue, setWalletValue] = useState<number>(0);
   const [myBookings, setMyBookings] = useState<BookingWithFacility[]>([]);
 
@@ -40,7 +42,11 @@ const BookingView: NextPage = () => {
       setLoading(true);
       axios(getUserconfig)
         .then((response) => response.data)
-        .then((user) => setWalletValue(user.walletValue))
+        .then((user: User) => {
+          setDisplayName(user.name);
+          setPhotoUrl(user.profilePictureUrl);
+          setWalletValue(user.walletValue);
+        })
         .then(() => axios(getBookingConfig))
         .then((response) => response.data)
         .then((bookings) =>
@@ -63,15 +69,6 @@ const BookingView: NextPage = () => {
             )
           )
         )
-        // .then((bookings) => {
-        //   console.log("First One: ");
-        //   console.log(bookings);
-        //   console.log("Second One");
-        //   bookings.forEach((booking) => {
-        //     console.log(booking);
-        //   });
-        //   return bookings;
-        // })
         .then((bookings) => setMyBookings(bookings))
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
@@ -88,8 +85,8 @@ const BookingView: NextPage = () => {
         ) : authContext.auth ? (
           <Box>
             <ProfileHeader
-              displayName={authContext.auth.name}
-              photoUrl={authContext.auth.photoUrl}
+              displayName={displayName ? displayName : authContext.auth.name}
+              photoUrl={photoUrl ? photoUrl : authContext.auth.photoUrl}
               email={authContext.auth.email}
               walletValue={walletValue}
               showWallet={false}
