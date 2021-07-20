@@ -32,10 +32,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.json({ message: "Welcome to BoNUS Server" }));
 
 const webPush = require('web-push');
+const webPushConfig = require('./config/webpush.config');
 webPush.setVapidDetails(
-  process.env.WEB_PUSH_EMAIL || "mailto:amadeus.winarto@u.nus.edu", 
-  process.env.WEB_PUSH_PUBLIC_KEY || "BIrwgIfEWi6V7zSo7wPbobsEykXR5LMsCVNmmSeGHR4ctltUa49jOke3px4JbagLR9xVNcm30zzpRCuL-zOr1fw",
-  process.env.WEB_PUSH_PRIVATE_KEY || "5CUhVGHSP73z3nP8pmqz7TCnLR2IJHNVZpoiGSNIy-0",
+  webPushConfig.WEB_PUSH_EMAIL,
+  webPushConfig.WEB_PUSH_PUBLIC_KEY,
+  webPushConfig.WEB_PUSH_PRIVATE_KEY,
 )
 
 // require("./routes/notif.routes")(app);
