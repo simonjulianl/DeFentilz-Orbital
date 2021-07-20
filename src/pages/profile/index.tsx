@@ -39,7 +39,8 @@ const ProfileView: NextPage = () => {
         .get<User>(APIUrl.getSingleUserByEmail + "/" + authContext.auth.email)
         .then((response) => response.data)
         .then((user) => {
-          canTopUp.current = moment(user.lastTopUpRequest).diff(moment()) > 0;
+          canTopUp.current =
+            moment().diff(moment(user.lastTopUpRequest), "days") > 0;
           setWalletValue(user.walletValue);
         })
         .catch((error) => console.error(error))
