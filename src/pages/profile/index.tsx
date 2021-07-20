@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 
 import {
@@ -22,25 +22,26 @@ import APIUrl from "~/config/backendUrl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faKey } from "@fortawesome/free-solid-svg-icons";
 import TopUpModal from "~/components/TopUpModal/TopUpModal";
+import { User } from "~/config/interface";
+import moment from "moment";
 
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [walletValue, setWalletValue] = useState<number>(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const canTopUp = useRef<boolean>();
 
   useEffect(() => {
     if (authContext.auth) {
-      const getUserconfig: AxiosRequestConfig = {
-        method: "GET",
-        url: APIUrl.getSingleUserByEmail + "/" + authContext.auth.email,
-        timeout: 5000,
-      };
-
       setLoading(true);
-      axios(getUserconfig)
+      axios
+        .get<User>(APIUrl.getSingleUserByEmail + "/" + authContext.auth.email)
         .then((response) => response.data)
-        .then((user) => setWalletValue(user.walletValue))
+        .then((user) => {
+          canTopUp.current = moment(user.lastTopUpRequest).diff(moment()) > 0;
+          setWalletValue(user.walletValue);
+        })
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
     }
@@ -48,13 +49,15 @@ const ProfileView: NextPage = () => {
 
   const getTopUpConfig = (topUpValue: number) => {
     const postConfig: AxiosRequestConfig = {
-      method: "PUT",
-      url: APIUrl.topUpWalletValue + "/" + authContext.auth.email,
-      data: {
-        email: authContext.auth.email,
-        value: topUpValue,
+      method: "POST",
+      url: APIUrl.createWalletRequest,
+      headers: {
+        "Content-Type": "application/json",
       },
-      timeout: 5000,
+      data: JSON.stringify({
+        userEmail: authContext.auth.email,
+        value: topUpValue,
+      }),
     };
     return postConfig;
   };
@@ -74,7 +77,7 @@ const ProfileView: NextPage = () => {
               email={authContext.auth.email}
               walletValue={walletValue}
               showWallet={true}
-              showTopUp={true}
+              disableTopUp={canTopUp.current}
               onTopUp={onOpen} // Do a post request
             />
             <Center>
