@@ -134,7 +134,7 @@ const Calendar: React.FC<OwnProps> = ({
           return {
             // Change this to Moment
             startingTime: moment(booking.startingTime).toDate(),
-            endingTime: moment(booking.startingTime).toDate(),
+            endingTime: moment(booking.endingTime).toDate(),
             title:
               !authContext.auth || authContext.auth.user.isAdmin
                 ? "Booking"
