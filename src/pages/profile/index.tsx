@@ -86,13 +86,13 @@ const ProfileView: NextPage = () => {
         "Content-type": "application/json",
       },
       data: {
-        endpoint: sub.endpoint, 
+        endpoint: sub.endpoint,
         keys: {
           auth: sub.toJSON().keys.auth,
-          p256dh: sub.toJSON().keys.p256dh
+          p256dh: sub.toJSON().keys.p256dh,
         },
         userAgent: navigator.userAgent,
-        userEmail: authContext.auth.email
+        userEmail: authContext.auth.email,
       },
       timeout: 5000,
     };
@@ -149,8 +149,9 @@ const ProfileView: NextPage = () => {
       axios(getUserconfig)
         .then((response) => response.data)
         .then((user: User) => {
-          console.log(user);
+          console.log(user.lastTopUpRequest);
           canTopUp.current =
+            user.lastTopUpRequest.includes("Invalid") ||
             moment().diff(moment(user.lastTopUpRequest), "days") > 0;
 
           setDisplayName(user.name);
@@ -164,7 +165,7 @@ const ProfileView: NextPage = () => {
       if (typeof window !== "undefined" && "serviceWorker" in navigator) {
         navigator.serviceWorker.ready.then((reg) => {
           reg.pushManager.getSubscription().then((sub) => {
-            if ( sub ) {
+            if (sub) {
               setSubscription(sub);
               setIsSubscribed(true);
             }

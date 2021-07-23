@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: null,
         allowNull: true,
         get() {
-          return moment(this.getDataValue("startingTime"))
+          return moment(this.getDataValue("lastTopUpRequest"))
             .locale("en-SG")
             .format("YYYY-MM-DD HH:mm:ss");
         },
