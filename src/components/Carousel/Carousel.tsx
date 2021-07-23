@@ -3,6 +3,8 @@ import { Carousel } from "react-responsive-carousel";
 import React from "react";
 import Image from "next/image";
 
+import { CarouselConfig } from "./CarouselConfig";
+
 const BonusCarousel: React.FC<Record<string, unknown>> = () => {
   return (
     <Carousel
@@ -12,22 +14,20 @@ const BonusCarousel: React.FC<Record<string, unknown>> = () => {
       showThumbs={false}
       showArrows={false}
     >
-      <Image
-        aria-label="carousel"
-        layout="responsive"
-        width={400}
-        height={250}
-        src="https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg"
-        priority={true}
-      />
-      <Image
-        aria-label="carousel"
-        layout="responsive"
-        width={400}
-        height={250}
-        src="https://bonusdefentilzbucket.s3.ap-southeast-1.amazonaws.com/default_image_facility.jpeg"
-        priority={true}
-      />
+      {
+        CarouselConfig.map(src => {
+          return (
+            <Image
+            aria-label="carousel"
+            layout="responsive"
+            width={400}
+            height={250}
+            src={src}
+            priority={true}
+          />
+          );
+        })
+      }
     </Carousel>
   );
 };
