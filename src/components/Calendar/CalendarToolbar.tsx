@@ -59,7 +59,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   };
 
   const goToCurrent = () => {
-    const now = new Date();
+    const now = moment().toDate();
     date.setDate(now.getDate());
     date.setMonth(now.getMonth());
     date.setYear(now.getFullYear());

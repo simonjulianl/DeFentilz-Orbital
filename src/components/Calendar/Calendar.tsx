@@ -132,8 +132,9 @@ const Calendar: React.FC<OwnProps> = ({
         localizer={localizer}
         events={bookingsList.map((booking) => {
           return {
-            startingTime: new Date(booking.startingTime),
-            endingTime: new Date(booking.endingTime),
+            // Change this to Moment
+            startingTime: moment(booking.startingTime).toDate(),
+            endingTime: moment(booking.startingTime).toDate(),
             title:
               !authContext.auth || authContext.auth.user.isAdmin
                 ? "Booking"
