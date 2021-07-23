@@ -332,6 +332,7 @@ const AdminUserPage: NextPage = () => {
                   message={`Are you sure to delete ${
                     selectedUser.current && selectedUser.current.name
                   } ?`}
+                  messageStatus={"warning"}
                   onDelete={() => {
                     onCloseDeleteModal();
                     setLoading(true);

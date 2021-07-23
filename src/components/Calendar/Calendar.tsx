@@ -33,6 +33,7 @@ const Calendar: React.FC<OwnProps> = ({
 
   const [myBooking, setMyBooking] = useState<Booking>(null);
   const [error, setError] = useState<string>(null);
+  const [message, setMessage] = useState<string>(null);
   const [state, setState] = useState<ModalState>(ModalState.None);
   const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
   const {
@@ -75,8 +76,8 @@ const Calendar: React.FC<OwnProps> = ({
       data: JSON.stringify(booking),
     })
       .then((response) => {
-        setError(
-          `Booking Created from ${response.data.startingTime} to ${response.data.endingTime} `
+        setMessage(
+          `Booking created from ${response.data.startingTime} to ${response.data.endingTime} `
         );
         onOpenError();
       })
@@ -92,7 +93,7 @@ const Calendar: React.FC<OwnProps> = ({
       url: APIUrl.deleteSingleBooking + `/${booking.id}`,
     })
       .then((_) => {
-        setError(
+        setMessage(
           `Booking from ${booking.startingTime} to ${booking.endingTime} deleted`
         );
         onOpenError();
@@ -182,7 +183,8 @@ const Calendar: React.FC<OwnProps> = ({
         state={state}
       />
       <DeleteConfirmationModal
-        message={error}
+        message={message ? message : error}
+        messageStatus={message ? "success" : "error"}
         onDelete={() => {
           onCloseError();
           onChange();

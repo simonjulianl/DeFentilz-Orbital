@@ -225,6 +225,7 @@ const ChangeProfile: NextPage = () => {
                 </Button>
                 <DeleteConfirmationModal
                   message={"Are you sure to delete this account?"}
+                  messageStatus={"warning"}
                   onDelete={handleDelete}
                   isOpen={isOpen}
                   onClose={onClose}

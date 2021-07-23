@@ -344,6 +344,7 @@ const FacilityEdit: NextPage = () => {
                 </Button>
                 <DeleteConfirmationModal
                   message={"Are you sure to delete this facility ?"}
+                  messageStatus={"warning"}
                   onDelete={handleDelete}
                   isOpen={isOpen}
                   onClose={onClose}

@@ -1,4 +1,4 @@
-import { Button, useBreakpointValue } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   Modal,
@@ -12,6 +12,7 @@ import {
 
 interface OwnProps {
   message: string;
+  messageStatus: "info" | "warning" | "success" | "error", 
   onDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isOpen: boolean;
   onClose: () => void;
@@ -19,6 +20,7 @@ interface OwnProps {
 
 const DeleteConfirmationModal: React.FC<OwnProps> = ({
   message,
+  messageStatus,
   onDelete,
   isOpen,
   onClose,
@@ -33,13 +35,23 @@ const DeleteConfirmationModal: React.FC<OwnProps> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Confirmation</ModalHeader>
+          {
+          messageStatus === 'success'
+          ? <ModalHeader>Success!</ModalHeader>
+          :  <ModalHeader>{messageStatus.toUpperCase()}</ModalHeader>
+          }
           <ModalCloseButton />
           <ModalBody>{message}</ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={onDelete}>
-              Delete
-            </Button>
+            {
+              messageStatus === "info" || messageStatus === "success" || messageStatus === "warning"
+              ? <Button colorScheme="teal" mr={3} onClick={onDelete}>
+                  {messageStatus === "success" ? "OK" : "Confirm"}
+                </Button>
+              : <Button colorScheme="red" mr={3} onClick={onDelete}>
+                  Return
+                </Button>
+            }
           </ModalFooter>
         </ModalContent>
       </Modal>
