@@ -75,7 +75,6 @@ const ProfileView: NextPage = () => {
   const subscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
-
     event.preventDefault();
     const sub: PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
@@ -94,42 +93,43 @@ const ProfileView: NextPage = () => {
         "Content-type": "application/json",
       },
       data: {
-        endpoint: sub.endpoint, 
+        endpoint: sub.endpoint,
         keys: {
           auth: sub.toJSON().keys.auth,
-          p256dh: sub.toJSON().keys.p256dh
+          p256dh: sub.toJSON().keys.p256dh,
         },
         userAgent: navigator.userAgent,
-        userEmail: authContext.auth.email
+        userEmail: authContext.auth.email,
       },
       timeout: 5000,
     };
 
     axios(subscribeConfig)
-    .then(() => console.log("Subscribed!"))
-    .then(() => setIsSubscribed(true))
-    .catch(err => console.error(err));
+      .then(() => console.log("Subscribed!"))
+      .then(() => setIsSubscribed(true))
+      .catch((err) => console.error(err));
   };
 
   const unsubscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    subscription.unsubscribe()
-    .then(() => {
-      const deleteSub : AxiosRequestConfig = {
-        method: "DELETE", 
-        url: APIUrl.deleteSubscription,
-        data: {
-          endpoint: subscription.endpoint
-        }
-      }
-      return axios(deleteSub);
-    })
-    .then(() => setSubscription(null))
-    .then(() => setIsSubscribed(false))
-    .then(() => console.log("Unsubscribed locally!"))
-    .catch((err) => console.error(err));
+    subscription
+      .unsubscribe()
+      .then(() => {
+        const deleteSub: AxiosRequestConfig = {
+          method: "DELETE",
+          url: APIUrl.deleteSubscription,
+          data: {
+            endpoint: subscription.endpoint,
+          },
+        };
+        return axios(deleteSub);
+      })
+      .then(() => setSubscription(null))
+      .then(() => setIsSubscribed(false))
+      .then(() => console.log("Unsubscribed locally!"))
+      .catch((err) => console.error(err));
   };
 
   const sendNotificationButtonOnClick = async (event: {
@@ -168,7 +168,9 @@ const ProfileView: NextPage = () => {
       axios(getUserconfig)
         .then((response) => response.data)
         .then((user: User) => {
+          console.log(user.lastTopUpRequest);
           canTopUp.current =
+            user.lastTopUpRequest.includes("Invalid") ||
             moment().diff(moment(user.lastTopUpRequest), "days") > 0;
 
           setDisplayName(user.name);
@@ -182,7 +184,7 @@ const ProfileView: NextPage = () => {
       if (typeof window !== "undefined" && "serviceWorker" in navigator) {
         navigator.serviceWorker.ready.then((reg) => {
           reg.pushManager.getSubscription().then((sub) => {
-            if ( sub ) {
+            if (sub) {
               setSubscription(sub);
               setIsSubscribed(true);
             }
