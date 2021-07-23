@@ -59,17 +59,6 @@ const ProfileView: NextPage = () => {
     new Notification(notifTitle, options);
   };
 
-  const testNotif = () => {
-    Notification.requestPermission().then((result) => {
-      if (result === "granted") {
-        console.log("Permission granted");
-        randomNotification();
-      } else {
-        console.log("Nope");
-      }
-    });
-  };
-
   const base64ToUint8Array = (base64) => {
     const padding = "=".repeat((4 - (base64.length % 4)) % 4);
     const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -94,9 +83,6 @@ const ProfileView: NextPage = () => {
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
       ),
     });
-    // TODO: you should call your API to save subscription data on server in order to send web push notification from server
-    // each sub object contains an endpoint field and an expirationTime field
-    // each sub object if and only if one unique device
 
     setSubscription(sub);
     console.log(sub.toJSON());
@@ -143,16 +129,7 @@ const ProfileView: NextPage = () => {
     .then(() => setSubscription(null))
     .then(() => setIsSubscribed(false))
     .then(() => console.log("Unsubscribed locally!"))
-    .catch(() => console.error("Problem Unsubscribing!"));
-
-    // Setup Delete subscription
-    // subscription.unsubscribe()
-    // .then();
-
-    // TODO: you should call your API to delete or invalidate subscription data on server
-    // setSubscription(null);
-    // setIsSubscribed(false);
-    // console.log("web push unsubscribed!");
+    .catch((err) => console.error(err));
   };
 
   const sendNotificationButtonOnClick = async (event: {
@@ -293,9 +270,9 @@ const ProfileView: NextPage = () => {
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </Button>
-              <Button onClick={sendNotificationButtonOnClick}>
+              {/* <Button onClick={sendNotificationButtonOnClick}>
                 Send Notification
-              </Button>
+              </Button> */}
             </VStack>
           </Box>
         ) : (
