@@ -1,5 +1,6 @@
 const db = require("../models");
 const WalletRequest = db.walletRequests;
+const User = db.users;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -20,10 +21,19 @@ exports.create = (req, res) => {
     value: req.body.value,
   };
 
-  WalletRequest.create(walletRequest)
-    .then((data) => {
-      res.send(data);
-    })
+  Promise.all(
+    User.update(
+      {
+        email: email,
+        lastTopUpRequest: new Date(),
+      },
+      {
+        where: { email: email },
+      }
+    ),
+    WalletRequest.create(walletRequest)
+  )
+    .then((values) => res.send(values))
     .catch((err) => {
       res.status(500).send({
         message:
