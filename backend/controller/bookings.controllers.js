@@ -1,4 +1,6 @@
 const db = require("../models");
+const moment = require('moment');
+
 const Booking = db.bookings;
 const Facility = db.facilities;
 const User = db.users;
