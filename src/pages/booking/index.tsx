@@ -12,6 +12,7 @@ import ProfileAvatar from "~/components/Profile/ProfileAvatar";
 import axios, { AxiosRequestConfig } from "axios";
 import APIUrl from "~/config/backendUrl";
 import { Booking, User } from "~/config/interface";
+import moment from "moment";
 
 interface BookingWithFacility extends Booking {
   facilityName: string;
@@ -23,7 +24,8 @@ const BookingView: NextPage = () => {
   const [displayName, setDisplayName] = useState<string>(undefined);
   const [photoUrl, setPhotoUrl] = useState<string>(undefined);
   const [walletValue, setWalletValue] = useState<number>(0);
-  const [myBookings, setMyBookings] = useState<BookingWithFacility[]>([]);
+  const [pastBookings, setPastBookings] = useState<BookingWithFacility[]>([]);
+  const [futureBookings, setFutureBookings] = useState<BookingWithFacility[]>([]);
 
   useEffect(() => {
     if (authContext.auth) {
@@ -70,8 +72,29 @@ const BookingView: NextPage = () => {
             return newBooking;
           })
         })
-      .then(bookings => bookings.sort((a,b) => (a.startingTime > b.startingTime) ? 1 : ((b.startingTime > a.startingTime) ? -1 : 0)))
-      .then((bookings) => setMyBookings(bookings))
+      .then((bookings : BookingWithFacility[]) => {
+        let past: BookingWithFacility[] = [];
+        let future: BookingWithFacility[] = [];
+        const currTime = moment();
+
+        for (let i = 0; i < bookings.length; i++) {
+          if ( currTime.diff(moment(bookings[i].endingTime)) > 0 ){
+            past.push(bookings[i]);
+          } else {
+            future.push(bookings[i]);
+          }
+        }
+
+        const sortingFn = (a,b) => (a.startingTime > b.startingTime) ? 1 : ((b.startingTime > a.startingTime) ? -1 : 0);        
+        return Promise.all<BookingWithFacility[], BookingWithFacility[]>([
+          Promise.resolve(past).then(past => past.sort(sortingFn)).then(past => past.slice(0, 5)),
+          Promise.resolve(future).then(future => future.sort(sortingFn))
+        ]);
+      })
+      .then(values => {
+        setPastBookings(values[0]);
+        setFutureBookings(values[1]);
+      })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
     }
@@ -97,24 +120,44 @@ const BookingView: NextPage = () => {
             <VStack>
               <Box>
                 <Text fontWeight="bold" fontSize="xl">
-                  {"My Bookings"}
+                  {"Upcoming Bookings"}
                 </Text>
               </Box>
-              {/* <Stack direction={{ base: "column", md: "row" }}> */}
               <Flex
                 direction={["column", "column", "row"]}
                 maxW={"100vw"}
                 wrap="wrap"
               >
-                {myBookings.length > 0 ? (
-                  myBookings.map((booking, id) => {
+                {futureBookings.length > 0 ? (
+                  futureBookings.map((booking, id) => {
                     return (
                     <Box key={id} ml={[0, 0, 3]} mb={[0, 3, 5]}>
                       <BookingCard key={id} booking={booking} />
                     </Box>);
                   })
                 ) : (
-                  <Text>{"No bookings has been made"}</Text>
+                  <Text>{"No upcoming bookings to show."}</Text>
+                )}
+              </Flex>
+              <Box pt={3}>
+                <Text fontWeight="bold" fontSize="xl">
+                  {"Past 5 Bookings"}
+                </Text>
+              </Box>
+              <Flex
+                direction={["column", "column", "row"]}
+                maxW={"100vw"}
+                wrap="wrap"
+              >
+              {pastBookings.length > 0 ? (
+                  pastBookings.map((booking, id) => {
+                    return (
+                    <Box key={id} ml={[0, 0, 3]} mb={[0, 3, 5]}>
+                      <BookingCard key={futureBookings.length + id} booking={booking} />
+                    </Box>);
+                  })
+                ) : (
+                  <Text>{"No past bookings to show"}</Text>
                 )}
               </Flex>
             </VStack>
