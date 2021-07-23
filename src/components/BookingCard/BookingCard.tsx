@@ -2,6 +2,7 @@ import React from "react";
 import { HStack, Center, Text, Box } from "@chakra-ui/react";
 
 import { Booking } from "~/config/interface";
+import moment from "moment";
 
 interface BookingWithFacility extends Booking {
   facilityName: string;
@@ -21,8 +22,9 @@ const BookingCard: React.FC<OwnProps> = ({ booking }) => {
     hour: "2-digit",
     minute: "2-digit",
   };
-  const startTime = new Date(booking.startingTime);
-  const endTime = new Date(booking.endingTime);
+  
+  const startTime = moment(booking.startingTime).toDate();;
+  const endTime = moment(booking.endingTime).toDate();;
 
   return (
     <Box
