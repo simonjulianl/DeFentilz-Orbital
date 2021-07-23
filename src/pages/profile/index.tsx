@@ -36,6 +36,7 @@ import moment from "moment";
 const ProfileView: NextPage = () => {
   const authContext = useAuth();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   const [displayName, setDisplayName] = useState<string>(undefined);
   const [photoUrl, setPhotoUrl] = useState<string>(undefined);
@@ -48,16 +49,6 @@ const ProfileView: NextPage = () => {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const [subscription, setSubscription] = useState<PushSubscription>(null);
   const [registration, setRegistration] = useState(null);
-
-  const randomNotification = () => {
-    const notifTitle = "Hello World";
-    const notifBody = `Created by your mama`;
-    const options = {
-      body: notifBody,
-    };
-
-    new Notification(notifTitle, options);
-  };
 
   const base64ToUint8Array = (base64) => {
     const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -76,6 +67,8 @@ const ProfileView: NextPage = () => {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
+    setButtonLoading(true);
+
     const sub: PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
@@ -104,44 +97,7 @@ const ProfileView: NextPage = () => {
       timeout: 5000,
     };
 
-    axios(subscribeConfig)
-      .then(() => console.log("Subscribed!"))
-      .then(() => setIsSubscribed(true))
-      .catch((err) => console.error(err));
-  };
-
-  const unsubscribeButtonOnClick = async (event: {
-    preventDefault: () => void;
-  }) => {
-    event.preventDefault();
-    subscription
-      .unsubscribe()
-      .then(() => {
-        const deleteSub: AxiosRequestConfig = {
-          method: "DELETE",
-          url: APIUrl.deleteSubscription,
-          data: {
-            endpoint: subscription.endpoint,
-          },
-        };
-        return axios(deleteSub);
-      })
-      .then(() => setSubscription(null))
-      .then(() => setIsSubscribed(false))
-      .then(() => console.log("Unsubscribed locally!"))
-      .catch((err) => console.error(err));
-  };
-
-  const sendNotificationButtonOnClick = async (event: {
-    preventDefault: () => void;
-  }) => {
-    event.preventDefault();
-    if (subscription == null) {
-      console.error("web push not subscribed");
-      return;
-    }
-
-    const subscribeConfig: AxiosRequestConfig = {
+    const getNotifConfig: AxiosRequestConfig = {
       method: "POST",
       url: APIUrl.getNotifByEmail,
       data: {
@@ -151,9 +107,34 @@ const ProfileView: NextPage = () => {
     };
 
     axios(subscribeConfig)
-      .then((response) => response.data)
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+    .then(() => axios(getNotifConfig))
+    .then(() => setIsSubscribed(true))
+    .catch(err => console.error(err))
+    .finally(() => setButtonLoading(false));
+  };
+
+  const unsubscribeButtonOnClick = async (event: {
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
+    setButtonLoading(true);
+
+    subscription.unsubscribe()
+    .then(() => {
+      const deleteSub : AxiosRequestConfig = {
+        method: "DELETE", 
+        url: APIUrl.deleteSubscription,
+        data: {
+          endpoint: subscription.endpoint
+        }
+      }
+      return axios(deleteSub);
+    })
+    .then(() => setSubscription(null))
+    .then(() => setIsSubscribed(false))
+    .then(() => console.log("Unsubscribed locally!"))
+    .catch((err) => console.error(err))
+    .finally(() => setButtonLoading(false));
   };
 
   useEffect(() => {
@@ -269,6 +250,7 @@ const ProfileView: NextPage = () => {
                     ? unsubscribeButtonOnClick
                     : subscribeButtonOnClick
                 }
+                isLoading={buttonLoading}
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </Button>

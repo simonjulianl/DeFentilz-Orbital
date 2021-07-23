@@ -50,8 +50,8 @@ exports.getNotif = (req, res) => {
         };
         return webPush.sendNotification(subObj,
           JSON.stringify({
-            title: "Hello World", 
-            message: "Success!"
+            title: "Hello!", 
+            message: "This is how you will be notified!"
             })
           );
       });
