@@ -42,7 +42,7 @@ function isInsufficientMoney(facilId, userEmail) {
           {
             email: userEmail,
             walletValue: {
-              [Op.lte]: facil.rate,
+              [Op.lt]: facil.rate,
             },
           },
         ],
