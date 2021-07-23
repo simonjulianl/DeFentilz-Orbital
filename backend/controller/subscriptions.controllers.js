@@ -14,16 +14,17 @@ function checkBody(req, res) {
 
 exports.create = (req, res) => {
   checkBody(req, res);
-  const { subscription, userEmail } = req.body;
+  const { endpoint, keys, userAgent, userEmail } = req.body;
   Subscription.create({
-    subscription: subscription, 
+    endpoint: endpoint, 
+    keys: keys,
+    userAgent: userAgent,
     userEmail: userEmail
   })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
-    console.log(err);
     res.status(500)
     .send({
       message: err.sqlMessage || "Some error occured while creating the booking"
@@ -37,22 +38,51 @@ exports.getNotif = (req, res) => {
     where: {
       userEmail: userEmail
     }
-  }).then(subscriptions =>
-    subscriptions.map(subscription =>
+  }).then(subscriptions => {
+    return subscriptions.map(subscription =>
       {
-        return webPush.sendNotification(subscription.dataValues.subscription,
+        const subObj = {
+          endpoint: subscription.dataValues.endpoint,
+          keys: {
+            auth: subscription.dataValues.keys.auth,
+            p256dh: subscription.dataValues.keys.p256dh
+          }
+        };
+        return webPush.sendNotification(subObj,
           JSON.stringify({
             title: "Hello World", 
             message: "Success!"
             })
           );
-      })
+      });
+    }
     )
     .then(promises => Promise.allSettled(promises))
     .then(() => {
       res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({ data: { success: true } }));
     })
+    .catch(function(err) {
+      console.error(err);
+      res.status(500);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({
+        error: {
+          id: 'unable-to-send-messages',
+          message: `We were unable to send messages to all subscriptions : ` +
+            `'${err.message}'`
+        }
+      }));
+    });
+}
+
+exports.delete = (req, res) => {
+  Subscription.destroy({
+    where: {
+      endpoint: req.body.endpoint
+    }
+  })
+    .then(() => res.send("Success"))
     .catch(function(err) {
       console.error(err);
       res.status(500);

@@ -4,15 +4,22 @@ module.exports = (sequelize, Sequelize) => {
   const Subscription = sequelize.define(
     "subscriptions",
     {
-      subscription: {
+      endpoint: {
+        type: DataTypes.STRING(500), 
+        allowNull: false
+      }, 
+      keys: {
         type: DataTypes.JSON, 
-        allowNull: true
+        allowNull: false
+      }, 
+      userAgent: {
+        type: DataTypes.STRING, 
+        allowNull: true,
       }
     },
     {
       tableName: "Subscriptions"
     }
   );
-
   return Subscription;
 };

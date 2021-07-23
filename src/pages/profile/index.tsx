@@ -45,8 +45,8 @@ const ProfileView: NextPage = () => {
   const canTopUp = useRef<boolean>();
 
   // For Push Notif
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscription, setSubscription] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [subscription, setSubscription] = useState<PushSubscription>(null);
   const [registration, setRegistration] = useState(null);
 
   const randomNotification = () => {
@@ -88,60 +88,6 @@ const ProfileView: NextPage = () => {
   }) => {
 
     event.preventDefault();
-    // if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-    //   navigator.serviceWorker.ready.then((reg) => {
-    //     reg.pushManager.getSubscription().then((sub) => {
-    //       if (
-    //         sub &&
-    //         !(
-    //           sub.expirationTime &&
-    //           Date.now() > sub.expirationTime - 5 * 60 * 1000
-    //         )
-    //       ) {
-    //         // set sub expiration time
-    //         setSubscription(sub);
-    //         setIsSubscribed(true);
-    //       }
-    //     });
-    //     setRegistration(reg);
-    //   });
-    // }
-
-    // if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-    //   navigator.serviceWorker.ready.then((registration) => 
-    //     registration.pushManager.subscribe({
-    //       userVisibleOnly: true,
-    //       applicationServerKey: base64ToUint8Array(
-    //         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-    //       ),
-    //     })
-    //   )
-    //   .then(sub => {
-    //     setSubscription(sub);
-    //     const subscribeConfig: AxiosRequestConfig = {
-    //       method: "POST",
-    //       url: APIUrl.createSubscription,
-    //       headers: {
-    //         'Content-type': "application/json",
-    //       },
-    //       data: {
-    //         subscription: sub.toJSON(),
-    //         userEmail: authContext.auth.email
-    //       },
-    //       timeout: 5000,
-    //     };
-
-    //     return subscribeConfig;
-    //   })
-    //   .then(config => axios(config))
-    //   .then(() => console.log("Subscribed!"))
-    //   .then(() => setIsSubscribed(true))
-    //   .catch(err => console.error(err));  
-    // } else {
-    //   console.error("Something went wrong");
-    //   return;
-    // }
-
     const sub : PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
@@ -153,6 +99,7 @@ const ProfileView: NextPage = () => {
     // each sub object if and only if one unique device
 
     setSubscription(sub);
+    console.log(sub.toJSON());
 
     const subscribeConfig: AxiosRequestConfig = {
       method: "POST",
@@ -161,7 +108,12 @@ const ProfileView: NextPage = () => {
         'Content-type': "application/json",
       },
       data: {
-        subscription: sub.toJSON(),
+        endpoint: sub.endpoint, 
+        keys: {
+          auth: sub.toJSON().keys.auth,
+          p256dh: sub.toJSON().keys.p256dh
+        },
+        userAgent: navigator.userAgent,
         userEmail: authContext.auth.email
       },
       timeout: 5000,
@@ -171,27 +123,32 @@ const ProfileView: NextPage = () => {
     .then(() => console.log("Subscribed!"))
     .then(() => setIsSubscribed(true))
     .catch(err => console.error(err));
-
-    // await fetch("http://localhost:5000/api/notif", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     subscription,
-    //   }),
-    // });
-
-    console.log("web push subscribed!");
-    console.log(sub);
   };
 
   const unsubscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    console.error("Unsubscribing not allowed!");
-    // await subscription.unsubscribe();
+    subscription.unsubscribe()
+    .then(() => {
+      const deleteSub : AxiosRequestConfig = {
+        method: "DELETE", 
+        url: APIUrl.deleteSubscription,
+        data: {
+          endpoint: subscription.endpoint
+        }
+      }
+      return axios(deleteSub);
+    })
+    .then(() => setSubscription(null))
+    .then(() => setIsSubscribed(false))
+    .then(() => console.log("Unsubscribed locally!"))
+    .catch(() => console.error("Problem Unsubscribing!"));
+
+    // Setup Delete subscription
+    // subscription.unsubscribe()
+    // .then();
+
     // TODO: you should call your API to delete or invalidate subscription data on server
     // setSubscription(null);
     // setIsSubscribed(false);
@@ -239,7 +196,6 @@ const ProfileView: NextPage = () => {
           setDisplayName(user.name);
           setPhotoUrl(user.profilePictureUrl);
           setWalletValue(user.walletValue);
-          console.log(photoUrl);
         })
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));

@@ -6,6 +6,9 @@ module.exports = (app) => {
     // create new subscription
     router.post("/", subscription.create);
 
+    // delete one subscription by endpoint
+    router.delete("/", subscription.delete);
+
     // get Notification
     router.post("/notifs", subscription.getNotif);
   
