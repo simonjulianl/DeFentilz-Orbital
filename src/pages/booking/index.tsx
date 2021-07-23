@@ -27,7 +27,7 @@ const BookingView: NextPage = () => {
 
   useEffect(() => {
     if (authContext.auth) {
-      const getUserconfig: AxiosRequestConfig = {
+      const getUserConfig: AxiosRequestConfig = {
         method: "GET",
         url: APIUrl.getSingleUserByEmail + "/" + authContext.auth.email,
         timeout: 5000,
@@ -39,39 +39,41 @@ const BookingView: NextPage = () => {
         timeout: 5000,
       };
 
+      const getAllFacilities: AxiosRequestConfig = {
+        method: "GET", 
+        url: APIUrl.getAllFacilities,
+        timeout: 5000
+      };
+
       setLoading(true);
-      axios(getUserconfig)
-        .then((response) => response.data)
+      Promise.all([
+        axios(getUserConfig)
+        .then(response => response.data)
         .then((user: User) => {
           setDisplayName(user.name);
           setPhotoUrl(user.profilePictureUrl);
           setWalletValue(user.walletValue);
         })
-        .then(() => axios(getBookingConfig))
+        ,
+        axios(getAllFacilities)
+        .then(response => response.data)
+        , 
+        axios(getBookingConfig)
         .then((response) => response.data)
-        .then((bookings) =>
-          Promise.all<BookingWithFacility>(
-            // To get facility name
-            bookings.map((booking) =>
-              axios({
-                method: "GET",
-                url: APIUrl.getSingleFacility + "/" + booking.facilityId,
-                timeout: 5000,
-              })
-                .then((response) => response.data)
-                .then((facility) => {
-                  const new_booking = {
-                    ...booking,
-                    facilityName: facility.name,
-                  };
-                  return new_booking;
-                })
-            )
-          )
-        )
-        .then((bookings) => setMyBookings(bookings))
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+      ])
+        .then(values => {
+          return values[2].map((booking: Booking) => {
+            const newBooking = {
+              ...booking,
+              facilityName: values[1].filter(facility => facility.id === booking.facilityId)[0].name
+            }
+            return newBooking;
+          })
+        })
+      .then(bookings => bookings.sort((a,b) => (a.startingTime > b.startingTime) ? 1 : ((b.startingTime > a.startingTime) ? -1 : 0)))
+      .then((bookings) => setMyBookings(bookings))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
     }
   }, []);
 
