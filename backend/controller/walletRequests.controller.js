@@ -21,18 +21,18 @@ exports.create = (req, res) => {
     value: req.body.value,
   };
 
-  Promise.all(
+  Promise.all([
     User.update(
       {
-        email: email,
+        email: req.body.userEmail,
         lastTopUpRequest: new Date(),
       },
       {
-        where: { email: email },
+        where: { email: req.body.userEmail },
       }
     ),
-    WalletRequest.create(walletRequest)
-  )
+    WalletRequest.create(walletRequest),
+  ])
     .then((values) => res.send(values))
     .catch((err) => {
       res.status(500).send({

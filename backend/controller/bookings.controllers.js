@@ -71,25 +71,6 @@ async function deductWallet(facilId, userEmail) {
   user.save();
 }
 
-async function refundWallet(booking) {
-  const values_1 = await Promise.all([
-    Facility.findOne({
-      where: {
-        id: booking.facilityId,
-      },
-    }).then((facil) => facil.rate),
-    User.findOne({
-      where: {
-        email: booking.userEmail,
-      },
-    }),
-  ]);
-  const rate = values_1[0];
-  const user = values_1[1];
-  user.walletValue = user.walletValue + rate;
-  user.save();
-}
-
 function checkBody(req, res) {
   if (!req.body.facilityId) {
     res.status(400).send({
@@ -366,15 +347,6 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Booking.findOne({ where: { id: id } })
-    .then((booking) => {
-      if (moment(booking.startingTime).diff(moment()) < 0) {
-        return res.status(500).send({
-          message: "Booking in the past",
-        });
-      } else {
-        refundWallet(booking);
-      }
-    })
     .then(() =>
       Booking.destroy({
         where: { id: id },
