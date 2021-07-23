@@ -3,6 +3,7 @@ import { HStack, Center, Text, Box } from "@chakra-ui/react";
 
 import { Booking } from "~/config/interface";
 import moment from "moment";
+import router from "next/router";
 
 interface BookingWithFacility extends Booking {
   facilityName: string;
@@ -36,6 +37,8 @@ const BookingCard: React.FC<OwnProps> = ({ booking }) => {
       shadow="lg"
       data-cy="search-card"
       p={3}
+      as="button"
+      onClick={() => router.push('/explore/facilities/' + booking.facilityId)}
     >
       <Center>
         <Text fontWeight="bold">{booking.facilityName}</Text>
