@@ -100,7 +100,7 @@ const ChangeProfile: NextPage = () => {
     })
       .then((_) => {
         setLoading(false);
-        // router.push("/admin/facilities");
+        router.push("/profile");
       })
       .catch((err) => {
         setError(err.response.data.message);
