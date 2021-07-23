@@ -58,6 +58,7 @@ const APIUrl = {
   // subscription endpoints
   createSubscription: url + APIStarter.subscriptions,
   getNotifByEmail: url + APIStarter.subscriptions + "/notifs",
+  deleteSubscription: url + APIStarter.subscriptions, 
 };
 
 export default APIUrl;

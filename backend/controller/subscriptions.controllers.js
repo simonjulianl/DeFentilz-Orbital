@@ -14,40 +14,48 @@ function checkBody(req, res) {
 
 exports.create = (req, res) => {
   checkBody(req, res);
-  const { subscription, userEmail } = req.body;
+  const { endpoint, keys, userAgent, userEmail } = req.body;
   Subscription.create({
-    subscription: subscription,
-    userEmail: userEmail,
+    endpoint: endpoint, 
+    keys: keys,
+    userAgent: userAgent,
+    userEmail: userEmail
   })
-    .then((data) => {
-      res.send(data);
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500)
+    .send({
+      message: err.sqlMessage || "Some error occured while creating the booking"
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message:
-          err.sqlMessage || "Some error occured while creating the notif",
-      });
-    });
+  });
 };
 
 exports.getNotif = (req, res) => {
   const { userEmail } = req.body;
   Subscription.findAll({
     where: {
-      userEmail: userEmail,
-    },
-  })
-    .then((subscriptions) =>
-      subscriptions.map((subscription) => {
-        return webPush.sendNotification(
-          subscription.dataValues.subscription,
+      userEmail: userEmail
+    }
+  }).then(subscriptions => {
+    return subscriptions.map(subscription =>
+      {
+        const subObj = {
+          endpoint: subscription.dataValues.endpoint,
+          keys: {
+            auth: subscription.dataValues.keys.auth,
+            p256dh: subscription.dataValues.keys.p256dh
+          }
+        };
+        return webPush.sendNotification(subObj,
           JSON.stringify({
-            title: "Hello World",
-            message: "Success!",
-          })
-        );
-      })
+            title: "Hello World", 
+            message: "Success!"
+            })
+          );
+      });
+    }
     )
     .then((promises) => Promise.allSettled(promises))
     .then(() => {
@@ -70,3 +78,24 @@ exports.getNotif = (req, res) => {
       );
     });
 };
+
+exports.delete = (req, res) => {
+  Subscription.destroy({
+    where: {
+      endpoint: req.body.endpoint
+    }
+  })
+    .then(() => res.send("Success"))
+    .catch(function(err) {
+      console.error(err);
+      res.status(500);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({
+        error: {
+          id: 'unable-to-send-messages',
+          message: `We were unable to send messages to all subscriptions : ` +
+            `'${err.message}'`
+        }
+      }));
+    });
+}

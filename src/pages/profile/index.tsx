@@ -45,8 +45,8 @@ const ProfileView: NextPage = () => {
   const canTopUp = useRef<boolean>();
 
   // For Push Notif
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscription, setSubscription] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [subscription, setSubscription] = useState<PushSubscription>(null);
   const [registration, setRegistration] = useState(null);
 
   const randomNotification = () => {
@@ -86,6 +86,7 @@ const ProfileView: NextPage = () => {
   const subscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
+
     event.preventDefault();
     const sub: PushSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
@@ -98,6 +99,7 @@ const ProfileView: NextPage = () => {
     // each sub object if and only if one unique device
 
     setSubscription(sub);
+    console.log(sub.toJSON());
 
     const subscribeConfig: AxiosRequestConfig = {
       method: "POST",
@@ -106,37 +108,47 @@ const ProfileView: NextPage = () => {
         "Content-type": "application/json",
       },
       data: {
-        subscription: sub.toJSON(),
-        userEmail: authContext.auth.email,
+        endpoint: sub.endpoint, 
+        keys: {
+          auth: sub.toJSON().keys.auth,
+          p256dh: sub.toJSON().keys.p256dh
+        },
+        userAgent: navigator.userAgent,
+        userEmail: authContext.auth.email
       },
       timeout: 5000,
     };
 
     axios(subscribeConfig)
-      .then(() => console.log("Subscribed!"))
-      .then(() => setIsSubscribed(true))
-      .catch((err) => console.error(err));
-
-    // await fetch("http://localhost:5000/api/notif", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     subscription,
-    //   }),
-    // });
-
-    console.log("web push subscribed!");
-    console.log(sub);
+    .then(() => console.log("Subscribed!"))
+    .then(() => setIsSubscribed(true))
+    .catch(err => console.error(err));
   };
 
   const unsubscribeButtonOnClick = async (event: {
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    console.error("Unsubscribing not allowed!");
-    // await subscription.unsubscribe();
+    subscription.unsubscribe()
+    .then(() => {
+      const deleteSub : AxiosRequestConfig = {
+        method: "DELETE", 
+        url: APIUrl.deleteSubscription,
+        data: {
+          endpoint: subscription.endpoint
+        }
+      }
+      return axios(deleteSub);
+    })
+    .then(() => setSubscription(null))
+    .then(() => setIsSubscribed(false))
+    .then(() => console.log("Unsubscribed locally!"))
+    .catch(() => console.error("Problem Unsubscribing!"));
+
+    // Setup Delete subscription
+    // subscription.unsubscribe()
+    // .then();
+
     // TODO: you should call your API to delete or invalidate subscription data on server
     // setSubscription(null);
     // setIsSubscribed(false);
@@ -188,25 +200,19 @@ const ProfileView: NextPage = () => {
         })
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
-    }
 
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
-            // set sub expiration time
-            setSubscription(sub);
-            setIsSubscribed(true);
-          }
+      // Attempt to get a subscription, if any
+      if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.pushManager.getSubscription().then((sub) => {
+            if ( sub ) {
+              setSubscription(sub);
+              setIsSubscribed(true);
+            }
+          });
+          setRegistration(reg);
         });
-        setRegistration(reg);
-      });
+      }
     }
   }, [isOpen, authContext.auth]);
 
