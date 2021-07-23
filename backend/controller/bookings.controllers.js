@@ -1,5 +1,5 @@
 const db = require("../models");
-const moment = require('moment');
+const moment = require("moment");
 
 const Booking = db.bookings;
 const Facility = db.facilities;
@@ -366,7 +366,15 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Booking.findOne({ where: { id: id } })
-    .then((booking) => refundWallet(booking))
+    .then((booking) => {
+      if (moment(booking.startingTime).diff(moment()) < 0) {
+        return res.status(500).send({
+          message: "Booking in the past",
+        });
+      } else {
+        refundWallet(booking);
+      }
+    })
     .then(() =>
       Booking.destroy({
         where: { id: id },
