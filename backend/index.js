@@ -47,6 +47,20 @@ require("./routes/rewards.routes")(app);
 require("./routes/walletRequests.routes")(app);
 require("./routes/subscriptions.routes")(app);
 
+// Setting up Cron Job for Notifications
+// const cron = require('node-cron');
+// const Subscription = require("./models").subscriptions;
+// cron.schedule("*/10 * * * * *", () => {
+//   console.log("Running a task every 10 second");
+//   Subscription.findAll({
+//     where: {
+//       userEmail: 'amadeus.winarto@u.nus.edu'
+//     }
+//   })
+//   .then(bookings => console.log(bookings))
+//   .then(() => console.log("Done"));
+// });
+
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is listening at http://localhost:${PORT}`);
 });
