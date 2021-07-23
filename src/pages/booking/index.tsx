@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "~/firebase/auth";
 
-import { VStack, Text, Box, Spinner, Center, Stack } from "@chakra-ui/react";
+import { VStack, Text, Box, Spinner, Center, Stack, Flex } from "@chakra-ui/react";
 
 import BookingCard from "~/components/BookingCard/BookingCard";
 import Page from "~/components/Page/Page";
@@ -98,15 +98,23 @@ const BookingView: NextPage = () => {
                   {"My Bookings"}
                 </Text>
               </Box>
-              <Stack direction={{ base: "column", md: "row" }}>
+              {/* <Stack direction={{ base: "column", md: "row" }}> */}
+              <Flex
+                direction={["column", "column", "row"]}
+                maxW={"100vw"}
+                wrap="wrap"
+              >
                 {myBookings.length > 0 ? (
                   myBookings.map((booking, id) => {
-                    return <BookingCard key={id} booking={booking} />;
+                    return (
+                    <Box key={id} ml={[0, 0, 3]} mb={[0, 3, 5]}>
+                      <BookingCard key={id} booking={booking} />
+                    </Box>);
                   })
                 ) : (
                   <Text>{"No bookings has been made"}</Text>
                 )}
-              </Stack>
+              </Flex>
             </VStack>
           </Box>
         ) : (

@@ -168,6 +168,7 @@ const ProfileView: NextPage = () => {
       axios(getUserconfig)
         .then((response) => response.data)
         .then((user: User) => {
+          console.log(user);
           canTopUp.current =
             moment().diff(moment(user.lastTopUpRequest), "days") > 0;
 
