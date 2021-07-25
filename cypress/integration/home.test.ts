@@ -23,11 +23,18 @@ describe("Mobile Home Page Rendering", () => {
     test_carousel();
   });
 
-  it("Should not have navigation buttons", () => {
+  it("Should not have navigation links", () => {
     cy.get("[aria-label=home]").should("not.exist");
     cy.get("[aria-label=explore]").should("not.exist");
     cy.get("[aria-label=profile]").should("not.exist");
     cy.get("[aria-label=sign-in]").should("not.exist");
+  });
+
+  it("Should have navbar buttons", () => {
+    cy.get("[aria-label=Home]").should("exist");
+    cy.get("[aria-label=Explore]").should("exist");
+    cy.get(`[aria-label="My Booking"]`).should("exist");
+    cy.get("[aria-label=Profile]").should("exist");
   });
 
   it("Should have navigation drawer", () => {
@@ -71,6 +78,13 @@ describe("Desktop Home Page Rendering", () => {
     cy.get("[aria-label=explore]").should("exist");
     cy.get("[aria-label=profile]").should("exist");
     cy.get("[aria-label=sign-in]").should("exist");
+  });
+
+  it("Should not have navbar buttons", () => {
+    cy.get("[aria-label=Home]").should("not.exist");
+    cy.get("[aria-label=Explore]").should("not.exist");
+    cy.get(`[aria-label="My Booking"]`).should("not.exist");
+    cy.get("[aria-label=Profile]").should("not.exist");
   });
 
   it("Should not have navigation drawer", () => {

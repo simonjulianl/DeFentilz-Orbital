@@ -227,12 +227,12 @@ const ProfileView: NextPage = () => {
                 </Text>
               </HStack>
               <Button
-                aria-label="Account"
+                aria-label="Change Profile"
                 onClick={() => router.push("/profile/edit")}
               >
                 Change Profile
               </Button>
-              <Button aria-label="Account" isDisabled>
+              <Button aria-label="Change Password" isDisabled>
                 Change Password
               </Button>
               {/* Notification settings */}
