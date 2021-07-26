@@ -1,3 +1,5 @@
+const sizes: Cypress.ViewportPreset[] = ["iphone-6+", "macbook-16"];
+
 describe("Booking Page", () => {
   sizes.forEach((size) => {
     it(`Cannot book before login on ${size}`, () => {
